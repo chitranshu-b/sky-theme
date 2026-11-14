@@ -1,0 +1,43 @@
+{%- comment -%}
+  Product card. Params: product (required), badge (optional text), show_swatches (bool)
+{%- endcomment -%}
+{%- assign p = product -%}
+{%- assign color_opt = nil -%}
+{%- for o in p.options_with_values -%}
+  {%- assign oname = o.name | downcase -%}
+  {%- if oname == 'color' or oname == 'colour' or oname == 'colors' -%}{%- assign color_opt = o -%}{%- endif -%}
+{%- endfor -%}
+<article class="sk-card">
+  <a href="{{ p.url }}" class="sk-card__media" aria-label="{{ p.title | escape }}">
+    {%- if badge != blank -%}<span class="sk-card__badge">{{ badge }}</span>{%- endif -%}
+    {%- if p.featured_image -%}
+      <img class="sk-card__img sk-card__img--1" src="{{ p.featured_image | image_url: width: 700 }}" srcset="{{ p.featured_image | image_url: width: 400 }} 400w, {{ p.featured_image | image_url: width: 700 }} 700w, {{ p.featured_image | image_url: width: 1000 }} 1000w" sizes="(min-width: 990px) 25vw, 50vw" alt="{{ p.featured_image.alt | default: p.title | escape }}" width="700" height="{{ 700 | divided_by: p.featured_image.aspect_ratio | round }}" loading="lazy">
+      {%- if p.images.size > 1 -%}
+        <img class="sk-card__img sk-card__img--2" src="{{ p.images[1] | image_url: width: 700 }}" alt="" width="700" height="{{ 700 | divided_by: p.images[1].aspect_ratio | round }}" loading="lazy">
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'sk-ph' }}
+    {%- endif -%}
+    {%- if show_swatches and color_opt -%}
+      <span class="sk-card__swatches">
+        <span>{{ color_opt.name }}</span>
+        <span class="sk-card__dots">
+          {%- for v in color_opt.values limit: 6 -%}
+            {%- if v.swatch.color -%}{%- assign sw = v.swatch.color -%}{%- else -%}{%- assign sw = v.name | handleize | split: '-' | last -%}{%- endif -%}
+            <span class="sk-card__dot" style="background: {{ sw }}" title="{{ v.name | escape }}"></span>
+          {%- endfor -%}
+        </span>
+      </span>
+    {%- endif -%}
+  </a>
+  <div class="sk-card__info">
+    <a href="{{ p.url }}" class="sk-card__title">{{ p.title }}</a>
+    <span class="sk-card__price">
+      {{ p.price | money }}
+      {%- if p.compare_at_price > p.price %}<s>{{ p.compare_at_price | money }}</s>{% endif -%}
+    </span>
+    {%- if p.has_only_default_variant == false -%}
+      <a href="{{ p.url }}" class="sk-card__choose">Choose Options</a>
+    {%- endif -%}
+  </div>
+</article>

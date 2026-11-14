@@ -1,0 +1,51 @@
+{%- assign s = section.settings -%}
+<section class="sk-ps sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px; --sk-slide: calc(100% / {{ s.per_view }}); --sk-slide-md: 33.333%; --sk-slide-sm: 62%;">
+  <div class="sk-container sk-ps__head">
+    <h2 class="sk-h2" data-sk-words>{{ s.heading }}</h2>
+    <div class="sk-ps__side" data-sk-reveal>
+      {%- if s.text != blank -%}<p>{{ s.text }}</p>{%- endif -%}
+      {%- if s.link_label != blank -%}<a href="{{ s.collection.url | default: routes.all_products_collection_url }}" class="sk-link">{{ s.link_label }}</a>{%- endif -%}
+    </div>
+  </div>
+
+  <div class="sk-slider sk-ps__slider" data-sk-slider>
+    <button type="button" class="sk-circle sk-slider__nav sk-slider__nav--prev" data-prev aria-label="Previous"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8H3M7 4L3 8l4 4"/></svg></button>
+    <ul class="sk-slider__track">
+      {%- assign list = s.collection.products | default: collections.all.products -%}
+      {%- for product in list limit: s.limit -%}
+        {%- assign badge = '' -%}
+        {%- for t in product.tags -%}{%- if t contains 'badge:' -%}{%- assign badge = t | remove: 'badge:' | strip -%}{%- endif -%}{%- endfor -%}
+        <li>{% render 'sky-product-card', product: product, badge: badge, show_swatches: true %}</li>
+      {%- else -%}
+        {%- for i in (1..4) -%}<li><div class="sk-card"><div class="sk-card__media">{{ 'product-1' | placeholder_svg_tag: 'sk-ph' }}</div><div class="sk-card__info"><span class="sk-card__title">Example product</span><span class="sk-card__price">$99.00</span></div></div></li>{%- endfor -%}
+      {%- endfor -%}
+    </ul>
+    <button type="button" class="sk-circle sk-slider__nav sk-slider__nav--next" data-next aria-label="Next"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sk-ps__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+  .sk-ps__head .sk-h2 { max-width: 11ch; font-size: clamp(34px, 5vw, 66px); }
+  .sk-ps__side { max-width: 360px; display: grid; gap: 14px; font-size: 13px; line-height: 1.5; }
+  .sk-ps__slider { border-top: 1px solid var(--sk-line); border-bottom: 1px solid var(--sk-line); }
+  .sk-ps__slider .sk-slider__nav { top: 42%; }
+  .sk-ps__slider .sk-slider__track > li:first-child .sk-card { border-left: 1px solid var(--sk-line); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product slider",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Fresh picks have just dropped for you." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Thoughtfully selected styles designed for everyday comfort, effortless layering, and timeless appeal." },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "View All" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Products", "min": 4, "max": 20, "step": 1, "default": 10 },
+    { "type": "range", "id": "per_view", "label": "Products per row (desktop)", "min": 3, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "presets": [{ "name": "Product slider" }]
+}
+{% endschema %}

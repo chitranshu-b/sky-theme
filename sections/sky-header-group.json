@@ -1,0 +1,9 @@
+{
+  "name": "Header group",
+  "type": "header",
+  "sections": {
+    "announcement": { "type": "sky-announcement-bar", "settings": { "text": "Big savings on everyday fashion only for a short time.", "link_label": "Shop Now" } },
+    "header": { "type": "sky-header", "settings": { "transparent_on_top": true } }
+  },
+  "order": ["announcement", "header"]
+}

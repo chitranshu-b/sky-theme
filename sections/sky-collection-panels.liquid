@@ -1,0 +1,86 @@
+{%- assign s = section.settings -%}
+<section class="sk-cp" style="--cp-font: '{{ s.title_font }}', cursive;">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ s.title_font | replace: ' ', '+' }}&display=swap">
+  <div class="sk-cp__grid">
+    {%- for block in section.blocks -%}
+      {%- assign b = block.settings -%}
+      <a class="sk-cp__panel" href="{{ b.link | default: '#' }}" style="--cp-bg: {{ b.bg }}; --cp-fg: {{ b.fg }};" {{ block.shopify_attributes }}>
+        <span class="sk-cp__eyebrow">{{ b.eyebrow }}</span>
+        <span class="sk-cp__title">{{ b.title }}</span>
+
+        <span class="sk-cp__chips" aria-hidden="true">
+          {%- assign feats = b.features | newline_to_br | split: '<br />' -%}
+          {%- for f in feats -%}
+            {%- assign ft = f | strip | strip_newlines -%}
+            {%- if ft != blank -%}
+              <span class="sk-cp__chip" style="--d: {{ forloop.index0 | times: 70 }}ms"><i></i>{{ ft }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
+
+        <span class="sk-cp__figures">
+          <span class="sk-cp__fig sk-cp__fig--a">
+            {%- if b.image != blank -%}<img src="{{ b.image | image_url: width: 700 }}" alt="{{ b.image.alt | escape }}" width="700" height="{{ 700 | divided_by: b.image.aspect_ratio | round }}" loading="lazy">{%- else -%}{{ 'image' | placeholder_svg_tag: 'sk-ph' }}{%- endif -%}
+          </span>
+          <span class="sk-cp__fig sk-cp__fig--b">
+            {%- if b.image_hover != blank -%}<img src="{{ b.image_hover | image_url: width: 700 }}" alt="" width="700" height="{{ 700 | divided_by: b.image_hover.aspect_ratio | round }}" loading="lazy">{%- endif -%}
+          </span>
+        </span>
+
+        <span class="sk-cp__cta sk-link">{{ b.link_label }}</span>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sk-cp__grid { display: grid; grid-template-columns: 1fr; }
+  @media (min-width: 750px) { .sk-cp__grid { grid-template-columns: 1fr 1fr; } }
+  .sk-cp__panel { position: relative; display: block; min-height: clamp(460px, 56vw, 620px); padding: 34px 20px 28px; overflow: hidden; text-align: center; color: var(--cp-fg, #000); background: radial-gradient(120% 90% at 50% 0%, #fff 0%, var(--cp-bg, #d5dadf) 70%); border-right: 1px solid rgba(255,255,255,.6); isolation: isolate; }
+  .sk-cp__eyebrow { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+  .sk-cp__title { display: block; margin-top: 12px; font-family: var(--cp-font); font-size: clamp(44px, 6.4vw, 84px); line-height: 1; transition: transform .6s cubic-bezier(.2,.7,.2,1); transform-origin: 50% 0; }
+  .sk-cp__panel:hover .sk-cp__title { transform: scale(1.06); }
+  .sk-cp__figures { position: absolute; left: 50%; bottom: 56px; width: min(78%, 360px); height: 62%; transform: translateX(-50%); display: block; z-index: 1; }
+  .sk-cp__fig { position: absolute; bottom: 0; display: block; height: 100%; transition: transform .7s cubic-bezier(.2,.7,.2,1), opacity .5s; }
+  .sk-cp__fig img, .sk-cp__fig .sk-ph { height: 100%; width: auto; max-width: none; object-fit: contain; mix-blend-mode: multiply; }
+  .sk-cp__fig--a { left: 50%; transform: translateX(-50%); }
+  .sk-cp__fig--b { left: 50%; opacity: 0; transform: translateX(-50%); }
+  .sk-cp__panel:hover .sk-cp__fig--a { transform: translateX(-88%); }
+  .sk-cp__panel:hover .sk-cp__fig--b { opacity: 1; transform: translateX(-12%); }
+  .sk-cp__chips { position: absolute; z-index: 3; left: 18px; top: 40%; display: grid; gap: 8px; justify-items: start; text-align: left; }
+  .sk-cp__chip { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,.88); font-size: 11px; font-weight: 500; opacity: 0; transform: translateX(-16px); transition: opacity .4s ease var(--d), transform .5s cubic-bezier(.2,.7,.2,1) var(--d); }
+  .sk-cp__chip i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid currentColor; }
+  .sk-cp__panel:hover .sk-cp__chip { opacity: 1; transform: none; }
+  .sk-cp__cta { position: absolute; right: 22px; bottom: 22px; z-index: 3; }
+  @media (hover: none) { .sk-cp__chips { display: none; } }
+  @media (max-width: 749px) { .sk-cp__chips { top: 36%; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection panels (hover)",
+  "settings": [
+    { "type": "select", "id": "title_font", "label": "Title font", "default": "Caveat Brush", "options": [
+      { "value": "Caveat Brush", "label": "Caveat Brush" }, { "value": "Permanent Marker", "label": "Permanent Marker" }, { "value": "Quicksand", "label": "Quicksand" }, { "value": "Bricolage Grotesque", "label": "Bricolage Grotesque" }
+    ] }
+  ],
+  "blocks": [
+    {
+      "type": "panel", "name": "Panel", "limit": 2,
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Small text", "default": "Style meets confidence" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Shop Men" },
+        { "type": "image_picker", "id": "image", "label": "Main image (PNG with transparent background works best)" },
+        { "type": "image_picker", "id": "image_hover", "label": "Second image (appears on hover)" },
+        { "type": "textarea", "id": "features", "label": "Hover chips (one per line)", "default": "Proper Fit\nComfort Fit Style\nEasy Care\nWind Resistant\nLightweight Material" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Discover The Edit" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "color", "id": "bg", "label": "Background tint", "default": "#d3d9de" },
+        { "type": "color", "id": "fg", "label": "Text", "default": "#000000" }
+      ]
+    }
+  ],
+  "max_blocks": 2,
+  "presets": [{ "name": "Collection panels (hover)", "blocks": [{ "type": "panel" }, { "type": "panel", "settings": { "eyebrow": "Elevate your style", "title": "Shop Women", "features": "Soft Touch\nRelaxed Fit\nEveryday Layering", "link_label": "Browse All Styles" } }] }]
+}
+{% endschema %}

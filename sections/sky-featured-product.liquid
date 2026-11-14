@@ -1,0 +1,140 @@
+{%- assign s = section.settings -%}
+{%- assign product = s.product -%}
+{%- if product == blank -%}
+  <section class="sk-section"><div class="sk-container"><p>Choose a product in this section's settings.</p></div></section>
+{%- else -%}
+{%- assign current = product.selected_or_first_available_variant -%}
+<sky-fp class="sk-fp sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px;" data-variants='{{ product.variants | json | escape }}' data-money="{{ shop.money_format | escape }}">
+  <div class="sk-container sk-fp__grid">
+    <div class="sk-fp__media">
+      <ul class="sk-fp__thumbs">
+        {%- for m in product.media limit: 6 -%}
+          <li><button type="button" class="{% if forloop.first %}is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }}"><img src="{{ m.preview_image | image_url: width: 120 }}" alt="" width="60" height="80" loading="lazy"></button></li>
+        {%- endfor -%}
+      </ul>
+      <div class="sk-fp__stage" data-stage>
+        {%- for m in product.media limit: 6 -%}
+          <img class="{% if forloop.first %}is-active{% endif %}" data-img="{{ forloop.index0 }}" src="{{ m.preview_image | image_url: width: 1000 }}" alt="{{ m.alt | escape }}" width="1000" height="{{ 1000 | divided_by: m.preview_image.aspect_ratio | round }}" loading="lazy">
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="sk-fp__card">
+      {%- if s.discount_heading != blank -%}
+        <details class="sk-fp__disc">
+          <summary>{{ s.discount_heading }}<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg></summary>
+          <div><span>{{ s.discount_text }}</span>{%- if s.discount_code != blank -%}<button type="button" data-copy="{{ s.discount_code | escape }}">{{ s.discount_code }}</button>{%- endif -%}</div>
+        </details>
+      {%- endif -%}
+      <div class="sk-fp__body">
+        <h2 class="sk-fp__title">{{ product.title }}</h2>
+        <div class="sk-fp__desc">{{ product.description | strip_html | truncatewords: 28 }}</div>
+        <p class="sk-fp__price"><span data-price>{{ current.price | money }}</span>{%- if current.compare_at_price > current.price %} <s data-compare>{{ current.compare_at_price | money }}</s>{% endif -%}</p>
+
+        {%- form 'product', product, class: 'sk-fp__form' -%}
+          <input type="hidden" name="id" value="{{ current.id }}" data-id>
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <fieldset class="sk-fp__opt" data-opt="{{ forloop.index0 }}">
+                <legend>{{ option.name }}: <span data-opt-val>{{ option.selected_value }}</span></legend>
+                <div>
+                  {%- for v in option.values -%}
+                    <button type="button" class="sk-fp__pill{% if v.selected %} is-active{% endif %}" data-value="{{ v | escape }}">{{ v }}</button>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endfor -%}
+          {%- endunless -%}
+          <div class="sk-fp__row">
+            <div class="sk-fp__qty"><button type="button" data-q="-1" aria-label="Less">&minus;</button><input type="number" name="quantity" value="1" min="1" aria-label="Quantity"><button type="button" data-q="1" aria-label="More">+</button></div>
+            <button type="submit" class="sk-btn sk-btn--dark sk-fp__add" data-add {% unless current.available %}disabled{% endunless %}>{% if current.available %}Add To Cart{% else %}Sold out{% endif %}</button>
+          </div>
+        {%- endform -%}
+        <a class="sk-link" href="{{ product.url }}">View full details</a>
+      </div>
+    </div>
+  </div>
+</sky-fp>
+{%- endif -%}
+
+{% stylesheet %}
+  .sk-fp__grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; }
+  .sk-fp__media { display: grid; grid-template-columns: 76px 1fr; gap: 12px; }
+  .sk-fp__thumbs { display: grid; gap: 8px; align-content: start; padding: 8px; border-radius: 14px; background: #fff; }
+  .sk-fp__thumbs button { display: block; width: 100%; padding: 0; border: 2px solid transparent; border-radius: 8px; overflow: hidden; background: none; }
+  .sk-fp__thumbs button.is-active { border-color: #000; }
+  .sk-fp__thumbs img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+  .sk-fp__stage { position: relative; aspect-ratio: 3 / 4; border-radius: 22px; overflow: hidden; background: #fff; }
+  .sk-fp__stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .5s; }
+  .sk-fp__stage img.is-active { opacity: 1; }
+  .sk-fp__card { border-radius: 26px; overflow: hidden; background: #fff; }
+  .sk-fp__disc { background: #000; color: #fff; }
+  .sk-fp__disc summary { display: flex; justify-content: space-between; align-items: center; padding: 14px 26px; cursor: pointer; list-style: none; font-weight: 600; }
+  .sk-fp__disc summary::-webkit-details-marker { display: none; }
+  .sk-fp__disc > div { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 26px 16px; font-size: 13px; }
+  .sk-fp__disc button { height: 32px; padding: 0 14px; border: 1px dashed #fff; border-radius: 999px; background: none; color: #fff; font-weight: 700; letter-spacing: 1px; }
+  .sk-fp__body { display: grid; gap: 14px; padding: 26px; }
+  .sk-fp__title { font-size: clamp(26px, 3vw, 40px); font-weight: 500; }
+  .sk-fp__desc { color: rgba(0,0,0,.6); }
+  .sk-fp__price { font-size: 17px; font-weight: 700; } .sk-fp__price s { font-weight: 400; opacity: .5; }
+  .sk-fp__form { display: grid; gap: 16px; }
+  .sk-fp__opt { border: 0; padding: 0; margin: 0; } .sk-fp__opt legend { padding: 0 0 8px; font-weight: 600; } .sk-fp__opt legend span { font-weight: 400; opacity: .6; }
+  .sk-fp__opt > div { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sk-fp__pill { min-width: 52px; height: 42px; padding: 0 16px; border: 1px solid var(--sk-line); border-radius: 999px; background: #fff; font-weight: 600; transition: .2s; }
+  .sk-fp__pill:hover { border-color: #000; } .sk-fp__pill.is-active { background: #000; color: #fff; border-color: #000; }
+  .sk-fp__row { display: flex; gap: 12px; align-items: center; }
+  .sk-fp__qty { display: inline-flex; align-items: center; height: 48px; border: 1px solid var(--sk-line); border-radius: 999px; }
+  .sk-fp__qty button { width: 40px; height: 46px; border: 0; background: none; font-size: 18px; }
+  .sk-fp__qty input { width: 38px; border: 0; background: none; text-align: center; font: inherit; font-weight: 600; -moz-appearance: textfield; }
+  .sk-fp__qty input::-webkit-outer-spin-button, .sk-fp__qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .sk-fp__add { flex: 1; justify-content: center; padding: 0 24px; } .sk-fp__add[disabled] { opacity: .5; }
+  @media (max-width: 989px) { .sk-fp__grid { grid-template-columns: 1fr; } }
+  @media (max-width: 599px) { .sk-fp__media { grid-template-columns: 1fr; } .sk-fp__thumbs { grid-auto-flow: column; grid-auto-columns: 56px; overflow-x: auto; order: 2; } }
+{% endstylesheet %}
+
+{% javascript %}
+  class SkyFP extends HTMLElement {
+    connectedCallback() {
+      if (this.ready) return; this.ready = true;
+      var self = this, variants = JSON.parse(this.dataset.variants || '[]');
+      var idInput = this.querySelector('[data-id]'), add = this.querySelector('[data-add]'), price = this.querySelector('[data-price]');
+      var thumbs = this.querySelectorAll('[data-thumb]'), imgs = this.querySelectorAll('[data-img]');
+      thumbs.forEach(function (t) { t.addEventListener('click', function () { show(t.dataset.thumb); }); });
+      function show(i) { thumbs.forEach(function (t) { t.classList.toggle('is-active', t.dataset.thumb === String(i)); }); imgs.forEach(function (m) { m.classList.toggle('is-active', m.dataset.img === String(i)); }); }
+      function money(c) { return (window.Shopify && Shopify.formatMoney) ? Shopify.formatMoney(c, self.dataset.money) : (c / 100).toFixed(2); }
+      function selected() { return [].map.call(self.querySelectorAll('[data-opt]'), function (f) { var a = f.querySelector('.is-active'); return a ? a.dataset.value : null; }); }
+      function sync() {
+        var sel = selected(); if (!sel.length) return;
+        var v = variants.filter(function (x) { return x.options.every(function (o, i) { return o === sel[i]; }); })[0];
+        self.querySelectorAll('[data-opt]').forEach(function (f, i) { f.querySelector('[data-opt-val]').textContent = sel[i]; });
+        if (!v) { add.disabled = true; add.textContent = 'Unavailable'; return; }
+        idInput.value = v.id; add.disabled = !v.available; add.textContent = v.available ? 'Add To Cart' : 'Sold out';
+        if (price && window.Shopify && Shopify.formatMoney) price.textContent = money(v.price);
+        if (v.featured_media) { var pos = v.featured_media.position - 1; if (pos >= 0 && pos < imgs.length) show(pos); }
+      }
+      this.querySelectorAll('.sk-fp__pill').forEach(function (b) {
+        b.addEventListener('click', function () { b.parentNode.querySelectorAll('.sk-fp__pill').forEach(function (x) { x.classList.remove('is-active'); }); b.classList.add('is-active'); sync(); });
+      });
+      var q = this.querySelector('input[name=quantity]');
+      this.querySelectorAll('[data-q]').forEach(function (b) { b.addEventListener('click', function () { q.value = Math.max(1, (+q.value || 1) + +b.dataset.q); }); });
+      var cp = this.querySelector('[data-copy]');
+      if (cp) cp.addEventListener('click', function () { try { navigator.clipboard.writeText(cp.dataset.copy); } catch (e) {} var t = cp.textContent; cp.textContent = 'Copied!'; setTimeout(function () { cp.textContent = t; }, 1500); });
+    }
+  }
+  if (!customElements.get('sky-fp')) customElements.define('sky-fp', SkyFP);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Featured product",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "discount_heading", "label": "Discount strip heading", "default": "Where's the discount?" },
+    { "type": "text", "id": "discount_text", "label": "Discount text", "default": "Buy 2, get $20 off by using this code" },
+    { "type": "text", "id": "discount_code", "label": "Coupon code", "default": "SAVE20" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "presets": [{ "name": "Featured product" }]
+}
+{% endschema %}

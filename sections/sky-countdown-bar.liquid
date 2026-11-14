@@ -1,0 +1,67 @@
+{%- assign s = section.settings -%}
+<sky-countdown class="sk-cd" data-end="{{ s.end_date }}" data-end-text="{{ s.ended_text | escape }}" style="--cd-bg: {{ s.bg }}; --cd-fg: {{ s.fg }};">
+  <div class="sk-cd__inner sk-container">
+    <div class="sk-cd__title">
+      <span>{{ s.eyebrow }}</span>
+      <h2>{{ s.heading }}</h2>
+    </div>
+    <div class="sk-cd__time" role="timer" aria-live="off">
+      <span data-d>00</span><i>:</i><span data-h>00</span><i>:</i><span data-m>00</span><i>:</i><span data-s>00</span>
+    </div>
+    <p class="sk-cd__text">{{ s.text }}</p>
+    {%- if s.button_label != blank -%}<a href="{{ s.button_link | default: routes.all_products_collection_url }}" class="sk-btn sk-cd__btn">{{ s.button_label }}</a>{%- endif -%}
+  </div>
+</sky-countdown>
+
+{% stylesheet %}
+  sky-countdown { display: block; background: var(--cd-bg, #000); color: var(--cd-fg, #fff); }
+  .sk-cd__inner { display: grid; grid-template-columns: 1fr auto 1fr auto; align-items: center; gap: 24px; padding-top: 28px; padding-bottom: 28px; }
+  .sk-cd__title span { font-size: 12px; }
+  .sk-cd__title h2 { color: var(--cd-fg, #fff); font-size: clamp(22px, 2.2vw, 30px); font-weight: 500; margin-top: 4px; max-width: 9ch; }
+  .sk-cd__time { display: flex; align-items: center; gap: 8px; font-family: var(--sk-font-head); font-size: clamp(30px, 4vw, 54px); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .sk-cd__time i { font-style: normal; opacity: .8; }
+  .sk-cd__text { font-size: 12px; max-width: 220px; }
+  .sk-cd__btn { background: #fff; color: #000; padding: 0 24px; }
+  @media (max-width: 989px) { .sk-cd__inner { grid-template-columns: 1fr; justify-items: start; gap: 16px; } .sk-cd__title h2 { max-width: none; } }
+{% endstylesheet %}
+
+{% javascript %}
+  class SkyCountdown extends HTMLElement {
+    connectedCallback() {
+      if (this.ready) return; this.ready = true;
+      var end = new Date((this.dataset.end || '').replace(' ', 'T')).getTime();
+      var els = { d: this.querySelector('[data-d]'), h: this.querySelector('[data-h]'), m: this.querySelector('[data-m]'), s: this.querySelector('[data-s]') };
+      var pad = function (n) { return String(n).padStart(2, '0'); };
+      var self = this;
+      function tick() {
+        var diff = isNaN(end) ? 0 : Math.max(0, end - Date.now());
+        els.d.textContent = pad(Math.floor(diff / 864e5));
+        els.h.textContent = pad(Math.floor(diff % 864e5 / 36e5));
+        els.m.textContent = pad(Math.floor(diff % 36e5 / 6e4));
+        els.s.textContent = pad(Math.floor(diff % 6e4 / 1e3));
+        if (diff === 0 && !isNaN(end)) clearInterval(self.timer);
+      }
+      tick(); this.timer = setInterval(tick, 1000);
+    }
+    disconnectedCallback() { clearInterval(this.timer); }
+  }
+  if (!customElements.get('sky-countdown')) customElements.define('sky-countdown', SkyCountdown);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Countdown bar",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small text", "default": "Dress Up Your Moments" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Hurry, Your Style Won't Wait" },
+    { "type": "text", "id": "end_date", "label": "End date & time", "default": "2026-12-31 23:59", "info": "Format: YYYY-MM-DD HH:MM (store time zone of the visitor's browser)." },
+    { "type": "text", "id": "ended_text", "label": "Text when ended", "default": "Offer ended" },
+    { "type": "textarea", "id": "text", "label": "Side text", "default": "All orders $25+ ship free within 1 business day via USPS Priority Mail" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#000000" },
+    { "type": "color", "id": "fg", "label": "Text", "default": "#ffffff" }
+  ],
+  "presets": [{ "name": "Countdown bar" }]
+}
+{% endschema %}

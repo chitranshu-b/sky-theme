@@ -1,0 +1,102 @@
+{%- assign s = section.settings -%}
+<sky-look class="sk-sl" style="--sl-h: {{ s.height }}vh; --sl-ov: {{ s.overlay | divided_by: 100.0 }}; --sl-fg: {{ s.text_color }};">
+  <div class="sk-sl__bg">
+    {%- if s.image != blank -%}
+      <img src="{{ s.image | image_url: width: 2000 }}" alt="{{ s.image.alt | escape }}" width="2000" height="{{ 2000 | divided_by: s.image.aspect_ratio | round }}" loading="lazy">
+    {%- else -%}{{ 'hero-apparel-2' | placeholder_svg_tag: 'sk-ph' }}{%- endif -%}
+    <span class="sk-sl__shade"></span>
+  </div>
+
+  <div class="sk-sl__copy sk-container">
+    <h2 class="sk-sl__title" data-sk-words>{{ s.heading }}</h2>
+    {%- if s.text != blank -%}<p data-sk-reveal>{{ s.text }}</p>{%- endif -%}
+  </div>
+
+  {%- for block in section.blocks -%}
+    <button type="button" class="sk-sl__dot{% if forloop.first %} is-active{% endif %}" data-dot="{{ forloop.index0 }}" style="left: {{ block.settings.x }}%; top: {{ block.settings.y }}%;" aria-label="{{ block.settings.product.title | escape }}" {{ block.shopify_attributes }}><span></span></button>
+  {%- endfor -%}
+
+  <div class="sk-sl__dock">
+    <div class="sk-sl__tag">{{ s.look_name }}</div>
+    <div class="sk-sl__cards">
+      {%- for block in section.blocks -%}
+        {%- assign p = block.settings.product -%}
+        <a class="sk-sl__card{% if forloop.first %} is-active{% endif %}" data-card="{{ forloop.index0 }}" href="{{ p.url | default: '#' }}">
+          <span class="sk-sl__thumb">{%- if p.featured_image -%}<img src="{{ p.featured_image | image_url: width: 240 }}" alt="" width="120" height="160" loading="lazy">{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'sk-ph' }}{%- endif -%}</span>
+          <span class="sk-sl__meta"><b>{{ p.title | default: 'Choose a product' }}</b>{%- if p != blank -%}<em>{{ p.price | money }}</em>{%- endif -%}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+    {%- if section.blocks.size > 1 -%}
+      <div class="sk-sl__nav"><button type="button" data-step="-1" class="sk-circle" aria-label="Previous"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8H3M7 4L3 8l4 4"/></svg></button><button type="button" data-step="1" class="sk-circle" aria-label="Next"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button></div>
+    {%- endif -%}
+  </div>
+</sky-look>
+
+{% stylesheet %}
+  sky-look { position: relative; display: block; min-height: max(620px, var(--sl-h)); overflow: hidden; color: var(--sl-fg); background: #222; }
+  .sk-sl__bg, .sk-sl__bg img, .sk-sl__bg .sk-ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sk-sl__shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,var(--sl-ov)), rgba(0,0,0,0) 60%); }
+  .sk-sl__copy { position: relative; z-index: 2; padding-top: 48px; display: grid; gap: 14px; max-width: 760px; margin-left: 0; }
+  .sk-sl__title { color: var(--sl-fg); font-family: "Caveat Brush", var(--sk-font-head); font-weight: 400; font-size: clamp(36px, 5vw, 64px); }
+  .sk-sl__copy p { font-size: 14px; }
+  .sk-sl__dot { position: absolute; z-index: 3; width: 34px; height: 34px; margin: -17px 0 0 -17px; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,.35); display: grid; place-items: center; }
+  .sk-sl__dot span { width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0 rgba(255,255,255,.7); animation: sk-pulse 2s infinite; transition: transform .3s; }
+  .sk-sl__dot.is-active span { transform: scale(1.35); }
+  @keyframes sk-pulse { 70% { box-shadow: 0 0 0 14px rgba(255,255,255,0); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } }
+  .sk-sl__dock { position: absolute; z-index: 4; left: 50%; bottom: 20px; transform: translateX(-50%); width: min(560px, calc(100% - 24px)); display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; align-items: center; padding: 12px 14px; border-radius: 20px; background: rgba(0,0,0,.45); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); color: #fff; }
+  .sk-sl__tag { grid-column: 1 / -1; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .75; }
+  .sk-sl__cards { position: relative; min-height: 76px; }
+  .sk-sl__card { position: absolute; inset: 0; display: flex; align-items: center; gap: 14px; opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .45s, transform .45s, visibility .45s; }
+  .sk-sl__card.is-active { opacity: 1; visibility: visible; transform: none; }
+  .sk-sl__thumb { flex: 0 0 60px; height: 76px; border-radius: 10px; overflow: hidden; background: #fff; }
+  .sk-sl__thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .sk-sl__meta { display: grid; gap: 4px; }
+  .sk-sl__meta b { font-weight: 500; font-size: 14px; } .sk-sl__meta em { font-style: normal; font-weight: 700; }
+  .sk-sl__nav { display: flex; gap: 8px; }
+  @media (max-width: 749px) { .sk-sl__copy { padding-top: 28px; } }
+{% endstylesheet %}
+
+{% javascript %}
+  class SkyLook extends HTMLElement {
+    connectedCallback() {
+      if (this.ready) return; this.ready = true;
+      var dots = this.querySelectorAll('[data-dot]'), cards = this.querySelectorAll('[data-card]'), cur = 0, n = dots.length, t;
+      var set = function (i) {
+        cur = (i + n) % n;
+        dots.forEach(function (d, k) { d.classList.toggle('is-active', k === cur); });
+        cards.forEach(function (c, k) { c.classList.toggle('is-active', k === cur); });
+      };
+      dots.forEach(function (d, i) { d.addEventListener('click', function () { set(i); }); d.addEventListener('mouseenter', function () { set(i); }); });
+      this.querySelectorAll('[data-step]').forEach(function (b) { b.addEventListener('click', function () { set(cur + +b.dataset.step); }); });
+    }
+  }
+  if (!customElements.get('sky-look')) customElements.define('sky-look', SkyLook);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Shop the look banner",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Banner image" },
+    { "type": "range", "id": "height", "label": "Height", "min": 60, "max": 110, "step": 5, "unit": "vh", "default": 90 },
+    { "type": "range", "id": "overlay", "label": "Dark overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 40 },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#ffffff" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Enduring Stylish Sophistication" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Enduring Stylish Sophistication blends timeless elegance with lasting style." },
+    { "type": "text", "id": "look_name", "label": "Look name", "default": "Office Wear" }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot", "name": "Hotspot + product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "range", "id": "x", "label": "Horizontal position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
+        { "type": "range", "id": "y", "label": "Vertical position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 55 }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [{ "name": "Shop the look banner", "blocks": [{ "type": "hotspot", "settings": { "x": 50, "y": 55 } }, { "type": "hotspot", "settings": { "x": 70, "y": 58 } }] }]
+}
+{% endschema %}

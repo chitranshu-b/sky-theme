@@ -1,0 +1,119 @@
+{%- assign s = section.settings -%}
+{%- assign n = section.blocks.size -%}
+<sky-showcase class="sk-sc" style="--n: {{ n }}; --steps: {{ n | plus: 2 }};" data-count="{{ n }}">
+  <div class="sk-sc__stage">
+    <h2 class="sk-sc__heading">{{ s.heading }}</h2>
+
+    <div class="sk-sc__left" data-left>
+      <span class="sk-sc__eyebrow">{{ s.eyebrow }}</span>
+      <ul class="sk-sc__list" data-list>
+        {%- for block in section.blocks -%}
+          <li data-i="{{ forloop.index0 }}" {{ block.shopify_attributes }}><a href="{{ block.settings.link | default: block.settings.collection.url | default: '#' }}">{{ block.settings.title | default: block.settings.collection.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+      {%- if s.ticker != blank -%}
+        <div class="sk-sc__ticker" data-sk-marquee aria-hidden="true"><div class="sk-marquee__inner"><span>{{ s.ticker }}</span></div></div>
+      {%- endif -%}
+    </div>
+
+    <div class="sk-sc__right" data-right>
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <figure class="sk-sc__slide{% if forloop.first %} is-active{% endif %}" data-i="{{ forloop.index0 }}">
+          {%- if b.image != blank -%}
+            <img src="{{ b.image | image_url: width: 1600 }}" alt="{{ b.image.alt | escape }}" width="1600" height="{{ 1600 | divided_by: b.image.aspect_ratio | round }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'sk-ph' }}
+          {%- endif -%}
+          <figcaption class="sk-sc__glass">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l-8 5 3 6 3-2v17h14V14l3 2 3-6-8-5a6 6 0 0 1-10 0z"/></svg>
+            <span>{{ b.text }}</span>
+          </figcaption>
+        </figure>
+      {%- endfor -%}
+    </div>
+  </div>
+</sky-showcase>
+
+{% stylesheet %}
+  sky-showcase { display: block; position: relative; height: calc(var(--steps) * 100vh); background: #000; }
+  .sk-sc__stage { position: sticky; top: 0; height: 100vh; overflow: hidden; padding: 14px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  .sk-sc__heading { position: absolute; left: var(--sk-gutter); top: 50%; transform: translateY(-50%); z-index: 6; max-width: 11ch; font-size: clamp(40px, 6vw, 84px); font-weight: 500; line-height: 1.12; color: #fff; pointer-events: none; transition: opacity .3s; }
+  .sk-sc__left { min-width: 0; overflow: hidden; position: relative; z-index: 3; display: flex; flex-direction: column; justify-content: space-between; padding: 22px 0 18px; border-radius: 26px; background: #fff; opacity: 0; transform: translateX(-30px); transition: opacity .5s, transform .6s cubic-bezier(.2,.7,.2,1); }
+  .sk-sc.is-split .sk-sc__left { opacity: 1; transform: none; }
+  .sk-sc__eyebrow { text-align: center; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+  .sk-sc__list { display: grid; gap: 14px; text-align: center; padding: 0 20px; }
+  .sk-sc__list li { font-family: var(--sk-font-head); font-size: clamp(20px, 2.4vw, 32px); font-weight: 600; color: rgba(0,0,0,.4); transition: color .4s, transform .4s; transform-origin: 50% 50%; }
+  .sk-sc__list li.is-active { color: #000; transform: scale(1.12); }
+  .sk-sc__ticker { overflow: hidden; border-top: 1px solid transparent; padding-top: 10px; font-size: 12px; white-space: nowrap; }
+  .sk-sc__ticker .sk-marquee__inner { display: inline-flex; gap: 0; width: max-content; animation: sk-mq 26s linear infinite; }
+  .sk-sc__ticker span { padding-right: 36px; }
+  .sk-sc__right { position: absolute; inset: 0; z-index: 2; overflow: hidden; margin: 0; clip-path: inset(0 0 0 0 round 0); will-change: clip-path; }
+  .sk-sc__slide { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity .7s ease; }
+  .sk-sc__slide.is-active { opacity: 1; }
+  .sk-sc__slide img, .sk-sc__slide .sk-ph { width: 100%; height: 100%; object-fit: cover; }
+  .sk-sc__slide::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,calc(.32 * (1 - var(--split, 0)))); }
+  .sk-sc__glass { position: absolute; z-index: 2; left: 5%; right: 5%; bottom: 6%; display: grid; gap: 40px; min-height: 36%; align-content: space-between; padding: 22px; border-radius: 22px; color: #fff; font-size: clamp(16px, 1.7vw, 22px); line-height: 1.25; background: rgba(255,255,255,.18); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); opacity: 0; transform: translateY(20px); transition: opacity .5s .15s, transform .6s .15s; }
+  .sk-sc.is-split .is-active .sk-sc__glass { opacity: 1; transform: none; }
+  .sk-sc__left { grid-row: 1; grid-column: 1; }
+  @media (max-width: 749px) {
+    .sk-sc__stage { grid-template-columns: 1fr; grid-template-rows: 38% 1fr; }
+    .sk-sc__list { gap: 6px; } .sk-sc__ticker { display: none; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  class SkyShowcase extends HTMLElement {
+    connectedCallback() {
+      if (this.ready) return; this.ready = true;
+      var n = +this.dataset.count || 1, self = this;
+      var right = this.querySelector('[data-right]'), heading = this.querySelector('.sk-sc__heading');
+      var items = this.querySelectorAll('.sk-sc__list li'), slides = this.querySelectorAll('.sk-sc__slide');
+      var last = -1;
+      var run = function () {
+        var p = Sky.pinProgress(self);
+        var split = Math.min(1, Math.max(0, (p - 0.05) / 0.12));      /* image shrinks into the right card */
+        var wide = window.innerWidth > 749, e = split;
+        var top = wide ? 14 * e + 'px' : 'calc(38% * ' + e + ' + ' + 14 * e + 'px)';
+        var left = wide ? 'calc(50% * ' + e + ' + ' + 7 * e + 'px)' : 14 * e + 'px';
+        right.style.clipPath = 'inset(' + top + ' ' + 14 * e + 'px ' + 14 * e + 'px ' + left + ' round ' + 26 * e + 'px)';
+        self.style.setProperty('--split', split);
+        heading.style.opacity = split > 0.6 ? 0 : 1;
+        self.classList.toggle('is-split', split > 0.85);
+        var idx = Math.min(n - 1, Math.max(0, Math.floor((p - 0.22) / (0.78 / n))));
+        if (idx !== last) {
+          last = idx;
+          items.forEach(function (li, i) { li.classList.toggle('is-active', i === idx); });
+          slides.forEach(function (sl, i) { sl.classList.toggle('is-active', i === idx); });
+        }
+      };
+      Sky.onScroll(run);
+    }
+  }
+  if (!customElements.get('sky-showcase')) customElements.define('sky-showcase', SkyShowcase);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Pinned collections",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Dress Up Your Beautiful Moments" },
+    { "type": "text", "id": "eyebrow", "label": "Small title on card", "default": "Our Collections" },
+    { "type": "text", "id": "ticker", "label": "Running text at the bottom", "default": "Designed to Stand Out  •  Elevate Your Wardrobe  •  Timeless Fits, Modern Style." }
+  ],
+  "blocks": [
+    {
+      "type": "collection", "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "title", "label": "Name (optional)", "default": "Jackets" },
+        { "type": "url", "id": "link", "label": "Link (optional)" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "textarea", "id": "text", "label": "Text on image card", "default": "Stylish jackets crafted for warmth, comfort, and everyday confidence." }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [{ "name": "Pinned collections", "blocks": [{ "type": "collection" }, { "type": "collection", "settings": { "title": "Sports Wear", "text": "Classic stripes and polished knits made for everyday comfort and easy layering." } }, { "type": "collection", "settings": { "title": "Relaxed Fit", "text": "Easy silhouettes with soft fabrics for all-day wear." } }] }]
+}
+{% endschema %}

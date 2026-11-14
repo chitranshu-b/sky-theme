@@ -1,0 +1,49 @@
+{%- assign s = section.settings -%}
+<div class="sk-fb" style="--f-bg: {{ s.bg }}; --f-fg: {{ s.fg }};">
+  <div class="sk-container sk-fb__inner">
+    <div class="sk-fb__loc">
+      {%- if localization.available_countries.size > 1 -%}
+        {%- form 'localization', id: 'FooterCountry', class: 'sk-fb__form' -%}
+          <label class="sk-sr" for="FooterCountrySel">Currency</label>
+          <select id="FooterCountrySel" name="country_code" onchange="this.form.submit()">
+            {%- for c in localization.available_countries -%}<option value="{{ c.iso_code }}"{% if c.iso_code == localization.country.iso_code %} selected{% endif %}>{{ c.currency.iso_code }}</option>{%- endfor -%}
+          </select>
+        {%- endform -%}
+      {%- endif -%}
+      {%- if localization.available_languages.size > 1 -%}
+        {%- form 'localization', id: 'FooterLang', class: 'sk-fb__form' -%}
+          <label class="sk-sr" for="FooterLangSel">Language</label>
+          <select id="FooterLangSel" name="language_code" onchange="this.form.submit()">
+            {%- for l in localization.available_languages -%}<option value="{{ l.iso_code }}"{% if l.iso_code == localization.language.iso_code %} selected{% endif %}>{{ l.iso_code | upcase }}</option>{%- endfor -%}
+          </select>
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+    <p class="sk-fb__copy">&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url }} {{ powered_by_link }}</p>
+    <ul class="sk-fb__pay" role="list">
+      {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'sk-fb__icon' }}</li>{%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% stylesheet %}
+  .sk-fb { background: var(--f-bg, #f2f2f4); color: var(--f-fg, #202020); border-top: 1px solid var(--sk-line); font-size: 11px; }
+  .sk-fb__inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; min-height: 65px; }
+  .sk-fb__loc { display: flex; gap: 12px; }
+  .sk-fb__form select { appearance: none; border: 0; background: transparent; font: inherit; color: inherit; padding-right: 12px; cursor: pointer; }
+  .sk-fb__copy a { text-decoration: none; }
+  .sk-fb__pay { display: flex; justify-content: flex-end; gap: 6px; }
+  .sk-fb__icon { width: 38px; height: 24px; }
+  @media (max-width: 749px) { .sk-fb__inner { grid-template-columns: 1fr; justify-items: center; padding-top: 14px; padding-bottom: 14px; } .sk-fb__pay { justify-content: center; flex-wrap: wrap; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Footer bottom bar",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Background", "default": "#f2f2f4" },
+    { "type": "color", "id": "fg", "label": "Text", "default": "#202020" }
+  ],
+  "presets": [{ "name": "Footer bottom bar" }]
+}
+{% endschema %}

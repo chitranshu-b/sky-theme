@@ -1,0 +1,21 @@
+[
+  { "name": "theme_info", "theme_name": "Sky-style Theme", "theme_version": "1.0.0", "theme_author": "Hikabae", "theme_documentation_url": "https://help.shopify.com", "theme_support_url": "https://help.shopify.com" },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "color", "id": "bg_color", "label": "Page background", "default": "#f2f2f4" },
+      { "type": "color", "id": "text_color", "label": "Text", "default": "#202020" },
+      { "type": "color", "id": "heading_color", "label": "Headings", "default": "#000000" },
+      { "type": "color", "id": "card_color", "label": "Cards", "default": "#ffffff" },
+      { "type": "color", "id": "accent_color", "label": "Accent dot", "default": "#e8590c" }
+    ]
+  },
+  {
+    "name": "Layout & behaviour",
+    "settings": [
+      { "type": "range", "id": "page_width", "label": "Max page width", "min": 1200, "max": 1920, "step": 40, "unit": "px", "default": 1440 },
+      { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 16 },
+      { "type": "checkbox", "id": "smooth_scroll", "label": "Smooth scrolling (Lenis)", "default": true }
+    ]
+  }
+]

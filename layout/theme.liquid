@@ -1,0 +1,54 @@
+<!doctype html>
+<html class="js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="{{ settings.bg_color }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <title>{{ page_title }}{% if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+    {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+
+    {{ 'sky-base.css' | asset_url | stylesheet_tag }}
+    <style>
+      :root {
+        --sk-bg: {{ settings.bg_color }};
+        --sk-text: {{ settings.text_color }};
+        --sk-heading: {{ settings.heading_color }};
+        --sk-card: {{ settings.card_color }};
+        --sk-accent: {{ settings.accent_color }};
+        --sk-radius: {{ settings.radius }}px;
+        --sk-max: {{ settings.page_width }}px;
+      }
+    </style>
+
+    <script src="{{ 'sky-base.js' | asset_url }}"></script>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ request.page_type | handleize }}">
+    <a class="sk-sr" href="#MainContent">Skip to content</a>
+
+    {% sections 'sky-header-group' %}
+
+    <main id="MainContent" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'sky-footer-group' %}
+
+    {% render 'sky-back-to-top' %}
+
+    {%- if settings.smooth_scroll -%}
+      <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js" defer></script>
+    {%- else -%}
+      <script>document.documentElement.setAttribute('data-no-smooth', '');</script>
+    {%- endif -%}
+  </body>
+</html>

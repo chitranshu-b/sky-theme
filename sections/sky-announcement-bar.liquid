@@ -1,0 +1,66 @@
+<div class="sk-ann" style="--ann-bg: {{ section.settings.bg }}; --ann-fg: {{ section.settings.fg }};" data-sk-ann>
+  <div class="sk-ann__inner">
+    <nav class="sk-ann__menu" aria-label="Top menu">
+      {%- if section.settings.menu != blank -%}
+        {%- for l in section.settings.menu.links -%}<a href="{{ l.url }}">{{ l.title }}</a>{%- endfor -%}
+      {%- endif -%}
+    </nav>
+    <div class="sk-ann__msg">
+      {%- if section.settings.text != blank -%}<span>{{ section.settings.text }}</span>{%- endif -%}
+      {%- if section.settings.link_label != blank -%}<a href="{{ section.settings.link_url | default: '#' }}" class="sk-ann__cta">{{ section.settings.link_label }}</a>{%- endif -%}
+    </div>
+    <div class="sk-ann__loc">
+      {%- if section.settings.show_localization and localization.available_countries.size > 1 -%}
+        {%- form 'localization', id: 'AnnCountry', class: 'sk-ann__form' -%}
+          <label class="sk-sr" for="AnnCountrySel">Country</label>
+          <select id="AnnCountrySel" name="country_code" onchange="this.form.submit()">
+            {%- for c in localization.available_countries -%}
+              <option value="{{ c.iso_code }}"{% if c.iso_code == localization.country.iso_code %} selected{% endif %}>{{ c.currency.iso_code }}</option>
+            {%- endfor -%}
+          </select>
+        {%- endform -%}
+      {%- endif -%}
+      {%- if section.settings.show_localization and localization.available_languages.size > 1 -%}
+        {%- form 'localization', id: 'AnnLang', class: 'sk-ann__form' -%}
+          <label class="sk-sr" for="AnnLangSel">Language</label>
+          <select id="AnnLangSel" name="language_code" onchange="this.form.submit()">
+            {%- for l in localization.available_languages -%}
+              <option value="{{ l.iso_code }}"{% if l.iso_code == localization.language.iso_code %} selected{% endif %}>{{ l.iso_code | upcase }}</option>
+            {%- endfor -%}
+          </select>
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .sk-ann { background: var(--ann-bg); color: var(--ann-fg); font-size: 13px; }
+  .sk-ann__inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; min-height: 43px; padding: 6px 20px; }
+  .sk-ann__menu { display: flex; gap: 22px; font-weight: 500; }
+  .sk-ann__msg { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+  .sk-ann__cta { text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
+  .sk-ann__loc { display: flex; justify-content: flex-end; gap: 12px; }
+  .sk-ann__form select { appearance: none; border: 0; background: transparent; color: inherit; font: inherit; padding: 2px 14px 2px 2px; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' fill='none' stroke='%23fff' stroke-width='1.2'%3E%3Cpath d='M1 1l3 3 3-3'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right center; }
+  .sk-ann__form option { color: #000; }
+  @media (max-width: 749px) {
+    .sk-ann__inner { grid-template-columns: 1fr; justify-items: center; padding: 8px 14px; }
+    .sk-ann__menu, .sk-ann__loc { display: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Left menu" },
+    { "type": "text", "id": "text", "label": "Message", "default": "Big savings on everyday fashion only for a short time." },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop Now" },
+    { "type": "url", "id": "link_url", "label": "Link" },
+    { "type": "checkbox", "id": "show_localization", "label": "Show currency & language", "default": true },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#000000" },
+    { "type": "color", "id": "fg", "label": "Text", "default": "#ffffff" }
+  ],
+  "presets": [{ "name": "Announcement bar" }]
+}
+{% endschema %}

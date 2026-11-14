@@ -1,0 +1,344 @@
+{%- assign solid = section.settings.always_solid -%}
+<sky-header class="sk-hd{% if solid %} is-solid{% endif %}" data-transparent="{{ section.settings.transparent_on_top }}" data-solid-forced="{{ solid }}" style="--hd-fg: {{ section.settings.fg }};">
+  <div class="sk-hd__bar">
+    <div class="sk-hd__inner">
+      <div class="sk-hd__left">
+        <button type="button" class="sk-hd__btn" data-menu-open aria-label="Open menu" aria-expanded="false">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 5h12M2 11h12"/></svg>
+        </button>
+      </div>
+
+      <a href="{{ routes.root_url }}" class="sk-hd__logo">
+        {%- if section.settings.logo != blank -%}
+          <img src="{{ section.settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" width="{{ section.settings.logo_width }}" height="{{ section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio | round }}" style="width: {{ section.settings.logo_width }}px">
+        {%- else -%}
+          <span>{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+
+      <div class="sk-hd__right">
+        <button type="button" class="sk-hd__btn" data-search-open aria-label="Search">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.8"/><path d="M11 11l3 3"/></svg>
+        </button>
+        <a href="{{ routes.account_url }}" class="sk-hd__btn" aria-label="Account">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="5.2" r="2.8"/><path d="M2.8 14c.4-2.6 2.6-4 5.2-4s4.8 1.4 5.2 4"/></svg>
+        </a>
+        <a href="{{ routes.cart_url }}" class="sk-hd__btn sk-hd__cart" aria-label="Cart">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h12l-1 6.5H3zM5.5 6.5L8 2.5l2.5 4"/></svg>
+          <span class="sk-hd__count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="sk-hd__spacer"></div>
+
+  {%- comment -%} menu drawer {%- endcomment -%}
+  <div class="sk-drawer" data-drawer hidden>
+    <div class="sk-drawer__scrim" data-menu-close></div>
+    <div class="sk-drawer__panel" role="dialog" aria-label="Main menu">
+      <div class="sk-drawer__top">
+        <a href="{{ routes.root_url }}" class="sk-drawer__logo">
+          {%- assign dlogo = section.settings.drawer_logo | default: section.settings.logo -%}
+          {%- if dlogo != blank -%}
+            <img src="{{ dlogo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" width="{{ section.settings.logo_width }}" height="{{ section.settings.logo_width | divided_by: dlogo.aspect_ratio | round }}" style="width: {{ section.settings.logo_width }}px">
+          {%- else -%}
+            <span>{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+        <button type="button" class="sk-drawer__close" data-menu-close aria-label="Close menu">
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg>
+        </button>
+      </div>
+
+      <div class="sk-drawer__viewport" data-lenis-prevent>
+        {%- comment -%} level 1 {%- endcomment -%}
+        <div class="sk-drawer__level is-active" data-level="root">
+          <nav class="sk-dm" aria-label="Menu">
+            <p class="sk-dm__label">Menu</p>
+            <ul>
+              {%- for l in section.settings.menu.links -%}
+                <li>
+                  <a href="{{ l.url }}" class="sk-roll"><span class="sk-roll__a">{{ l.title }}</span><span class="sk-roll__b" aria-hidden="true">{{ l.title }}</span></a>
+                  {%- if l.links != blank -%}
+                    <button type="button" class="sk-dm__more" data-open-sub="sub-{{ forloop.index }}" aria-label="Open {{ l.title | escape }}">
+                      <svg width="8" height="13" viewBox="0 0 8 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5l5 5-5 5"/></svg>
+                    </button>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+
+          {%- capture small_cards -%}
+            {%- assign cats = section.blocks | where: 'type', 'category' -%}
+            {%- if cats.size > 0 -%}
+              {%- for block in cats -%}
+                {%- assign col = block.settings.collection -%}
+                {%- assign img = block.settings.image | default: col.featured_image -%}
+                {%- assign nm = block.settings.title | default: col.title -%}
+                {%- assign href = col.url | default: block.settings.link | default: '#' -%}
+                {%- render 'sky-menu-card-small', href: href, img: img, nm: nm, attrs: block.shopify_attributes -%}
+              {%- endfor -%}
+            {%- else -%}
+              {%- for col in collections limit: 8 -%}
+                {%- assign img = col.featured_image | default: col.products.first.featured_image -%}
+                {%- render 'sky-menu-card-small', href: col.url, img: img, nm: col.title, attrs: '' -%}
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endcapture -%}
+          {%- if small_cards contains 'sk-pc__item' -%}
+            <div class="sk-pc">
+              <p class="sk-pc__title">{{ section.settings.categories_heading }}</p>
+              <div class="sk-pc__list">{{ small_cards }}</div>
+            </div>
+          {%- endif -%}
+
+          {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+            {%- form 'localization', class: 'sk-loc' -%}
+              {%- if localization.available_countries.size > 1 -%}
+                <label class="sk-loc__sel"><span class="sk-sr">Country</span>
+                  <select name="country_code" onchange="this.form.submit()">
+                    {%- for c in localization.available_countries -%}<option value="{{ c.iso_code }}" {% if c.iso_code == localization.country.iso_code %}selected{% endif %}>{{ c.currency.iso_code }}</option>{%- endfor -%}
+                  </select>
+                </label>
+              {%- endif -%}
+              {%- if localization.available_languages.size > 1 -%}
+                <label class="sk-loc__sel"><span class="sk-sr">Language</span>
+                  <select name="language_code" onchange="this.form.submit()">
+                    {%- for l in localization.available_languages -%}<option value="{{ l.iso_code }}" {% if l.iso_code == localization.language.iso_code %}selected{% endif %}>{{ l.iso_code | upcase }}</option>{%- endfor -%}
+                  </select>
+                </label>
+              {%- endif -%}
+            {%- endform -%}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} level 2 (one panel per menu item that has children) {%- endcomment -%}
+        {%- for l in section.settings.menu.links -%}
+          {%- if l.links != blank -%}
+            <div class="sk-drawer__level" data-level="sub-{{ forloop.index }}" aria-hidden="true">
+              <button type="button" class="sk-dm__back" data-back>
+                <svg width="8" height="13" viewBox="0 0 8 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 1.5l-5 5 5 5"/></svg>
+                Back
+              </button>
+              <nav class="sk-dm" aria-label="{{ l.title | escape }}">
+                <p class="sk-dm__label">{{ l.title }}</p>
+                <ul>
+                  <li><a href="{{ l.url }}" class="sk-roll"><span class="sk-roll__a">All {{ l.title }}</span><span class="sk-roll__b" aria-hidden="true">All {{ l.title }}</span></a></li>
+                  {%- for c in l.links -%}
+                    <li class="{% if c.links != blank %}has-children{% endif %}">
+                      {%- if c.links != blank -%}
+                        <details>
+                          <summary><span class="sk-roll"><span class="sk-roll__a">{{ c.title }}</span><span class="sk-roll__b" aria-hidden="true">{{ c.title }}</span></span><span class="sk-dm__plus" aria-hidden="true"></span></summary>
+                          <ul class="sk-dm__sub">
+                            <li><a href="{{ c.url }}">All {{ c.title }}</a></li>
+                            {%- for g in c.links -%}<li><a href="{{ g.url }}">{{ g.title }}</a></li>{%- endfor -%}
+                          </ul>
+                        </details>
+                      {%- else -%}
+                        <a href="{{ c.url }}" class="sk-roll"><span class="sk-roll__a">{{ c.title }}</span><span class="sk-roll__b" aria-hidden="true">{{ c.title }}</span></a>
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- capture big_cards -%}
+      {%- assign cats2 = section.blocks | where: 'type', 'category' -%}
+      {%- if cats2.size > 0 -%}
+        {%- for block in cats2 -%}
+          {%- assign col = block.settings.collection -%}
+          {%- assign img = block.settings.image | default: col.featured_image -%}
+          {%- assign nm = block.settings.title | default: col.title -%}
+          {%- assign href = col.url | default: block.settings.link | default: '#' -%}
+          {%- render 'sky-menu-card-big', href: href, img: img, nm: nm -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for col in collections limit: 8 -%}
+          {%- assign img = col.featured_image | default: col.products.first.featured_image -%}
+          {%- render 'sky-menu-card-big', href: col.url, img: img, nm: col.title -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endcapture -%}
+    {%- if big_cards contains 'sk-bc' -%}
+      <aside class="sk-drawer__promo" data-lenis-prevent aria-label="Featured collections">{{ big_cards }}</aside>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} search overlay {%- endcomment -%}
+  <div class="sk-search" data-search hidden>
+    <div class="sk-drawer__scrim" data-search-close></div>
+    <form class="sk-search__box" action="{{ routes.search_url }}" method="get" role="search">
+      <input type="search" name="q" placeholder="Search products" autocomplete="off" aria-label="Search">
+      <button type="submit" class="sk-hd__btn" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.8"/><path d="M11 11l3 3"/></svg></button>
+      <button type="button" class="sk-hd__btn" data-search-close aria-label="Close search"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
+    </form>
+  </div>
+</sky-header>
+
+{% stylesheet %}
+  sky-header { display: block; }
+  .sk-hd__bar { position: fixed; z-index: 55; left: 0; right: 0; top: var(--sk-ann-top, 0px); color: var(--hd-fg, #fff); transition: background .35s, color .35s, box-shadow .35s; }
+  .sk-hd__inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: var(--sk-header-h); padding: 0 var(--sk-gutter); max-width: 100%; border-bottom: 1px solid rgba(255,255,255,.22); }
+  .sk-hd__left { justify-self: start; display: flex; }
+  .sk-hd__right { justify-self: end; display: flex; gap: 8px; }
+  .sk-hd__logo { font-family: var(--sk-font-head); font-size: 32px; font-weight: 500; letter-spacing: .06em; color: inherit; line-height: 1; }
+  .sk-hd__btn { position: relative; display: inline-grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,.18); color: inherit; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background .3s, color .3s; }
+  .sk-hd__btn:hover { background: rgba(255,255,255,.34); }
+  .sk-hd__count { position: absolute; top: -3px; right: -3px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: #d93025; color: #fff; font-size: 10px; line-height: 16px; text-align: center; }
+  .sk-hd__spacer { height: 0; }
+  .sk-hd.is-solid .sk-hd__bar, .sk-hd.is-scrolled .sk-hd__bar { background: var(--sk-bg); color: #000; box-shadow: 0 1px 0 var(--sk-line); }
+  .sk-hd.is-solid .sk-hd__inner, .sk-hd.is-scrolled .sk-hd__inner { border-bottom-color: transparent; }
+  .sk-hd.is-solid .sk-hd__btn, .sk-hd.is-scrolled .sk-hd__btn { background: rgba(0,0,0,.07); }
+  .sk-hd[data-solid-forced="true"] .sk-hd__spacer, .sk-hd[data-transparent="false"] .sk-hd__spacer { height: calc(var(--sk-header-h) + var(--sk-ann-h, 0px)); }
+  .sk-hd[data-transparent="false"] .sk-hd__bar { background: var(--sk-bg); color: #000; }
+  .sk-hd.is-hidden .sk-hd__bar { transform: translateY(-110%); }
+  .sk-hd__bar { transition: transform .4s cubic-bezier(.2,.7,.2,1), background .35s, color .35s, box-shadow .35s; }
+
+  .sk-drawer, .sk-search { position: fixed; inset: 0; z-index: 90; }
+  .sk-drawer[hidden], .sk-search[hidden] { display: none; }
+  .sk-drawer__scrim { position: absolute; inset: 0; background: rgba(0,0,0,.45); opacity: 0; transition: opacity .35s; }
+  .sk-drawer.is-open .sk-drawer__scrim, .sk-search.is-open .sk-drawer__scrim { opacity: 1; }
+  .sk-drawer__panel { position: absolute; top: 12px; bottom: 12px; left: 12px; width: min(460px, calc(100vw - 24px)); display: flex; flex-direction: column; border-radius: 30px; background: #e4e4e7; color: #000; overflow: hidden; transform: translateX(-110%); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+  .sk-drawer.is-open .sk-drawer__panel { transform: none; }
+  .sk-drawer__top { display: flex; align-items: center; justify-content: space-between; padding: 22px 22px 8px 24px; }
+  .sk-drawer__logo { font-family: var(--sk-font-head); font-size: 40px; font-weight: 500; letter-spacing: .06em; line-height: 1; color: #000; }
+  .sk-drawer__logo img { height: auto; }
+  .sk-drawer__close { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #000; transition: transform .3s; }
+  .sk-drawer__close:hover { transform: rotate(90deg); }
+  .sk-drawer__viewport { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+  .sk-drawer__level { position: absolute; inset: 0; overflow-y: auto; padding: 20px 24px 30px; transition: transform .45s cubic-bezier(.2,.7,.2,1), opacity .3s; scrollbar-width: none; }
+  .sk-drawer__level::-webkit-scrollbar { display: none; }
+  .sk-drawer__level:not(.is-active) { transform: translateX(40px); opacity: 0; pointer-events: none; visibility: hidden; transition: transform .45s cubic-bezier(.2,.7,.2,1), opacity .3s, visibility 0s .45s; }
+  .sk-drawer__level[data-level="root"]:not(.is-active) { transform: translateX(-40px); }
+
+  .sk-drawer__promo { position: absolute; z-index: 2; top: 122px; bottom: 12px; left: 392px; width: 400px; display: none; padding: 20px; border-radius: 30px 30px 0 0; background: #fff; overflow-y: auto; scrollbar-width: none; transform: translateX(-130%); transition: transform .6s cubic-bezier(.2,.7,.2,1) .05s; box-shadow: 0 0 40px rgba(0,0,0,.12); }
+  .sk-drawer__promo::-webkit-scrollbar { display: none; }
+  .sk-drawer.is-open .sk-drawer__promo { transform: none; }
+  .sk-bc { position: relative; display: block; margin-bottom: 20px; aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden; background: #ddd; }
+  .sk-bc:last-child { margin-bottom: 0; }
+  .sk-bc img, .sk-bc .sk-ph { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+  .sk-bc:hover img { transform: scale(1.05); }
+  .sk-bc span { position: absolute; left: 20px; top: 18px; color: #fff; font-family: var(--sk-font-head); font-size: 20px; font-weight: 600; text-shadow: 0 1px 12px rgba(0,0,0,.3); }
+  @media (min-width: 990px) {
+    .sk-drawer__promo { display: block; }
+    .sk-drawer__level { padding-right: 96px; }
+  }
+  .sk-loc { display: flex; gap: 10px; margin-top: 26px; }
+  .sk-loc__sel select { height: 40px; padding: 0 14px; border: 0; border-radius: 999px; background: #fff; font: inherit; font-size: 13px; }
+  .sk-dm__label { margin-bottom: 14px; font-size: 12px; color: rgba(0,0,0,.5); }
+  .sk-dm ul { display: grid; gap: 2px; }
+  .sk-dm > ul > li { position: relative; display: flex; align-items: center; justify-content: space-between; }
+  .sk-dm a, .sk-dm summary { font-family: var(--sk-font-head); font-size: 26px; font-weight: 500; line-height: 1.55; color: #202020; }
+  .sk-dm summary { display: flex; align-items: center; justify-content: space-between; width: 100%; list-style: none; cursor: pointer; }
+  .sk-dm summary::-webkit-details-marker { display: none; }
+  .sk-dm li > details { width: 100%; }
+  .sk-dm__more { display: grid; place-items: center; width: 34px; height: 34px; margin-right: 4px; padding: 0; border: 0; border-radius: 50%; background: none; color: #000; transition: background .25s; }
+  .sk-dm__more:hover { background: rgba(0,0,0,.08); }
+  .sk-dm__plus { position: relative; width: 14px; height: 14px; margin-right: 8px; }
+  .sk-dm__plus::before, .sk-dm__plus::after { content: ""; position: absolute; left: 0; top: 50%; width: 14px; height: 1.5px; background: #000; transition: transform .3s; }
+  .sk-dm__plus::after { transform: rotate(90deg); }
+  .sk-dm details[open] .sk-dm__plus::after { transform: rotate(0); }
+  .sk-dm__sub { padding: 2px 0 12px 4px; }
+  .sk-dm__sub a { font-family: var(--sk-font-body); font-size: 16px; font-weight: 400; color: rgba(0,0,0,.7); }
+  .sk-dm__sub a:hover { color: #000; }
+  .sk-dm__back { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px; padding: 0; border: 0; background: none; font-family: var(--sk-font-head); font-size: 18px; font-weight: 600; }
+
+  /* link text "roll" hover */
+  .sk-roll { display: inline-grid; overflow: hidden; }
+  .sk-roll__a, .sk-roll__b { grid-area: 1 / 1; transition: transform .45s cubic-bezier(.7,0,.2,1); }
+  .sk-roll__b { transform: translateY(110%); }
+  .sk-roll:hover .sk-roll__a, summary:hover .sk-roll__a { transform: translateY(-110%); }
+  .sk-roll:hover .sk-roll__b, summary:hover .sk-roll__b { transform: none; }
+
+  /* Popular categories */
+  .sk-pc { margin-top: 34px; }
+  .sk-pc__title { margin-bottom: 14px; font-size: 13px; color: rgba(0,0,0,.5); }
+  .sk-pc__list { display: grid; gap: 14px; }
+  .sk-pc__item { display: grid; grid-template-columns: 68px 1fr auto; align-items: center; gap: 16px; padding: 8px 18px 8px 8px; border: 1px solid rgba(0,0,0,.14); border-radius: 18px; background: transparent; transition: background .3s; }
+  .sk-pc__item:hover { background: rgba(255,255,255,.6); }
+  .sk-pc__media { display: block; aspect-ratio: 1 / 1; border-radius: 12px; overflow: hidden; background: #ddd; }
+  .sk-pc__media img, .sk-pc__media .sk-ph { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  .sk-pc__item:hover .sk-pc__media img { transform: scale(1.08); }
+  .sk-pc__name { font-family: var(--sk-font-head); font-size: 17px; font-weight: 500; line-height: 1.2; color: #202020; }
+  .sk-pc__arrow { color: #000; transition: transform .3s; } .sk-pc__item:hover .sk-pc__arrow { transform: translateX(4px); }
+
+  .sk-search__box { position: absolute; top: 24px; left: 50%; width: min(680px, calc(100vw - 24px)); display: flex; align-items: center; gap: 8px; padding: 8px 10px 8px 22px; border-radius: 999px; background: #fff; color: #000; transform: translate(-50%, -20px); opacity: 0; transition: .35s; }
+  .sk-search.is-open .sk-search__box { transform: translate(-50%, 0); opacity: 1; }
+  .sk-search__box input { flex: 1; height: 44px; border: 0; outline: 0; background: none; font: inherit; font-size: 17px; }
+  .sk-search__box .sk-hd__btn { background: rgba(0,0,0,.07); }
+{% endstylesheet %}
+
+{% javascript %}
+  class SkyHeader extends HTMLElement {
+    connectedCallback() {
+      if (this.ready) return; this.ready = true;
+      this.bar = this.querySelector('.sk-hd__bar');
+      this.ann = document.querySelector('[data-sk-ann]');
+      var self = this, lastY = window.scrollY;
+      if (!document.body.classList.contains('template-index')) { this.classList.add('is-solid'); this.dataset.solidForced = 'true'; }
+      function update() {
+        var ah = self.ann ? self.ann.offsetHeight : 0;
+        var y = window.scrollY;
+        document.documentElement.style.setProperty('--sk-ann-h', ah + 'px');
+        document.documentElement.style.setProperty('--sk-ann-top', Math.max(0, ah - y) + 'px');
+        self.classList.toggle('is-scrolled', y > ah + 20);
+        if (y > 400 && y > lastY + 4) self.classList.add('is-hidden');
+        else if (y < lastY - 4 || y < 400) self.classList.remove('is-hidden');
+        lastY = y;
+      }
+      (window.Sky && Sky.onScroll ? Sky.onScroll : function (f) { window.addEventListener('scroll', f, { passive: true }); f(); })(update);
+      window.addEventListener('resize', update);
+
+      var drawer = this.querySelector('[data-drawer]'), search = this.querySelector('[data-search]');
+      function open(el) { el.hidden = false; requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-open'); }); }); if (window.Sky) Sky.lockScroll(); }
+      function close(el) { el.classList.remove('is-open'); setTimeout(function () { el.hidden = true; }, 400); if (window.Sky) Sky.unlockScroll(); }
+      this.querySelector('[data-menu-open]').addEventListener('click', function () { open(drawer); });
+      this.querySelectorAll('[data-menu-close]').forEach(function (b) { b.addEventListener('click', function () { close(drawer); }); });
+      this.querySelector('[data-search-open]').addEventListener('click', function () { open(search); setTimeout(function () { search.querySelector('input').focus(); }, 300); });
+      var levels = this.querySelectorAll('.sk-drawer__level');
+      function show(name) {
+        levels.forEach(function (l) { var on = l.dataset.level === name; l.classList.toggle('is-active', on); l.setAttribute('aria-hidden', on ? 'false' : 'true'); if (on) l.scrollTop = 0; });
+      }
+      this.querySelectorAll('[data-open-sub]').forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.openSub); }); });
+      this.querySelectorAll('[data-back]').forEach(function (b) { b.addEventListener('click', function () { show('root'); }); });
+      this.querySelectorAll('[data-menu-close]').forEach(function (b) { b.addEventListener('click', function () { setTimeout(function () { show('root'); }, 450); }); });
+      this.querySelectorAll('[data-search-close]').forEach(function (b) { b.addEventListener('click', function () { close(search); }); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!drawer.hidden) close(drawer); if (!search.hidden) close(search); } });
+    }
+  }
+  if (!customElements.get('sky-header')) customElements.define('sky-header', SkyHeader);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo image (optional)" },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 300, "step": 10, "unit": "px", "default": 120 },
+    { "type": "image_picker", "id": "drawer_logo", "label": "Logo inside the menu (optional, otherwise the header logo)" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "text", "id": "categories_heading", "label": "Popular categories heading", "default": "Popular Categories" },
+    { "type": "checkbox", "id": "transparent_on_top", "label": "Transparent over hero (home page)", "default": true },
+    { "type": "checkbox", "id": "always_solid", "label": "Always solid background", "default": false },
+    { "type": "color", "id": "fg", "label": "Text colour on transparent header", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "category", "name": "Popular category",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection (name and image are taken from it)" },
+        { "type": "image_picker", "id": "image", "label": "Image (optional, overrides the collection image)" },
+        { "type": "text", "id": "title", "label": "Name (optional, overrides the collection name)" },
+        { "type": "url", "id": "link", "label": "Link (only if no collection is chosen)" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "Header", "blocks": [{ "type": "category" }, { "type": "category" }, { "type": "category" }] }]
+}
+{% endschema %}

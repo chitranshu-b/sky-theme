@@ -1,0 +1,50 @@
+{%- assign s = section.settings -%}
+<section class="sk-br" style="--br-bg: {{ s.bg }}; --br-fg: {{ s.fg }};">
+  <div class="sk-container">
+    <h2 class="sk-br__title">{{ s.heading }}</h2>
+    <ul class="sk-br__list">
+      {%- for block in section.blocks -%}
+        <li data-sk-reveal {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.link | default: '#' }}">
+            <span class="sk-br__name">{{ block.settings.name }}</span>
+            <span class="sk-br__meta"><i>{{ block.settings.type }}</i><i>{{ block.settings.count }}</i></span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sk-br { background: var(--br-bg, #000); color: var(--br-fg, #fff); padding: 28px 0 40px; }
+  .sk-br__title { color: var(--br-fg, #fff); font-size: 22px; font-weight: 500; padding-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,.14); }
+  .sk-br__list { display: flex; flex-wrap: wrap; gap: 14px 34px; padding: 30px 0; border-bottom: 1px solid rgba(255,255,255,.14); }
+  .sk-br__list a { display: inline-flex; align-items: flex-end; gap: 10px; transition: opacity .3s; }
+  .sk-br__list:hover a { opacity: .45; } .sk-br__list a:hover { opacity: 1; }
+  .sk-br__name { font-family: var(--sk-font-head); font-size: clamp(28px, 3.8vw, 52px); font-weight: 600; text-transform: uppercase; line-height: 1; }
+  .sk-br__meta { display: grid; font-size: 11px; line-height: 1.25; margin-bottom: 4px; } .sk-br__meta i { font-style: normal; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Shop by brand",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop By Brand" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#000000" },
+    { "type": "color", "id": "fg", "label": "Text", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "brand", "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Brand name" },
+        { "type": "text", "id": "type", "label": "Small text 1", "default": "Curated Collection" },
+        { "type": "text", "id": "count", "label": "Small text 2", "default": "15 Products" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [{ "name": "Shop by brand", "blocks": [{ "type": "brand", "settings": { "name": "Solène" } }, { "type": "brand", "settings": { "name": "Urbanmuse" } }, { "type": "brand", "settings": { "name": "Lenora" } }, { "type": "brand", "settings": { "name": "Elira" } }] }]
+}
+{% endschema %}

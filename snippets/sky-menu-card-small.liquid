@@ -1,0 +1,9 @@
+<a href="{{ href }}" class="sk-pc__item" {{ attrs }}>
+  <span class="sk-pc__media">
+    {%- if img != blank -%}
+      <img src="{{ img | image_url: width: 300 }}" alt="{{ nm | escape }}" width="300" height="{{ 300 | divided_by: img.aspect_ratio | round }}" loading="lazy">
+    {%- else -%}{{ 'collection-1' | placeholder_svg_tag: 'sk-ph' }}{%- endif -%}
+  </span>
+  <span class="sk-pc__name">{{ nm }}</span>
+  <svg class="sk-pc__arrow" width="8" height="13" viewBox="0 0 8 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 1.5l5 5-5 5"/></svg>
+</a>

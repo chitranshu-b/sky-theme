@@ -1,0 +1,18 @@
+{
+  "name": "Footer group",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "sky-footer",
+      "blocks": {
+        "c1": { "type": "links", "settings": { "title": "Quick links" } },
+        "c2": { "type": "links", "settings": { "title": "Best collections" } },
+        "c3": { "type": "links", "settings": { "title": "Help & support" } },
+        "c4": { "type": "contact", "settings": {} }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"]
+    },
+    "bottom": { "type": "sky-footer-bottom", "settings": {} }
+  },
+  "order": ["footer", "bottom"]
+}

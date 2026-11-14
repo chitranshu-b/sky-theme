@@ -1,0 +1,6 @@
+<a href="{{ href }}" class="sk-bc">
+  {%- if img != blank -%}
+    <img src="{{ img | image_url: width: 800 }}" alt="{{ nm | escape }}" width="800" height="{{ 800 | divided_by: img.aspect_ratio | round }}" loading="lazy">
+  {%- else -%}{{ 'collection-1' | placeholder_svg_tag: 'sk-ph' }}{%- endif -%}
+  <span>{{ nm }}</span>
+</a>
