@@ -1,5 +1,5 @@
 {%- assign s = section.settings -%}
-<section class="sk-mos sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px;">
+<section class="sk-mos sk-section{% if s.hide_mobile %} sk-hide-m{% endif %}" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px;">
   <div class="sk-container">
     <header class="sk-mos__head">
       <h2 class="sk-h2" data-sk-words>{{ s.heading }}</h2>
@@ -38,6 +38,7 @@
 </section>
 
 {% stylesheet %}
+  @media (max-width: 749px) { .sk-mos.sk-hide-m { display: none; } }
   .sk-mos__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
   .sk-mos__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; align-items: end; }
   .sk-mos__tile { position: relative; grid-column: span var(--span, 3); aspect-ratio: var(--ratio, 0.85); overflow: hidden; border-radius: 18px; background: #ddd; transition-property: opacity, transform; }
@@ -63,6 +64,7 @@
 {
   "name": "Collection mosaic",
   "settings": [
+    { "type": "checkbox", "id": "hide_mobile", "label": "Hide on phones (the Mobile categories section is shown there instead)", "default": true },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Discover Signature Collections" },
     { "type": "text", "id": "link_label", "label": "Link label", "default": "Explore All Collections" },
     { "type": "url", "id": "link_url", "label": "Link" },

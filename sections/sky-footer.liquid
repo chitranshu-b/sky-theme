@@ -19,7 +19,7 @@
         {%- case block.type -%}
           {%- when 'links' -%}
             <div class="sk-ft2__col" {{ block.shopify_attributes }}>
-              <h3>{{ block.settings.title }}</h3>
+              <h3 data-ft-toggle>{{ block.settings.title }}<i aria-hidden="true"></i></h3>
               {%- if block.settings.menu != blank -%}<ul>{%- for l in block.settings.menu.links -%}<li><a href="{{ l.url }}">{{ l.title }}</a></li>{%- endfor -%}</ul>{%- endif -%}
             </div>
           {%- when 'contact' -%}
@@ -49,8 +49,31 @@
   .sk-ft2__col li + li { margin-top: 10px; }
   .sk-ft2__col a { font-size: 13px; transition: opacity .25s; } .sk-ft2__col a:hover { opacity: .6; }
   .sk-ft2__addr { font-size: 13px; line-height: 1.55; } .sk-ft2__u { display: inline-block; margin-top: 14px; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+  .sk-ft2__col h3 i { display: none; }
+  @media (max-width: 749px) {
+    .sk-ft2__news p { max-width: none; }
+    .sk-ft2__form input[type=email] { width: 100%; min-width: 0; font-size: 15px; }
+    .sk-ft2__cols { display: block; padding: 10px 0 24px; }
+    .sk-ft2__col { border-bottom: 1px solid var(--sk-line); }
+    .sk-ft2__col h3 { display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 18px 0; cursor: pointer; }
+    .sk-ft2__col:not(.sk-ft2__col--contact) h3 i { display: block; position: relative; width: 12px; height: 12px; }
+    .sk-ft2__col h3 i::before, .sk-ft2__col h3 i::after { content: ""; position: absolute; left: 0; top: 5px; width: 12px; height: 1.5px; background: currentColor; transition: transform .3s; }
+    .sk-ft2__col h3 i::after { transform: rotate(90deg); }
+    .sk-ft2__col.is-open h3 i::after { transform: rotate(0); }
+    .sk-ft2__col:not(.sk-ft2__col--contact) ul { display: none; padding-bottom: 16px; }
+    .sk-ft2__col.is-open ul { display: block; }
+    .sk-ft2__col--contact { border-bottom: 0; }
+    .sk-ft2__col--contact h3 { padding-bottom: 8px; }
+  }
   @media (max-width: 989px) { .sk-ft2__grid { grid-template-columns: 1fr; } .sk-ft2__news { border: 0; padding: 36px 0 0; } .sk-ft2__cols { grid-template-columns: repeat(2, 1fr); padding: 28px 0 36px; } }
 {% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('click', function (e) {
+    var h = e.target.closest && e.target.closest('[data-ft-toggle]');
+    if (h && window.matchMedia('(max-width: 749px)').matches) h.parentNode.classList.toggle('is-open');
+  });
+{% endjavascript %}
 
 {% schema %}
 {

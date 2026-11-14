@@ -68,7 +68,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .sk-slider__nav[disabled] { opacity: 0; pointer-events: none; }
 .sk-slider__nav--prev { left: 12px; } .sk-slider__nav--next { right: 12px; }
 @media (max-width: 989px) { .sk-slider__track > * { flex-basis: var(--sk-slide-md, 40%); } }
-@media (max-width: 599px) { .sk-slider__track > * { flex-basis: var(--sk-slide-sm, 60%); } .sk-slider__nav { display: none; } }
+@media (max-width: 599px) { .sk-slider__track > * { flex-basis: var(--sk-slide-sm, 48%); } .sk-slider__nav { display: none; } }
 
 /* product card */
 .sk-card { position: relative; background: var(--sk-card); height: 100%; border-right: 1px solid var(--sk-line); }

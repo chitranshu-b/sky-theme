@@ -23,6 +23,14 @@
   .sk-br__list:hover a { opacity: .45; } .sk-br__list a:hover { opacity: 1; }
   .sk-br__name { font-family: var(--sk-font-head); font-size: clamp(28px, 3.8vw, 52px); font-weight: 600; text-transform: uppercase; line-height: 1; }
   .sk-br__meta { display: grid; font-size: 11px; line-height: 1.25; margin-bottom: 4px; } .sk-br__meta i { font-style: normal; }
+  @media (max-width: 749px) {
+    .sk-br__list { flex-wrap: nowrap; gap: 28px; margin: 0 calc(var(--sk-gutter) * -1); padding: 26px var(--sk-gutter); overflow-x: auto; scrollbar-width: none; }
+    .sk-br__list::-webkit-scrollbar { display: none; }
+    .sk-br__list li { flex: 0 0 auto; }
+    .sk-br__list a { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .sk-br__name { font-size: 30px; }
+    .sk-br__meta { margin: 0; font-size: 12px; font-weight: 600; }
+  }
 {% endstylesheet %}
 
 {% schema %}

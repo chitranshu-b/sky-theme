@@ -33,6 +33,22 @@
       {%- endfor -%}
     </div>
   </div>
+
+  <div class="sk-sc__m">
+    {%- assign first = section.blocks.first.settings.image -%}
+    {%- if first != blank -%}<img class="sk-sc__mbg" src="{{ first | image_url: width: 1000 }}" alt="" loading="lazy" width="1000" height="{{ 1000 | divided_by: first.aspect_ratio | round }}">{%- endif -%}
+    <h2>{{ s.heading }}</h2>
+    <div class="sk-sc__mrow">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <a class="sk-sc__mcard" href="{{ b.link | default: b.collection.url | default: '#' }}">
+          {%- if b.image != blank -%}<img src="{{ b.image | image_url: width: 700 }}" alt="" loading="lazy" width="700" height="{{ 700 | divided_by: b.image.aspect_ratio | round }}">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'sk-ph' }}{%- endif -%}
+          <span class="sk-sc__mt">{{ b.title | default: b.collection.title }}</span>
+          <span class="sk-sc__mg"><svg width="30" height="30" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l-8 5 3 6 3-2v17h14V14l3 2 3-6-8-5a6 6 0 0 1-10 0z"/></svg>{{ b.text }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
 </sky-showcase>
 
 {% stylesheet %}
@@ -56,9 +72,20 @@
   .sk-sc__glass { position: absolute; z-index: 2; left: 5%; right: 5%; bottom: 6%; display: grid; gap: 40px; min-height: 36%; align-content: space-between; padding: 22px; border-radius: 22px; color: #fff; font-size: clamp(16px, 1.7vw, 22px); line-height: 1.25; background: rgba(255,255,255,.18); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); opacity: 0; transform: translateY(20px); transition: opacity .5s .15s, transform .6s .15s; }
   .sk-sc.is-split .is-active .sk-sc__glass { opacity: 1; transform: none; }
   .sk-sc__left { grid-row: 1; grid-column: 1; }
+  .sk-sc__m { display: none; }
   @media (max-width: 749px) {
-    .sk-sc__stage { grid-template-columns: 1fr; grid-template-rows: 38% 1fr; }
-    .sk-sc__list { gap: 6px; } .sk-sc__ticker { display: none; }
+    sky-showcase { height: auto; }
+    .sk-sc__stage { display: none; }
+    .sk-sc__m { position: relative; display: block; padding: 44px 0 34px; overflow: hidden; }
+    .sk-sc__mbg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .sk-sc__m::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.28); }
+    .sk-sc__m h2 { position: relative; z-index: 2; padding: 0 24px; text-align: center; color: #fff; font-size: 32px; font-weight: 500; line-height: 1.15; }
+    .sk-sc__mrow { position: relative; z-index: 2; display: flex; gap: 12px; margin-top: 26px; padding: 0 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .sk-sc__mrow::-webkit-scrollbar { display: none; }
+    .sk-sc__mcard { position: relative; flex: 0 0 66%; aspect-ratio: 3 / 4; border-radius: 22px; overflow: hidden; scroll-snap-align: start; color: #fff; background: #333; }
+    .sk-sc__mcard img, .sk-sc__mcard .sk-ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .sk-sc__mt { position: absolute; top: 16px; left: 18px; z-index: 2; font-size: 14px; font-weight: 600; }
+    .sk-sc__mg { position: absolute; z-index: 2; left: 10px; right: 10px; bottom: 10px; display: grid; gap: 28px; min-height: 42%; align-content: space-between; padding: 16px; border-radius: 18px; font-size: 14px; font-weight: 600; line-height: 1.3; background: rgba(255,255,255,.2); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
   }
 {% endstylesheet %}
 

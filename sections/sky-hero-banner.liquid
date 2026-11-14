@@ -1,5 +1,5 @@
 {%- assign s = section.settings -%}
-<section class="sk-hero" style="--hero-h: {{ s.height }}vh; --hero-ov: {{ s.overlay | divided_by: 100.0 }}; --mq-size: {{ s.marquee_size }}px; --hero-fg: {{ s.text_color }};">
+<section class="sk-hero{% if s.hide_mobile %} sk-hide-m{% endif %}" style="--hero-h: {{ s.height }}vh; --hero-ov: {{ s.overlay | divided_by: 100.0 }}; --mq-size: {{ s.marquee_size }}px; --hero-fg: {{ s.text_color }};">
   <div class="sk-hero__bg">
     {%- if s.image != blank -%}
       <img src="{{ s.image | image_url: width: 2000 }}" srcset="{{ s.image | image_url: width: 900 }} 900w, {{ s.image | image_url: width: 1500 }} 1500w, {{ s.image | image_url: width: 2400 }} 2400w" sizes="100vw" alt="{{ s.image.alt | escape }}" width="2000" height="{{ 2000 | divided_by: s.image.aspect_ratio | round }}" fetchpriority="high">
@@ -35,6 +35,7 @@
 </section>
 
 {% stylesheet %}
+  @media (max-width: 749px) { .sk-hero.sk-hide-m { display: none; } }
   .sk-hero { position: relative; display: flex; align-items: flex-end; min-height: max(520px, var(--hero-h)); overflow: hidden; color: var(--hero-fg); background: #000; }
   .sk-hero__bg { position: absolute; inset: 0; }
   .sk-hero__bg img, .sk-hero__bg .sk-ph { width: 100%; height: 100%; object-fit: cover; }
@@ -57,6 +58,7 @@
 {
   "name": "Hero banner",
   "settings": [
+    { "type": "checkbox", "id": "hide_mobile", "label": "Hide on phones (the Mobile categories section is shown there instead)", "default": true },
     { "type": "image_picker", "id": "image", "label": "Background image" },
     { "type": "range", "id": "height", "label": "Height", "min": 50, "max": 100, "step": 5, "unit": "vh", "default": 100 },
     { "type": "range", "id": "overlay", "label": "Dark overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 40 },

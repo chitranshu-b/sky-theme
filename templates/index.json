@@ -1,80 +1,324 @@
 {
   "sections": {
-    "hero": { "type": "sky-hero-banner", "settings": { "marquee_text": "Spring Sale" } },
+    "hero": {
+      "type": "sky-hero-banner",
+      "settings": {
+        "marquee_text": "Spring Sale"
+      }
+    },
     "mosaic": {
       "type": "sky-collection-mosaic",
       "blocks": {
-        "m1": { "type": "collection", "settings": { "span": 2, "ratio": "0.85" } },
-        "m2": { "type": "collection", "settings": { "span": 2, "ratio": "1" } },
-        "m3": { "type": "collection", "settings": { "span": 2, "ratio": "0.85" } },
-        "m4": { "type": "collection", "settings": { "span": 3, "ratio": "1" } },
-        "m5": { "type": "collection", "settings": { "span": 3, "ratio": "0.85" } },
-        "m6": { "type": "collection", "settings": { "span": 2, "ratio": "1" } },
-        "m7": { "type": "collection", "settings": { "span": 2, "ratio": "0.85" } },
-        "m8": { "type": "video_text", "settings": { "span": 5 } },
-        "m9": { "type": "collection", "settings": { "span": 3, "ratio": "1" } }
+        "m1": {
+          "type": "collection",
+          "settings": {
+            "span": 2,
+            "ratio": "0.85"
+          }
+        },
+        "m2": {
+          "type": "collection",
+          "settings": {
+            "span": 2,
+            "ratio": "1"
+          }
+        },
+        "m3": {
+          "type": "collection",
+          "settings": {
+            "span": 2,
+            "ratio": "0.85"
+          }
+        },
+        "m4": {
+          "type": "collection",
+          "settings": {
+            "span": 3,
+            "ratio": "1"
+          }
+        },
+        "m5": {
+          "type": "collection",
+          "settings": {
+            "span": 3,
+            "ratio": "0.85"
+          }
+        },
+        "m6": {
+          "type": "collection",
+          "settings": {
+            "span": 2,
+            "ratio": "1"
+          }
+        },
+        "m7": {
+          "type": "collection",
+          "settings": {
+            "span": 2,
+            "ratio": "0.85"
+          }
+        },
+        "m8": {
+          "type": "video_text",
+          "settings": {
+            "span": 5
+          }
+        },
+        "m9": {
+          "type": "collection",
+          "settings": {
+            "span": 3,
+            "ratio": "1"
+          }
+        }
       },
-      "block_order": ["m1", "m2", "m3", "m4", "m5", "m6", "m7", "m8", "m9"]
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6",
+        "m7",
+        "m8",
+        "m9"
+      ]
     },
-    "slider": { "type": "sky-product-slider", "settings": {} },
+    "slider": {
+      "type": "sky-product-slider",
+      "settings": {}
+    },
     "panels": {
       "type": "sky-collection-panels",
       "blocks": {
-        "p1": { "type": "panel", "settings": {} },
-        "p2": { "type": "panel", "settings": { "eyebrow": "Elevate your style", "title": "Shop Women", "features": "Soft Touch\nRelaxed Fit\nEveryday Layering", "link_label": "Browse All Styles" } }
+        "p1": {
+          "type": "panel",
+          "settings": {}
+        },
+        "p2": {
+          "type": "panel",
+          "settings": {
+            "eyebrow": "Elevate your style",
+            "title": "Shop Women",
+            "features": "Soft Touch\nRelaxed Fit\nEveryday Layering",
+            "link_label": "Browse All Styles"
+          }
+        }
       },
-      "block_order": ["p1", "p2"]
+      "block_order": [
+        "p1",
+        "p2"
+      ]
     },
     "showcase": {
       "type": "sky-showcase-pinned",
       "blocks": {
-        "s1": { "type": "collection", "settings": {} },
-        "s2": { "type": "collection", "settings": { "title": "Sports Wear", "text": "Classic stripes and polished knits made for everyday comfort and easy layering." } },
-        "s3": { "type": "collection", "settings": { "title": "Relaxed Fit", "text": "Easy silhouettes with soft fabrics for all-day wear." } }
+        "s1": {
+          "type": "collection",
+          "settings": {}
+        },
+        "s2": {
+          "type": "collection",
+          "settings": {
+            "title": "Sports Wear",
+            "text": "Classic stripes and polished knits made for everyday comfort and easy layering."
+          }
+        },
+        "s3": {
+          "type": "collection",
+          "settings": {
+            "title": "Relaxed Fit",
+            "text": "Easy silhouettes with soft fabrics for all-day wear."
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3"]
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ]
     },
     "tabs": {
       "type": "sky-product-tabs",
       "blocks": {
-        "t1": { "type": "tab", "settings": { "label": "Premium" } },
-        "t2": { "type": "tab", "settings": { "label": "Fresh Picks" } },
-        "t3": { "type": "tab", "settings": { "label": "Trending" } }
+        "t1": {
+          "type": "tab",
+          "settings": {
+            "label": "Premium"
+          }
+        },
+        "t2": {
+          "type": "tab",
+          "settings": {
+            "label": "Fresh Picks"
+          }
+        },
+        "t3": {
+          "type": "tab",
+          "settings": {
+            "label": "Trending"
+          }
+        }
       },
-      "block_order": ["t1", "t2", "t3"]
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ]
     },
     "look": {
       "type": "sky-shop-the-look",
-      "blocks": { "h1": { "type": "hotspot", "settings": { "x": 50, "y": 55 } }, "h2": { "type": "hotspot", "settings": { "x": 72, "y": 58 } } },
-      "block_order": ["h1", "h2"]
+      "blocks": {
+        "h1": {
+          "type": "hotspot",
+          "settings": {
+            "x": 50,
+            "y": 55
+          }
+        },
+        "h2": {
+          "type": "hotspot",
+          "settings": {
+            "x": 72,
+            "y": 58
+          }
+        }
+      },
+      "block_order": [
+        "h1",
+        "h2"
+      ]
     },
-    "featured": { "type": "sky-featured-product", "settings": {} },
+    "featured": {
+      "type": "sky-featured-product",
+      "settings": {}
+    },
     "lookbook": {
       "type": "sky-lookbook",
-      "blocks": { "l1": { "type": "look" }, "l2": { "type": "look" }, "l3": { "type": "look" }, "l4": { "type": "look" } },
-      "block_order": ["l1", "l2", "l3", "l4"]
+      "blocks": {
+        "l1": {
+          "type": "look"
+        },
+        "l2": {
+          "type": "look"
+        },
+        "l3": {
+          "type": "look"
+        },
+        "l4": {
+          "type": "look"
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2",
+        "l3",
+        "l4"
+      ]
     },
-    "countdown": { "type": "sky-countdown-bar", "settings": {} },
+    "countdown": {
+      "type": "sky-countdown-bar",
+      "settings": {}
+    },
     "floating": {
       "type": "sky-floating-text",
-      "blocks": { "i1": { "type": "image" }, "i2": { "type": "image" }, "i3": { "type": "image" } },
-      "block_order": ["i1", "i2", "i3"]
+      "blocks": {
+        "i1": {
+          "type": "image"
+        },
+        "i2": {
+          "type": "image"
+        },
+        "i3": {
+          "type": "image"
+        }
+      },
+      "block_order": [
+        "i1",
+        "i2",
+        "i3"
+      ]
     },
     "instagram": {
       "type": "sky-instagram-stack",
-      "blocks": { "g1": { "type": "post" }, "g2": { "type": "post" }, "g3": { "type": "post" }, "g4": { "type": "post" }, "g5": { "type": "post" }, "g6": { "type": "post" } },
-      "block_order": ["g1", "g2", "g3", "g4", "g5", "g6"]
+      "blocks": {
+        "g1": {
+          "type": "post"
+        },
+        "g2": {
+          "type": "post"
+        },
+        "g3": {
+          "type": "post"
+        },
+        "g4": {
+          "type": "post"
+        },
+        "g5": {
+          "type": "post"
+        },
+        "g6": {
+          "type": "post"
+        }
+      },
+      "block_order": [
+        "g1",
+        "g2",
+        "g3",
+        "g4",
+        "g5",
+        "g6"
+      ]
     },
     "brands": {
       "type": "sky-brand-list",
       "blocks": {
-        "b1": { "type": "brand", "settings": { "name": "Solène" } },
-        "b2": { "type": "brand", "settings": { "name": "Urbanmuse" } },
-        "b3": { "type": "brand", "settings": { "name": "Lenora" } },
-        "b4": { "type": "brand", "settings": { "name": "Elira" } }
+        "b1": {
+          "type": "brand",
+          "settings": {
+            "name": "Sol\u00e8ne"
+          }
+        },
+        "b2": {
+          "type": "brand",
+          "settings": {
+            "name": "Urbanmuse"
+          }
+        },
+        "b3": {
+          "type": "brand",
+          "settings": {
+            "name": "Lenora"
+          }
+        },
+        "b4": {
+          "type": "brand",
+          "settings": {
+            "name": "Elira"
+          }
+        }
       },
-      "block_order": ["b1", "b2", "b3", "b4"]
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
     }
   },
-  "order": ["hero", "mosaic", "slider", "panels", "showcase", "tabs", "look", "featured", "lookbook", "countdown", "floating", "instagram", "brands"]
+  "order": [
+    "hero",
+    "mosaic",
+    "slider",
+    "panels",
+    "showcase",
+    "tabs",
+    "look",
+    "featured",
+    "lookbook",
+    "countdown",
+    "floating",
+    "instagram",
+    "brands"
+  ]
 }
