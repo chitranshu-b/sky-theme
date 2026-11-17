@@ -110,8 +110,10 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* product card: quick view button (matches Sky: white circle, soft ring shadow, slides in from the right on hover) */
 .sk-card__qv { position: absolute; z-index: 4; top: 20px; right: 20px; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #000; box-shadow: 0 0 7px 2px rgba(0,0,0,.1); }
 .sk-card__qv svg { width: 16px; height: 16px; }
+.sk-card__qv { transition: background .3s, color .3s; }
+.sk-card__qv:hover, .sk-card__qv:focus-visible { background: #000; color: #fff; }
 @media (min-width: 768px) and (pointer: fine) {
-  .sk-card__qv { opacity: 0; visibility: hidden; pointer-events: none; transform: translate(100%) scale(.8); transition: transform .54s cubic-bezier(.4,0,.2,1), opacity .54s cubic-bezier(.4,0,.2,1), visibility .54s cubic-bezier(.4,0,.2,1), background .3s; }
+  .sk-card__qv { opacity: 0; visibility: hidden; pointer-events: none; transform: translate(100%) scale(.8); transition: transform .54s cubic-bezier(.4,0,.2,1), opacity .54s cubic-bezier(.4,0,.2,1), visibility .54s cubic-bezier(.4,0,.2,1), background .3s, color .3s; }
   .sk-card:hover .sk-card__qv, .sk-card:focus-within .sk-card__qv { opacity: 1; visibility: visible; pointer-events: auto; transform: none; }
 }
 @media (max-width: 1024px) { .sk-card__qv { width: 36px; height: 36px; } }
