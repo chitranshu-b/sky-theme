@@ -107,11 +107,15 @@ ul { margin: 0; padding: 0; list-style: none; }
 .sk-top:hover .sk-top__arrows svg + svg { transform: none; }
 @media (max-width: 749px) { .sk-top { right: 14px; bottom: 14px; } }
 
-/* product card: quick view button */
-.sk-card__qv { position: absolute; z-index: 4; top: 24px; right: 24px; width: 44px; height: 44px; opacity: 0; transform: scale(.85); transition: opacity .3s, transform .3s; }
-.sk-card:hover .sk-card__qv, .sk-card__qv:focus-visible { opacity: 1; transform: none; }
-.sk-card__qv svg { width: 18px; height: 18px; }
-@media (hover: none) { .sk-card__qv { opacity: 1; transform: none; top: 12px; right: 12px; width: 36px; height: 36px; } }
+/* product card: quick view button (matches Sky: white circle, soft ring shadow, slides in from the right on hover) */
+.sk-card__qv { position: absolute; z-index: 4; top: 20px; right: 20px; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #000; box-shadow: 0 0 7px 2px rgba(0,0,0,.1); }
+.sk-card__qv svg { width: 16px; height: 16px; }
+@media (min-width: 768px) and (pointer: fine) {
+  .sk-card__qv { opacity: 0; visibility: hidden; pointer-events: none; transform: translate(100%) scale(.8); transition: transform .54s cubic-bezier(.4,0,.2,1), opacity .54s cubic-bezier(.4,0,.2,1), visibility .54s cubic-bezier(.4,0,.2,1), background .3s; }
+  .sk-card:hover .sk-card__qv, .sk-card:focus-within .sk-card__qv { opacity: 1; visibility: visible; pointer-events: auto; transform: none; }
+}
+@media (max-width: 1024px) { .sk-card__qv { width: 36px; height: 36px; } }
+@media (max-width: 767px) { .sk-card__qv { display: none; } }
 
 /* quick view sheet */
 .sk-qv { position: fixed; inset: 0; z-index: 200; }
