@@ -14,7 +14,7 @@
     "announcement": {
       "type": "sky-announcement-bar",
       "settings": {
-        "menu": "",
+        "menu": "announcement-menu",
         "text": "Big savings on everyday fashion only for a short time.",
         "link_label": "Shop Now",
         "link_url": "",
