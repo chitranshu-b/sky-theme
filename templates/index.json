@@ -154,8 +154,8 @@
           "settings": {
             "eyebrow": "Style meets confidence",
             "title": "Shop Men",
-            "image": "shopify://shop_images/magnific__leaning-male-model-wearing-the-same-d3ceba-tshirt-__41073.png",
-            "image_hover": "shopify://shop_images/magnific__leaning-male-model-wearing-the-same-d3ceba-tshirt-__41071.png",
+            "image": "shopify://shop_images/men_front.png",
+            "image_hover": "shopify://shop_images/men_back.png",
             "features": "Proper Fit\nComfort Fit Style\nEasy Care\nWind Resistant\nLightweight Material",
             "link_label": "Discover The Edit",
             "link": "",
@@ -168,8 +168,8 @@
           "settings": {
             "eyebrow": "Elevate your style",
             "title": "Shop Women",
-            "image": "shopify://shop_images/02_1448bace-f2c2-44f3-a15c-5207f086da7f.png",
-            "image_hover": "shopify://shop_images/03_640384c1-9412-43ed-bce4-5e0ee51673e0.png",
+            "image": "shopify://shop_images/women_front.png",
+            "image_hover": "shopify://shop_images/women_back.png",
             "features": "Soft Touch\nRelaxed Fit\nEveryday Layering",
             "link_label": "Browse All Styles",
             "link": "",
