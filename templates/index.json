@@ -33,8 +33,7 @@
           "settings": {
             "collection": "anime-collection",
             "title": "",
-            "span": 2,
-            "ratio": "0.85"
+            "new_row": true
           }
         },
         "m2": {
@@ -42,8 +41,7 @@
           "settings": {
             "collection": "men-t-shirts",
             "title": "",
-            "span": 2,
-            "ratio": "1"
+            "new_row": false
           }
         },
         "m3": {
@@ -51,8 +49,7 @@
           "settings": {
             "collection": "peek-a-boo-collection",
             "title": "",
-            "span": 2,
-            "ratio": "0.85"
+            "new_row": false
           }
         },
         "m4": {
@@ -60,8 +57,7 @@
           "settings": {
             "collection": "women-t-shirts",
             "title": "",
-            "span": 3,
-            "ratio": "1"
+            "new_row": false
           }
         },
         "m5": {
@@ -69,8 +65,7 @@
           "settings": {
             "collection": "marvel-doomsday-collection",
             "title": "",
-            "span": 3,
-            "ratio": "0.85"
+            "new_row": false
           }
         },
         "m6": {
@@ -78,8 +73,7 @@
           "settings": {
             "collection": "peek-a-boo-collection",
             "title": "",
-            "span": 2,
-            "ratio": "1"
+            "new_row": false
           }
         },
         "m7": {
@@ -87,8 +81,7 @@
           "settings": {
             "collection": "anime-collection",
             "title": "",
-            "span": 2,
-            "ratio": "0.85"
+            "new_row": true
           }
         },
         "m8": {
@@ -96,8 +89,7 @@
           "settings": {
             "text": "Drop",
             "video": "shopify://files/videos/[3s] 🚨 WINTER DRIP ALERT 🚨Up to 80% OFF ‘cause cold fits shouldn’t hurt your wallet 🥶💸👀 Follow us💬 Comment “SALE”📩 Boom—extra 10% OFF drops in your DMs✔️ Free Shipping (as it should be)✔️ COD Say less 😎✔️ 3-Day Easy Returns✔️ 100% Premium C....mp4",
-            "span": 5,
-            "ratio": "1.5"
+            "new_row": false
           }
         },
         "m9": {
@@ -105,8 +97,15 @@
           "settings": {
             "collection": "anime-collection",
             "title": "",
-            "span": 3,
-            "ratio": "1"
+            "new_row": false
+          }
+        },
+        "m10": {
+          "type": "collection",
+          "settings": {
+            "collection": "women-t-shirts",
+            "title": "",
+            "new_row": false
           }
         }
       },
@@ -118,6 +117,7 @@
         "m5",
         "m6",
         "m7",
+        "m10",
         "m8",
         "m9"
       ],
@@ -126,7 +126,8 @@
         "link_label": "Explore All Collections",
         "link_url": "shopify://collections/all-products",
         "pt": 48,
-        "pb": 48
+        "pb": 48,
+        "text_size": 200
       }
     },
     "slider": {
