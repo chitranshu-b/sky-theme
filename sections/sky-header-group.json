@@ -1,9 +1,43 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "Header group",
   "type": "header",
   "sections": {
-    "announcement": { "type": "sky-announcement-bar", "settings": { "text": "Big savings on everyday fashion only for a short time.", "link_label": "Shop Now" } },
-    "header": { "type": "sky-header", "settings": { "transparent_on_top": true } }
+    "announcement": {
+      "type": "sky-announcement-bar",
+      "settings": {
+        "menu": "",
+        "text": "Big savings on everyday fashion only for a short time.",
+        "link_label": "Shop Now",
+        "link_url": "",
+        "show_localization": true,
+        "bg": "#000000",
+        "fg": "#ffffff"
+      }
+    },
+    "header": {
+      "type": "sky-header",
+      "settings": {
+        "logo": "shopify://shop_images/HikabaeLogoMemojiWhite.png",
+        "logo_width": 120,
+        "menu": "main-menu",
+        "categories_heading": "Popular Categories",
+        "transparent_on_top": true,
+        "always_solid": false,
+        "fg": "#ffffff"
+      }
+    }
   },
-  "order": ["announcement", "header"]
+  "order": [
+    "announcement",
+    "header"
+  ]
 }
