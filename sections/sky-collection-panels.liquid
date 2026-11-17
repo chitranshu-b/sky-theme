@@ -6,7 +6,7 @@
   <div class="sk-cp__grid">
     {%- for block in section.blocks -%}
       {%- assign b = block.settings -%}
-      <a class="sk-cp__panel" href="{{ b.link | default: '#' }}" style="--cp-bg: {{ b.bg }}; --cp-fg: {{ b.fg }};" {{ block.shopify_attributes }}>
+      <div class="sk-cp__panel" style="--cp-bg: {{ b.bg }}; --cp-fg: {{ b.fg }};" {{ block.shopify_attributes }}>
         <span class="sk-cp__eyebrow">{{ b.eyebrow }}</span>
         <span class="sk-cp__title">{{ b.title }}</span>
 
@@ -32,8 +32,12 @@
           </span>
         </span>
 
-        <span class="sk-cp__cta sk-link">{{ b.link_label }}</span>
-      </a>
+        {%- if b.link != blank -%}
+          <a class="sk-cp__cta sk-link" href="{{ b.link }}">{{ b.link_label }}</a>
+        {%- else -%}
+          <span class="sk-cp__cta sk-link">{{ b.link_label }}</span>
+        {%- endif -%}
+      </div>
     {%- endfor -%}
   </div>
 </section>
@@ -65,7 +69,7 @@
   .sk-cp__chip { display: inline-flex; align-items: center; gap: 8px; width: max-content; padding: 8px 10px; border-radius: 8px; background: #fff; color: #2b2b2b; font-size: 12px; font-weight: 400; line-height: 1.35; opacity: 0; transform: translateX(-10px); transition: opacity .5s ease-in-out var(--d), transform .5s ease-in-out var(--d); }
   .sk-cp__icon { flex: 0 0 auto; width: 15px; height: 15px; color: #000; }
   @media (min-width: 1200px) { .sk-cp__icon { width: 20px; height: 20px; } }
-  .sk-cp__panel:hover .sk-cp__chip, .sk-cp__panel:focus-visible .sk-cp__chip { opacity: 1; transform: none; }
+  .sk-cp__panel:hover .sk-cp__chip, .sk-cp__panel:focus-within .sk-cp__chip { opacity: 1; transform: none; }
   @media (hover: none) { .sk-cp__chips { display: none; } }
   .sk-cp__cta { position: relative; z-index: 3; display: flex; width: max-content; margin: 11px 0 0 auto; }
 {% endstylesheet %}

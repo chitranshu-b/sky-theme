@@ -158,7 +158,7 @@
             "image_hover": "shopify://shop_images/men_back.png",
             "features": "Proper Fit|check\nComfort Fit Style|person\nEasy Care|hand-heart\nWind Resistant|wind\nLightweight Material|feather",
             "link_label": "Discover The Edit",
-            "link": "",
+            "link": "shopify://collections/all-products",
             "bg": "#e4e8ea",
             "fg": "#000000"
           }
@@ -172,7 +172,7 @@
             "image_hover": "shopify://shop_images/women_back.png",
             "features": "Skin Friendly|hand-leaf\nVersatile Style|dress\nComfort Fit Style|person\nQuick Dry|waves\nShape Retention|magnet",
             "link_label": "Browse All Styles",
-            "link": "",
+            "link": "shopify://collections/all-products",
             "bg": "#e4e8ea",
             "fg": "#000000"
           }
