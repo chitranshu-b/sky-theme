@@ -87,11 +87,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 .sk-card__dots { display: flex; gap: 6px; }
 .sk-card__dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c, #999); box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
 .sk-card__info { padding: 12px 14px 18px; }
-.sk-card__title { display: block; font-size: 12px; font-weight: 500; line-height: 1.4; }
+.sk-card__title { display: block; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sk-card__price { display: block; margin-top: 4px; font-size: 14px; font-weight: 700; }
 .sk-card__price s { margin-left: 6px; font-weight: 400; opacity: .5; }
-.sk-card__choose { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; font-weight: 500; }
-.sk-card__choose::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--sk-accent); }
 
 /* back to top */
 .sk-top { position: fixed; z-index: 60; right: 24px; bottom: 24px; width: 46px; height: 46px; border: 0; padding: 0; border-radius: 50%; background: #fff; color: #000; box-shadow: 0 4px 18px rgba(0,0,0,.15); opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .3s, transform .3s, visibility .3s; }

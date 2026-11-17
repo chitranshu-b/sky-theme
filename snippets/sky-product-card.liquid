@@ -46,8 +46,5 @@
       {{ p.price | money }}
       {%- if p.compare_at_price > p.price %}<s>{{ p.compare_at_price | money }}</s>{% endif -%}
     </span>
-    {%- if p.has_only_default_variant == false -%}
-      <a href="{{ p.url }}" class="sk-card__choose">Choose Options</a>
-    {%- endif -%}
   </div>
 </article>
