@@ -133,6 +133,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .sk-qv__heading { font-family: var(--sk-font-head); font-size: 22px; font-weight: 500; color: #000; }
 .sk-qv__close { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #353535; cursor: pointer; }
 .sk-qv__close svg { width: 16px; height: 16px; transition: transform .3s; }
+.sk-qv__close { outline: 1.6px solid transparent; outline-offset: 1.6px; transition: outline-color .3s; }
+.sk-qv__close:hover, .sk-qv__close:focus-visible { outline-color: #fff; }
 .sk-qv__close:hover svg { transform: rotate(180deg); }
 .sk-qv__body { flex: 1; overflow-y: auto; padding: 0 20px 20px; overscroll-behavior: contain; }
 .sk-qv__loading { padding: 40px 0; text-align: center; color: #555; }
