@@ -44,6 +44,9 @@
     {% sections 'sky-footer-group' %}
 
     {% render 'sky-back-to-top' %}
+    {% render 'sky-quick-view' %}
+    <script>window.SkyShop = { moneyFormat: {{ shop.money_format | json }}, cartUrl: {{ routes.cart_url | json }} };</script>
+    <script src="{{ 'sky-quickview.js' | asset_url }}" defer></script>
 
     {%- if settings.smooth_scroll -%}
       <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js" defer></script>
