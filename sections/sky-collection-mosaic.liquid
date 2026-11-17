@@ -54,7 +54,7 @@
   .sk-mos__label { position: absolute; left: 12px; bottom: 12px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.85); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 13px; font-weight: 500; opacity: 0; transform: translateY(8px); transition: .35s; }
   a.sk-mos__tile:hover .sk-mos__label { opacity: 1; transform: none; }
   /* the word sets its own width; video shows only inside the letters (white layer + "screen" blend) */
-  .sk-mos__vt { position: relative; flex: 0 1 auto; border-radius: 12px; overflow: hidden; isolation: isolate; }
+  .sk-mos__vt { position: relative; flex: 0 1 auto; overflow: hidden; isolation: isolate; mix-blend-mode: multiply; }
   .sk-mos__vt video, .sk-mos__vt img, .sk-vt-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
   .sk-vt-fallback { background: linear-gradient(120deg, #6a1b2c, #f08a4b, #3b6c7a); }
   .sk-mos__mask { position: relative; z-index: 2; display: block; background: #fff; mix-blend-mode: screen; padding: 0 .04em; }
