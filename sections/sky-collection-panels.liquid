@@ -39,8 +39,10 @@
   .sk-cp__grid { display: grid; grid-template-columns: 1fr; }
   @media (min-width: 750px) { .sk-cp__grid { grid-template-columns: 1fr 1fr; } }
   .sk-cp__panel { position: relative; display: block; min-height: clamp(460px, 56vw, 620px); padding: 34px 20px 28px; overflow: hidden; text-align: center; color: var(--cp-fg, #000); background: radial-gradient(120% 90% at 50% 0%, #fff 0%, var(--cp-bg, #d5dadf) 70%); border-right: 1px solid rgba(255,255,255,.6); isolation: isolate; }
-  .sk-cp__eyebrow { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
-  .sk-cp__title { display: block; margin-top: 12px; font-family: var(--cp-font); font-size: clamp(44px, 6.4vw, 84px); line-height: 1; transition: transform .6s cubic-bezier(.2,.7,.2,1); transform-origin: 50% 0; }
+  .sk-cp__eyebrow { display: block; font-size: 12px; letter-spacing: .1px; line-height: 1.35; text-transform: uppercase; }
+  @media (max-width: 1024px) { .sk-cp__title { font-size: 51.5px; } }
+  @media (max-width: 767px) { .sk-cp__title { font-size: 37.7px; } }
+  .sk-cp__title { display: block; margin-top: 12px; font-family: var(--cp-font); font-size: 72px; font-weight: 400; line-height: 1.2; transition: transform .6s cubic-bezier(.2,.7,.2,1); transform-origin: 50% 0; }
   .sk-cp__panel:hover .sk-cp__title { transform: scale(1.06); }
   .sk-cp__figures { position: absolute; left: 50%; bottom: 56px; width: min(78%, 360px); height: 62%; transform: translateX(-50%); display: block; z-index: 1; }
   .sk-cp__fig { position: absolute; bottom: 0; display: block; height: 100%; transition: transform .7s cubic-bezier(.2,.7,.2,1), opacity .5s; }
@@ -65,8 +67,8 @@
     { "type": "header", "content": "Spacing" },
     { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
     { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
-    { "type": "select", "id": "title_font", "label": "Title font", "default": "Caveat Brush", "options": [
-      { "value": "Caveat Brush", "label": "Caveat Brush" }, { "value": "Permanent Marker", "label": "Permanent Marker" }, { "value": "Quicksand", "label": "Quicksand" }, { "value": "Bricolage Grotesque", "label": "Bricolage Grotesque" }
+    { "type": "select", "id": "title_font", "label": "Title font", "default": "Protest Riot", "options": [
+      { "value": "Protest Riot", "label": "Protest Riot" }, { "value": "Caveat Brush", "label": "Caveat Brush" }, { "value": "Permanent Marker", "label": "Permanent Marker" }, { "value": "Quicksand", "label": "Quicksand" }, { "value": "Bricolage Grotesque", "label": "Bricolage Grotesque" }
     ] }
   ],
   "blocks": [
