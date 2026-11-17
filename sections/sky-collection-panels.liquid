@@ -1,6 +1,7 @@
 {%- assign s = section.settings -%}
 <div class="sk-space" style="padding-top: {{ section.settings.pt }}px; padding-bottom: {{ section.settings.pb }}px;">
-<section class="sk-cp" style="--cp-font: '{{ s.title_font }}', cursive;">
+{%- if s.bg_image != blank -%}{%- assign bg_url = s.bg_image | image_url: width: 1600 -%}{%- else -%}{%- assign bg_url = 'sky-panel-bg.jpg' | asset_url -%}{%- endif -%}
+<section class="sk-cp" style="--cp-font: '{{ s.title_font }}', cursive; --cp-bgimg: url('{{ bg_url }}');">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ s.title_font | replace: ' ', '+' }}&display=swap">
   <div class="sk-cp__grid">
     {%- for block in section.blocks -%}
@@ -38,10 +39,7 @@
 {% stylesheet %}
   .sk-cp__grid { display: grid; grid-template-columns: 1fr; }
   @media (min-width: 750px) { .sk-cp__grid { grid-template-columns: 1fr 1fr; } }
-  .sk-cp__panel { position: relative; display: block; min-height: clamp(460px, 56vw, 620px); padding: 34px 20px 28px; overflow: hidden; text-align: center; color: var(--cp-fg, #000); background: var(--cp-floor), var(--cp-cone), var(--cp-sides), var(--cp-bg, #e4e8ea); border-right: 1px solid rgba(255,255,255,.6);
-    --cp-floor: linear-gradient(180deg, rgba(255,255,255,0) 76%, rgba(120,130,140,.16) 80%, rgba(255,255,255,.35) 86%, rgba(255,255,255,.55) 100%);
-    --cp-cone: radial-gradient(58% 78% at 50% 0%, rgba(255,255,255,.75) 0%, rgba(255,255,255,.35) 55%, rgba(255,255,255,0) 100%);
-    --cp-sides: linear-gradient(90deg, rgba(140,150,160,.22) 0%, rgba(140,150,160,0) 30%, rgba(140,150,160,0) 70%, rgba(140,150,160,.22) 100%); isolation: isolate; }
+  .sk-cp__panel { position: relative; display: block; min-height: clamp(460px, 56vw, 620px); padding: 34px 20px 28px; overflow: hidden; text-align: center; color: var(--cp-fg, #000); background: var(--cp-bg, #e4e8ea) var(--cp-bgimg) center bottom / cover no-repeat; border-right: 1px solid rgba(255,255,255,.6); isolation: isolate; }
   .sk-cp__eyebrow { display: block; font-size: 12px; letter-spacing: .1px; line-height: 1.35; text-transform: uppercase; }
   @media (max-width: 1024px) { .sk-cp__title { font-size: 51.5px; } }
   @media (max-width: 767px) { .sk-cp__title { font-size: 37.7px; } }
@@ -70,6 +68,7 @@
     { "type": "header", "content": "Spacing" },
     { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
     { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
+    { "type": "image_picker", "id": "bg_image", "label": "Panel background image (default: studio backdrop)" },
     { "type": "select", "id": "title_font", "label": "Title font", "default": "Protest Riot", "options": [
       { "value": "Protest Riot", "label": "Protest Riot" }, { "value": "Caveat Brush", "label": "Caveat Brush" }, { "value": "Permanent Marker", "label": "Permanent Marker" }, { "value": "Quicksand", "label": "Quicksand" }, { "value": "Bricolage Grotesque", "label": "Bricolage Grotesque" }
     ] }
