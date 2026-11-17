@@ -84,6 +84,8 @@
       if (next) next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
       track.addEventListener('scroll', upd, { passive: true });
       window.addEventListener('resize', upd);
+      var start = parseInt(sl.dataset.start || '0', 10);
+      if (start) requestAnimationFrame(function () { track.style.scrollBehavior = 'auto'; track.scrollLeft = step() * start; track.style.scrollBehavior = ''; upd(); });
       upd();
     });
   }

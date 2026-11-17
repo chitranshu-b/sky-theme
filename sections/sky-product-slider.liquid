@@ -1,5 +1,5 @@
 {%- assign s = section.settings -%}
-<section class="sk-ps sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px; --sk-slide: calc(100% / {{ s.per_view }}); --sk-slide-md: 33.333%; --sk-slide-sm: 62%;">
+<section class="sk-ps sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px; --n-xl: {{ s.per_view }}; --n-lg: {{ s.per_view | minus: 1 }};">
   <div class="sk-container sk-ps__head">
     <h2 class="sk-h2" data-sk-words>{{ s.heading }}</h2>
     <div class="sk-ps__side" data-sk-reveal>
@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <div class="sk-slider sk-ps__slider" data-sk-slider>
+  <div class="sk-slider sk-ps__slider" data-sk-slider data-start="1">
     <button type="button" class="sk-circle sk-slider__nav sk-slider__nav--prev" data-prev aria-label="Previous"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8H3M7 4L3 8l4 4"/></svg></button>
     <ul class="sk-slider__track">
       {%- assign list = s.collection.products | default: collections.all.products -%}
@@ -30,9 +30,19 @@
   @media (max-width: 1024px) { .sk-ps__head .sk-h2 { font-size: 38.6px; } }
   @media (max-width: 767px) { .sk-ps__head .sk-h2 { font-size: 28.3px; } }
   .sk-ps__side { max-width: 360px; display: grid; gap: 14px; font-size: 13px; line-height: 1.5; }
-  .sk-ps__slider { border-top: 1px solid var(--sk-line); border-bottom: 1px solid var(--sk-line); }
-  .sk-ps__slider .sk-slider__nav { top: 42%; }
+  .sk-ps { --n: 2; overflow-x: clip; }
+  @media (min-width: 768px) { .sk-ps { --n: 3; } }
+  @media (min-width: 1200px) { .sk-ps { --n: var(--n-lg, 4); } }
+  @media (min-width: 1368px) { .sk-ps { --n: var(--n-xl, 5); } }
+  .sk-ps__slider { border-top: 1px solid var(--sk-line); border-bottom: 1px solid var(--sk-line); --sk-edge: calc((100% - min(100%, var(--sk-max))) / 2 + var(--sk-gutter)); }
+  /* track spans the full width so the neighbouring products peek in at both sides; cards line up with the container */
+  .sk-ps__slider .sk-slider__track { padding-inline: var(--sk-edge); scroll-padding-inline: var(--sk-edge); }
+  .sk-ps__slider .sk-slider__track > li { flex: 0 0 calc(100% / var(--n)); }
   .sk-ps__slider .sk-slider__track > li:first-child .sk-card { border-left: 1px solid var(--sk-line); }
+  .sk-ps__slider .sk-slider__nav { top: 50%; translate: 0 -50%; width: 40px; height: 50px; border-radius: 15px; border: .8px solid #e5e5e5; box-shadow: none; }
+  .sk-ps__slider .sk-slider__nav--prev { left: calc(var(--sk-edge) - 20px); }
+  .sk-ps__slider .sk-slider__nav--next { left: auto; right: calc(var(--sk-edge) - 20px); }
+  @media (max-width: 767px) { .sk-ps__slider .sk-slider__nav { display: none; } }
 {% endstylesheet %}
 
 {% schema %}
@@ -44,7 +54,7 @@
     { "type": "text", "id": "link_label", "label": "Link label", "default": "View All" },
     { "type": "collection", "id": "collection", "label": "Collection" },
     { "type": "range", "id": "limit", "label": "Products", "min": 4, "max": 20, "step": 1, "default": 10 },
-    { "type": "range", "id": "per_view", "label": "Products per row (desktop)", "min": 3, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "per_view", "label": "Products per row (wide screens)", "min": 4, "max": 6, "step": 1, "default": 5 },
     { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
     { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
   ],
