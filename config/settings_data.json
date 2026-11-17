@@ -9,6 +9,11 @@
  */
 {
   "current": {
+    "wh_title": "Manufacturer Warehouse",
+    "wh_name": "Hikabae Manufacturer Warehouse",
+    "wh_address": "Near Airport, East Wing\nJagatpura, Jaipur\nPincode - 302017",
+    "wh_phone": "+91-9045444943",
+    "wh_email": "hello@hikabae.com",
     "content_for_index": []
   },
   "platform_customizations": {
