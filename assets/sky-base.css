@@ -179,7 +179,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .sk-wh[hidden] { display: none; }
 .sk-wh.is-open .sk-qv__backdrop { opacity: 1; }
 .sk-wh.is-open .sk-qv__sheet { transform: none; }
-.sk-wh__sheet { height: auto; max-height: calc(100% - 160px); }
+.sk-wh__sheet { width: 385px; height: 100%; max-height: calc(100% - 160px); }
+@media (max-width: 767px) { .sk-wh__sheet { width: 100%; max-height: calc(100% - 128px); } }
 .sk-wh__card { background: #fff; border-radius: 20px; padding: 20px 24px; display: grid; gap: 16px; }
 .sk-wh__name { font-weight: 700; font-size: 15px; }
 .sk-wh__row { display: grid; gap: 2px; font-style: normal; }
