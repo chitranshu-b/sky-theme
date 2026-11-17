@@ -25,6 +25,28 @@
     },
     "header": {
       "type": "sky-header",
+      "blocks": {
+        "category_erYazD": {
+          "type": "category",
+          "settings": {
+            "collection": "marvel-doomsday-collection",
+            "title": "",
+            "link": ""
+          }
+        },
+        "category_JrThHQ": {
+          "type": "category",
+          "settings": {
+            "collection": "anime-collection",
+            "title": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_erYazD",
+        "category_JrThHQ"
+      ],
       "settings": {
         "logo": "shopify://shop_images/HikabaeLogoMemojiWhite_15c5c4c4-e5d6-4a39-b40a-e4da485c4f66.png",
         "logo_width": 190,
