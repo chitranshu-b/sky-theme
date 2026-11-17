@@ -48,10 +48,10 @@
   .sk-cp__panel:hover .sk-cp__title { transform: scale(1.2); }
   @media (max-width: 1024px) { .sk-cp__title { font-size: 51.5px; } }
   @media (max-width: 767px) { .sk-cp__title { font-size: 37.7px; } }
-  .sk-cp__figures { position: relative; display: block; width: 90%; aspect-ratio: 1; margin: 10px auto 0; z-index: 1; }
+  .sk-cp__figures { position: relative; display: block; overflow: hidden; width: 90%; aspect-ratio: 1; margin: 10px auto 0; z-index: 1; }
   @media (min-width: 768px) { .sk-cp__figures { width: 68%; } }
   .sk-cp__fig { position: absolute; inset: 0; display: block; transition: left .5s cubic-bezier(.45,0,.55,1), opacity .5s cubic-bezier(.45,0,.55,1); }
-  .sk-cp__fig img, .sk-cp__fig .sk-ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
+  .sk-cp__fig img, .sk-cp__fig .sk-ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .sk-cp__fig--a { left: -8%; }
   .sk-cp__fig--b { left: 15%; }
   @media (pointer: fine) {
