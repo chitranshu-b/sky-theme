@@ -26,7 +26,9 @@
 
 {% stylesheet %}
   .sk-ps__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
-  .sk-ps__head .sk-h2 { max-width: 10.6em; font-size: clamp(34px, 5vw, 66px); }
+  .sk-ps__head .sk-h2 { max-width: 10.6em; font-size: 54px; }
+  @media (max-width: 1024px) { .sk-ps__head .sk-h2 { font-size: 38.6px; } }
+  @media (max-width: 767px) { .sk-ps__head .sk-h2 { font-size: 28.3px; } }
   .sk-ps__side { max-width: 360px; display: grid; gap: 14px; font-size: 13px; line-height: 1.5; }
   .sk-ps__slider { border-top: 1px solid var(--sk-line); border-bottom: 1px solid var(--sk-line); }
   .sk-ps__slider .sk-slider__nav { top: 42%; }
