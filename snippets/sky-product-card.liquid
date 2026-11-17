@@ -33,7 +33,12 @@
         <span class="sk-card__dots">
           {%- for v in color_opt.values limit: 6 -%}
             {%- if v.swatch.color -%}{%- assign sw = v.swatch.color -%}{%- else -%}{%- assign sw = v.name | handleize | split: '-' | last -%}{%- endif -%}
-            <span class="sk-card__dot" style="background: {{ sw }}" title="{{ v.name | escape }}"></span>
+            {%- assign opt_key = 'option' | append: color_opt.position -%}
+            {%- assign sw_variant = p.variants | where: opt_key, v.name | first -%}
+            {%- assign sw_img = sw_variant.featured_image | default: p.featured_image -%}
+            <span class="sk-card__dot" style="background: {{ sw }}" title="{{ v.name | escape }}">
+              {%- if sw_img -%}<span class="sk-card__thumb"><img src="{{ sw_img | image_url: width: 150 }}" alt="{{ p.title | escape }} - {{ v.name | escape }}" width="62" height="62" loading="lazy"></span>{%- endif -%}
+            </span>
           {%- endfor -%}
         </span>
       </span>

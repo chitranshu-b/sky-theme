@@ -90,7 +90,10 @@ ul { margin: 0; padding: 0; list-style: none; }
 .sk-card__swatches { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; font-size: 11px; background: linear-gradient(90deg, rgba(255,255,255,.7), rgba(255,255,255,.35)); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transform: translateY(101%); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
 .sk-card:hover .sk-card__swatches { transform: none; }
 .sk-card__dots { display: flex; gap: 6px; }
-.sk-card__dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c, #999); box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
+.sk-card__dot { position: relative; width: 12px; height: 12px; border-radius: 50%; background: var(--c, #999); box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
+.sk-card__thumb { position: absolute; right: -4px; bottom: calc(100% + 9px); width: 62px; height: 62px; border: 2px solid #e5e5e5; border-radius: 6px; overflow: hidden; background: #fff; box-shadow: 0 0 6px rgba(28,36,64,.15); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .3s ease, visibility .3s ease; }
+.sk-card__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 768px) and (pointer: fine) { .sk-card__dot:hover .sk-card__thumb { opacity: 1; visibility: visible; } }
 .sk-card__info { padding: 12px 14px 18px; }
 .sk-card__title { display: block; font-family: var(--sk-font-head); font-size: 14px; font-weight: 600; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sk-card__price { display: block; margin-top: 4px; font-size: 14px; font-weight: 700; }
