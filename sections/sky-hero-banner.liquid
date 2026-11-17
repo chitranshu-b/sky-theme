@@ -31,7 +31,7 @@
         </a>
       {%- endif -%}
     </div>
-    {%- if s.text != blank -%}<p class="sk-hero__text" data-sk-reveal>{{ s.text }}</p>{%- endif -%}
+    {%- if s.text != blank -%}<p class="sk-hero__text" data-sk-reveal>{{ s.text | newline_to_br }}</p>{%- endif -%}
   </div>
 </section>
 </div>
@@ -81,7 +81,7 @@
     { "type": "textarea", "id": "heading", "label": "Heading", "default": "The New Season Starts Here" },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop Now" },
     { "type": "url", "id": "button_link", "label": "Button link" },
-    { "type": "textarea", "id": "text", "label": "Description", "default": "Curated wardrobe staples crafted from premium fabrics, blending timeless silhouettes with effortless versatility to create confident style for every season." }
+    { "type": "textarea", "id": "text", "label": "Description", "default": "Curated wardrobe staples crafted from premium fabrics,\nblending timeless silhouettes with effortless versatility\nto create confident style for every season." }
   ],
   "presets": [{ "name": "Hero banner" }]
 }
