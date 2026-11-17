@@ -72,9 +72,9 @@
     var multi = !(p.variants.length === 1 && /default/i.test(p.variants[0].title));
 
     var html = '<div class="sk-qv__card sk-qv__media">' +
-      '<div class="sk-qv__gallery" data-qv-gallery>' +
+      '<div class="sk-qv__view"><div class="sk-qv__gallery" data-qv-gallery>' +
         urls.map(function (u, i) { return '<img src="' + esc(img(u, 900)) + '" alt="' + esc(p.title) + '"' + (i ? ' loading="lazy"' : '') + '>'; }).join('') +
-      '</div>' +
+      '</div></div>' +
       (urls.length > 1 ? '<div class="sk-qv__arrows"><button type="button" class="sk-qv__arrow" data-qv-prev aria-label="Previous image">' + ICON.prev + '</button><button type="button" class="sk-qv__arrow" data-qv-next aria-label="Next image">' + ICON.next + '</button></div>' : '') +
     '</div>' +
     '<div class="sk-qv__card sk-qv__group1">' +
