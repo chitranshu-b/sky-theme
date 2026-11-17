@@ -222,7 +222,7 @@
         "s3"
       ],
       "custom_css": [
-        ".sk-sc__glass{left: 52%;}"
+        ".sk-sc__glass {left: 52%;}"
       ],
       "settings": {
         "heading": "Dress Up Your Beautiful Moments",
@@ -237,21 +237,21 @@
           "type": "tab",
           "settings": {
             "label": "Premium",
-            "collection": ""
+            "collection": "anime-collection"
           }
         },
         "t2": {
           "type": "tab",
           "settings": {
             "label": "Fresh Picks",
-            "collection": ""
+            "collection": "men-t-shirts"
           }
         },
         "t3": {
           "type": "tab",
           "settings": {
             "label": "Trending",
-            "collection": ""
+            "collection": "women-t-shirts"
           }
         }
       },
@@ -275,7 +275,7 @@
         "h1": {
           "type": "hotspot",
           "settings": {
-            "product": "",
+            "product": "fall-skeleton-men-offwhite",
             "x": 50,
             "y": 55
           }
@@ -283,7 +283,7 @@
         "h2": {
           "type": "hotspot",
           "settings": {
-            "product": "",
+            "product": "fall-skeleton-men-lavender",
             "x": 72,
             "y": 58
           }
@@ -294,6 +294,7 @@
         "h2"
       ],
       "settings": {
+        "image": "shopify://shop_images/fall-skeleton-men-offwhite-05.png",
         "height": 90,
         "overlay": 40,
         "text_color": "#ffffff",
@@ -305,7 +306,7 @@
     "featured": {
       "type": "sky-featured-product",
       "settings": {
-        "product": "",
+        "product": "marvel-doctor-doom-the-broken-world",
         "discount_heading": "Where's the discount?",
         "discount_text": "Buy 2, get $20 off by using this code",
         "discount_code": "SAVE20",
