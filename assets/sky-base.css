@@ -16,6 +16,8 @@
   --sk-header-h: 64px;
 }
 *, *::before, *::after { box-sizing: border-box; }
+/* thin, light scrollbars everywhere (same as Sky) */
+* { scrollbar-width: thin; scrollbar-color: #ddd transparent; }
 html { -webkit-text-size-adjust: 100%; }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
