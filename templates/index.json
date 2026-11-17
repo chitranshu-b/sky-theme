@@ -159,7 +159,7 @@
             "features": "Proper Fit\nComfort Fit Style\nEasy Care\nWind Resistant\nLightweight Material",
             "link_label": "Discover The Edit",
             "link": "",
-            "bg": "#d3d9de",
+            "bg": "#e4e8ea",
             "fg": "#000000"
           }
         },
@@ -173,7 +173,7 @@
             "features": "Soft Touch\nRelaxed Fit\nEveryday Layering",
             "link_label": "Browse All Styles",
             "link": "",
-            "bg": "#d3d9de",
+            "bg": "#e4e8ea",
             "fg": "#000000"
           }
         }

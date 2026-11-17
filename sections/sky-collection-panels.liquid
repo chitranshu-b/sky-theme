@@ -38,7 +38,10 @@
 {% stylesheet %}
   .sk-cp__grid { display: grid; grid-template-columns: 1fr; }
   @media (min-width: 750px) { .sk-cp__grid { grid-template-columns: 1fr 1fr; } }
-  .sk-cp__panel { position: relative; display: block; min-height: clamp(460px, 56vw, 620px); padding: 34px 20px 28px; overflow: hidden; text-align: center; color: var(--cp-fg, #000); background: radial-gradient(120% 90% at 50% 0%, #fff 0%, var(--cp-bg, #d5dadf) 70%); border-right: 1px solid rgba(255,255,255,.6); isolation: isolate; }
+  .sk-cp__panel { position: relative; display: block; min-height: clamp(460px, 56vw, 620px); padding: 34px 20px 28px; overflow: hidden; text-align: center; color: var(--cp-fg, #000); background: var(--cp-floor), var(--cp-cone), var(--cp-sides), var(--cp-bg, #e4e8ea); border-right: 1px solid rgba(255,255,255,.6);
+    --cp-floor: linear-gradient(180deg, rgba(255,255,255,0) 76%, rgba(120,130,140,.16) 80%, rgba(255,255,255,.35) 86%, rgba(255,255,255,.55) 100%);
+    --cp-cone: radial-gradient(58% 78% at 50% 0%, rgba(255,255,255,.75) 0%, rgba(255,255,255,.35) 55%, rgba(255,255,255,0) 100%);
+    --cp-sides: linear-gradient(90deg, rgba(140,150,160,.22) 0%, rgba(140,150,160,0) 30%, rgba(140,150,160,0) 70%, rgba(140,150,160,.22) 100%); isolation: isolate; }
   .sk-cp__eyebrow { display: block; font-size: 12px; letter-spacing: .1px; line-height: 1.35; text-transform: uppercase; }
   @media (max-width: 1024px) { .sk-cp__title { font-size: 51.5px; } }
   @media (max-width: 767px) { .sk-cp__title { font-size: 37.7px; } }
