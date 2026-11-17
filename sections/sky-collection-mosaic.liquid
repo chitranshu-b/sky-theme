@@ -6,11 +6,13 @@
       {%- if s.link_label != blank -%}<a href="{{ s.link_url | default: routes.collections_url }}" class="sk-link">{{ s.link_label }}</a>{%- endif -%}
     </header>
 
+    {%- assign row_open = '<div class="sk-mos__row"><div class="sk-mos__items">' -%}
+    {%- assign row_close = '</div></div>' -%}
     <div class="sk-mos__rows" style="--sk-ts: {{ s.text_size }}px;">
       {%- for block in section.blocks -%}
         {%- if forloop.first or block.settings.new_row -%}
-          {%- unless forloop.first -%}</div></div>{%- endunless -%}
-          <div class="sk-mos__row"><div class="sk-mos__items">
+          {%- unless forloop.first -%}{{- row_close -}}{%- endunless -%}
+          {{- row_open -}}
         {%- endif -%}
         {%- case block.type -%}
           {%- when 'collection' -%}
@@ -36,7 +38,7 @@
               <span class="sk-mos__mask" aria-label="{{ block.settings.text | escape }}"><b>{{ block.settings.text }}</b></span>
             </div>
         {%- endcase -%}
-        {%- if forloop.last -%}</div></div>{%- endif -%}
+        {%- if forloop.last -%}{{- row_close -}}{%- endif -%}
       {%- endfor -%}
     </div>
   </div>
