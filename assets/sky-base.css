@@ -48,7 +48,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .sk-btn__icon svg + svg { position: absolute; transform: translate(-28px, 28px); }
 .sk-btn:hover .sk-btn__icon svg:first-child { transform: translate(28px, -28px); }
 .sk-btn:hover .sk-btn__icon svg + svg { transform: none; }
-.sk-link { position: relative; display: inline-flex; align-items: center; padding-inline: 12px 0; font-size: 14px; font-weight: 400; line-height: 1; text-transform: capitalize; text-decoration: none; transition: padding .3s cubic-bezier(.7,0,.3,1); }
+.sk-link { position: relative; justify-self: start; align-self: start; display: inline-flex; align-items: center; padding-inline: 12px 0; font-size: 14px; font-weight: 400; line-height: 1; text-transform: capitalize; text-decoration: none; transition: padding .3s cubic-bezier(.7,0,.3,1); }
 .sk-link::before { content: ""; position: absolute; left: 0; top: 50%; width: 6px; height: 6px; border-radius: 50%; background: #ff4400; transform: translateY(-50%); transition: left .3s cubic-bezier(.7,0,.3,1); }
 @media (pointer: fine) {
   .sk-link:hover { padding-inline: 0 10px; }
