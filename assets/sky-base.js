@@ -58,7 +58,12 @@
       el.dataset.skSplit = '1';
       el.classList.add('sk-words');
       var i = 0;
-      el.innerHTML = el.textContent.trim().split(/\s+/).map(function (w) { return '<span class="w" style="--i:' + (i++) + '">' + w.replace(/[&<>]/g, '') + '</span>'; }).join(' ');
+      var parts = [];
+      el.childNodes.forEach(function (n) {
+        if (n.nodeName === 'BR') { parts.push('<br>'); return; }
+        (n.textContent || '').trim().split(/\s+/).forEach(function (w) { if (w) parts.push('<span class="w" style="--i:' + (i++) + '">' + w.replace(/[&<>]/g, '') + '</span>'); });
+      });
+      el.innerHTML = parts.join(' ');
     });
     var els = document.querySelectorAll('[data-sk-reveal], .sk-words');
     if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('is-in'); }); return; }
