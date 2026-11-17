@@ -130,7 +130,7 @@
         "link_url": "shopify://collections/all-products",
         "text_size": 200,
         "pt": 48,
-        "pb": 48
+        "pb": 0
       }
     },
     "slider": {
@@ -143,7 +143,7 @@
         "limit": 10,
         "per_view": 5,
         "pt": 48,
-        "pb": 48
+        "pb": 0
       }
     },
     "panels": {
@@ -156,10 +156,10 @@
             "title": "Shop Men",
             "image": "shopify://shop_images/men_front.png",
             "image_hover": "shopify://shop_images/men_back.png",
-            "features": "Proper Fit\nComfort Fit Style\nEasy Care\nWind Resistant\nLightweight Material",
+            "features": "Proper Fit|check\nComfort Fit Style|person\nEasy Care|hand-heart\nWind Resistant|wind\nLightweight Material|feather",
             "link_label": "Discover The Edit",
             "link": "",
-            "bg": "#d3d9de",
+            "bg": "#e4e8ea",
             "fg": "#000000"
           }
         },
@@ -170,10 +170,10 @@
             "title": "Shop Women",
             "image": "shopify://shop_images/women_front.png",
             "image_hover": "shopify://shop_images/women_back.png",
-            "features": "Soft Touch\nRelaxed Fit\nEveryday Layering",
+            "features": "Skin Friendly|hand-leaf\nVersatile Style|dress\nComfort Fit Style|person\nQuick Dry|waves\nShape Retention|magnet",
             "link_label": "Browse All Styles",
             "link": "",
-            "bg": "#d3d9de",
+            "bg": "#e4e8ea",
             "fg": "#000000"
           }
         }
@@ -185,7 +185,7 @@
       "settings": {
         "pt": 0,
         "pb": 0,
-        "title_font": "Caveat Brush"
+        "title_font": "Protest Riot"
       }
     },
     "showcase": {
