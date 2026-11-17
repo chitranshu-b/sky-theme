@@ -86,11 +86,20 @@
             "new_row": true
           }
         },
+        "m10": {
+          "type": "collection",
+          "settings": {
+            "collection": "women-t-shirts",
+            "title": "",
+            "new_row": false
+          }
+        },
         "m8": {
           "type": "video_text",
           "settings": {
             "text": "Drop",
-            "video": "shopify://files/videos/[3s] 🚨 WINTER DRIP ALERT 🚨Up to 80% OFF ‘cause cold fits shouldn’t hurt your wallet 🥶💸👀 Follow us💬 Comment “SALE”📩 Boom—extra 10% OFF drops in your DMs✔️ Free Shipping (as it should be)✔️ COD Say less 😎✔️ 3-Day Easy Returns✔️ 100% Premium C....mp4",
+            "video": "shopify://files/videos/Drop Video.mp4",
+            "image": "shopify://shop_images/Drop_Image.jpg",
             "new_row": false
           }
         },
@@ -98,14 +107,6 @@
           "type": "collection",
           "settings": {
             "collection": "anime-collection",
-            "title": "",
-            "new_row": false
-          }
-        },
-        "m10": {
-          "type": "collection",
-          "settings": {
-            "collection": "women-t-shirts",
             "title": "",
             "new_row": false
           }
@@ -127,9 +128,9 @@
         "heading": "Discover Signature Collections",
         "link_label": "Explore All Collections",
         "link_url": "shopify://collections/all-products",
+        "text_size": 200,
         "pt": 48,
-        "pb": 48,
-        "text_size": 200
+        "pb": 48
       }
     },
     "slider": {
