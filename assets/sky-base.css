@@ -18,12 +18,12 @@
 *, *::before, *::after { box-sizing: border-box; }
 /* thin, light scrollbars everywhere (same as Sky) */
 * { scrollbar-width: thin; scrollbar-color: #ddd transparent; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
-body { margin: 0; background: var(--sk-bg); color: var(--sk-text); font-family: var(--sk-font-body); font-size: 14px; line-height: 1.5; letter-spacing: .1px; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--sk-bg); color: var(--sk-text); font-family: var(--sk-font-body); font-size: 14px; line-height: 1.5; letter-spacing: .1px; overflow-x: clip; -webkit-font-smoothing: antialiased; }
 img, video, svg { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; cursor: pointer; }
