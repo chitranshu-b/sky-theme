@@ -1,4 +1,5 @@
 {%- assign s = section.settings -%}
+<div class="sk-space" style="padding-top: {{ section.settings.pt }}px; padding-bottom: {{ section.settings.pb }}px;">
 <footer class="sk-ft2" style="--f-bg: {{ s.bg }}; --f-fg: {{ s.fg }};">
   <div class="sk-container sk-ft2__grid">
     <div class="sk-ft2__news">
@@ -33,6 +34,7 @@
     </div>
   </div>
 </footer>
+</div>
 
 {% stylesheet %}
   .sk-ft2 { background: var(--f-bg, #f2f2f4); color: var(--f-fg, #202020); }
@@ -56,6 +58,9 @@
 {
   "name": "Footer",
   "settings": [
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
     { "type": "text", "id": "news_heading", "label": "Newsletter heading", "default": "Join our newsletter" },
     { "type": "text", "id": "news_text", "label": "Newsletter text", "default": "Be the first to know about new collections and exclusive offers." },
     { "type": "color", "id": "bg", "label": "Background", "default": "#f2f2f4" },

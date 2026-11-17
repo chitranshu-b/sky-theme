@@ -1,5 +1,6 @@
 {%- assign s = section.settings -%}
 {%- assign n = section.blocks.size -%}
+<div class="sk-space" style="padding-top: {{ section.settings.pt }}px; padding-bottom: {{ section.settings.pb }}px;">
 <sky-showcase class="sk-sc" style="--n: {{ n }}; --steps: {{ n | plus: 2 }};" data-count="{{ n }}">
   <div class="sk-sc__stage">
     <h2 class="sk-sc__heading">{{ s.heading }}</h2>
@@ -34,6 +35,7 @@
     </div>
   </div>
 </sky-showcase>
+</div>
 
 {% stylesheet %}
   sky-showcase { display: block; position: relative; height: calc(var(--steps) * 100vh); background: #000; }
@@ -97,6 +99,9 @@
 {
   "name": "Pinned collections",
   "settings": [
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Dress Up Your Beautiful Moments" },
     { "type": "text", "id": "eyebrow", "label": "Small title on card", "default": "Our Collections" },
     { "type": "text", "id": "ticker", "label": "Running text at the bottom", "default": "Designed to Stand Out  •  Elevate Your Wardrobe  •  Timeless Fits, Modern Style." }

@@ -1,4 +1,5 @@
 {%- assign s = section.settings -%}
+<div class="sk-space" style="padding-top: {{ section.settings.pt }}px; padding-bottom: {{ section.settings.pb }}px;">
 <section class="sk-hero" style="--hero-h: {{ s.height }}vh; --hero-ov: {{ s.overlay | divided_by: 100.0 }}; --mq-size: {{ s.marquee_size }}px; --hero-fg: {{ s.text_color }};">
   <div class="sk-hero__bg">
     {%- if s.image != blank -%}
@@ -33,6 +34,7 @@
     {%- if s.text != blank -%}<p class="sk-hero__text" data-sk-reveal>{{ s.text }}</p>{%- endif -%}
   </div>
 </section>
+</div>
 
 {% stylesheet %}
   .sk-hero { position: relative; display: flex; align-items: flex-end; min-height: max(520px, var(--hero-h)); overflow: hidden; color: var(--hero-fg); background: #000; }
@@ -57,6 +59,9 @@
 {
   "name": "Hero banner",
   "settings": [
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
     { "type": "image_picker", "id": "image", "label": "Background image" },
     { "type": "range", "id": "height", "label": "Height", "min": 50, "max": 100, "step": 5, "unit": "vh", "default": 100 },
     { "type": "range", "id": "overlay", "label": "Dark overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 40 },
