@@ -1,0 +1,15 @@
+{%- comment -%} Small line icons for the hover chips. Param: icon (check, person, hand-heart, wind, feather, hand-leaf, dress, waves, magnet) {%- endcomment -%}
+<svg class="sk-cp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  {%- case icon -%}
+    {%- when 'check' -%}<circle cx="12" cy="12" r="9.5" stroke-width="2.4"/><path d="M7.5 12.5l3 3 6-6.5" stroke-width="2.4"/>
+    {%- when 'person' -%}<circle cx="12" cy="4.8" r="2.2" fill="currentColor" stroke="none"/><path d="M3.5 9.5l8.5 1.5 8.5-1.5M12 11v4.5M12 15.5l-4 5.5M12 15.5l4 5.5"/>
+    {%- when 'hand-heart' -%}<path d="M12 10.8c-3-2.1-4.6-3.4-4.6-5.1a2.5 2.5 0 014.6-1.1 2.5 2.5 0 014.6 1.1c0 1.7-1.6 3-4.6 5.1z" fill="currentColor" stroke="none"/><path d="M2.5 15.5h3.2l4.3 1.5h3.4a1.4 1.4 0 010 2.8H9.6M13.4 19.8l5.2-2c1.3-.5 2.4.2 2.4 1.2L14 22l-6-1.6H2.5z"/>
+    {%- when 'wind' -%}<path d="M3 9h11a3 3 0 10-3-3M3 14h15a3 3 0 11-3 3M3 19h7"/>
+    {%- when 'feather' -%}<path d="M20 4c-8 0-13 4.5-13 11l-3 5M7 15h7M11 11.5h6M20 4c0 7-4 11-11 11"/>
+    {%- when 'hand-leaf' -%}<path d="M12 10c0-4 3-6.5 8-6.5 0 4-3 6.5-8 6.5zM12 10V6.5" fill="currentColor"/><path d="M2.5 15.5h3.2l4.3 1.5h3.4a1.4 1.4 0 010 2.8H9.6M13.4 19.8l5.2-2c1.3-.5 2.4.2 2.4 1.2L14 22l-6-1.6H2.5z"/>
+    {%- when 'dress' -%}<path fill="currentColor" stroke="none" d="M9 2h2l1 3 1-3h2l-1 6 4 13H5l4-13-1-6z"/>
+    {%- when 'waves' -%}<path d="M3 7c3-3 5 3 9 0s6 3 9 0M3 12c3-3 5 3 9 0s6 3 9 0M3 17c3-3 5 3 9 0s6 3 9 0"/>
+    {%- when 'magnet' -%}<path d="M5 3v9a7 7 0 0014 0V3h-4.5v9a2.5 2.5 0 01-5 0V3z" fill="currentColor" stroke="none"/>
+    {%- else -%}<circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/>
+  {%- endcase -%}
+</svg>

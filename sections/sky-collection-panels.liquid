@@ -15,7 +15,10 @@
           {%- for f in feats -%}
             {%- assign ft = f | strip | strip_newlines -%}
             {%- if ft != blank -%}
-              <span class="sk-cp__chip" style="--d: {{ forloop.index0 | times: 70 }}ms"><i></i>{{ ft }}</span>
+              {%- assign parts = ft | split: '|' -%}
+              {%- assign chip_label = parts[0] | strip -%}
+              {%- assign chip_icon = parts[1] | strip | default: 'dot' -%}
+              <span class="sk-cp__chip" style="--d: {{ forloop.index0 | times: 100 | plus: 50 }}ms">{% render 'sky-chip-icon', icon: chip_icon %}<span>{{ chip_label }}</span></span>
             {%- endif -%}
           {%- endfor -%}
         </span>
@@ -52,13 +55,14 @@
   .sk-cp__fig--b { left: 50%; opacity: 0; transform: translateX(-50%); }
   .sk-cp__panel:hover .sk-cp__fig--a { transform: translateX(-88%); }
   .sk-cp__panel:hover .sk-cp__fig--b { opacity: 1; transform: translateX(-12%); }
-  .sk-cp__chips { position: absolute; z-index: 3; left: 18px; top: 40%; display: grid; gap: 8px; justify-items: start; text-align: left; }
-  .sk-cp__chip { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,.88); font-size: 11px; font-weight: 500; opacity: 0; transform: translateX(-16px); transition: opacity .4s ease var(--d), transform .5s cubic-bezier(.2,.7,.2,1) var(--d); }
-  .sk-cp__chip i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid currentColor; }
-  .sk-cp__panel:hover .sk-cp__chip { opacity: 1; transform: none; }
-  .sk-cp__cta { position: absolute; right: 22px; bottom: 22px; z-index: 3; }
+  .sk-cp__chips { position: absolute; z-index: 3; left: 20px; top: 50%; transform: translateY(-50%); display: grid; gap: 4px; justify-items: start; text-align: left; }
+  @media (min-width: 1200px) { .sk-cp__chips { left: 50px; } }
+  .sk-cp__chip { display: inline-flex; align-items: center; gap: 8px; width: max-content; padding: 8px 10px; border-radius: 8px; background: #fff; color: #2b2b2b; font-size: 12px; font-weight: 400; line-height: 1.35; opacity: 0; transform: translateX(-10px); transition: opacity .5s ease-in-out var(--d), transform .5s ease-in-out var(--d); }
+  .sk-cp__icon { flex: 0 0 auto; width: 15px; height: 15px; color: #000; }
+  @media (min-width: 1200px) { .sk-cp__icon { width: 20px; height: 20px; } }
+  .sk-cp__panel:hover .sk-cp__chip, .sk-cp__panel:focus-visible .sk-cp__chip { opacity: 1; transform: none; }
   @media (hover: none) { .sk-cp__chips { display: none; } }
-  @media (max-width: 749px) { .sk-cp__chips { top: 36%; } }
+  .sk-cp__cta { position: absolute; right: 22px; bottom: 22px; z-index: 3; }
 {% endstylesheet %}
 
 {% schema %}
@@ -81,7 +85,11 @@
         { "type": "text", "id": "title", "label": "Title", "default": "Shop Men" },
         { "type": "image_picker", "id": "image", "label": "Main image (PNG with transparent background works best)" },
         { "type": "image_picker", "id": "image_hover", "label": "Second image (appears on hover)" },
-        { "type": "textarea", "id": "features", "label": "Hover chips (one per line)", "default": "Proper Fit\nComfort Fit Style\nEasy Care\nWind Resistant\nLightweight Material" },
+        { "type": "textarea", "id": "features", "label": "Hover chips (one per line: Label|icon)", "info": "Icons: check, person, hand-heart, wind, feather, hand-leaf, dress, waves, magnet", "default": "Proper Fit|check
+Comfort Fit Style|person
+Easy Care|hand-heart
+Wind Resistant|wind
+Lightweight Material|feather" },
         { "type": "text", "id": "link_label", "label": "Link label", "default": "Discover The Edit" },
         { "type": "url", "id": "link", "label": "Link" },
         { "type": "color", "id": "bg", "label": "Background tint", "default": "#d3d9de" },
