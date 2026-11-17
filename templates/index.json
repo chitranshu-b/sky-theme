@@ -12,7 +12,9 @@
     "hero": {
       "type": "sky-hero-banner",
       "settings": {
-        "image": "shopify://shop_images/Doom_Banner.png",
+        "pt": 0,
+        "pb": 0,
+        "image": "shopify://shop_images/Hero_Banner.jpg",
         "height": 100,
         "overlay": 40,
         "text_color": "#ffffff",
@@ -180,6 +182,8 @@
         "p2"
       ],
       "settings": {
+        "pt": 0,
+        "pb": 0,
         "title_font": "Caveat Brush"
       }
     },
@@ -226,6 +230,8 @@
         ".sk-sc__glass {left: 52%;}"
       ],
       "settings": {
+        "pt": 40,
+        "pb": 40,
         "heading": "Dress Up Your Beautiful Moments",
         "eyebrow": "Our Collections",
         "ticker": "Designed to Stand Out  •  Elevate Your Wardrobe  •  Timeless Fits, Modern Style."
@@ -295,6 +301,8 @@
         "h2"
       ],
       "settings": {
+        "pt": 40,
+        "pb": 40,
         "image": "shopify://shop_images/fall-skeleton-men-offwhite-05.png",
         "height": 90,
         "overlay": 40,
@@ -351,6 +359,8 @@
         "l4"
       ],
       "settings": {
+        "pt": 40,
+        "pb": 40,
         "heading": "Spring Summer 2026",
         "text": "Every piece of clothing is made to bring effortless style to everyday moments. From relaxed essentials to standout layers, our collections are designed for modern living.",
         "bg": "#dfe5ea"
@@ -359,6 +369,8 @@
     "countdown": {
       "type": "sky-countdown-bar",
       "settings": {
+        "pt": 0,
+        "pb": 0,
         "eyebrow": "Dress Up Your Moments",
         "heading": "Hurry, Your Style Won't Wait",
         "end_date": "2026-12-31 23:59",
@@ -521,6 +533,8 @@
         "b4"
       ],
       "settings": {
+        "pt": 28,
+        "pb": 40,
         "heading": "Shop By Brand",
         "bg": "#000000",
         "fg": "#ffffff"
