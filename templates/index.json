@@ -305,6 +305,7 @@
     },
     "featured": {
       "type": "sky-featured-product",
+      "custom_css": [],
       "settings": {
         "product": "marvel-doctor-doom-the-broken-world",
         "discount_heading": "Where's the discount?",
