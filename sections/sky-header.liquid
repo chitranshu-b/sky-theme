@@ -191,9 +191,12 @@
   .sk-hd__btn:hover { background: rgba(255,255,255,.34); }
   .sk-hd__count { position: absolute; top: -3px; right: -3px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: #d93025; color: #fff; font-size: 10px; line-height: 16px; text-align: center; }
   .sk-hd__spacer { height: 0; }
-  .sk-hd.is-solid .sk-hd__bar, .sk-hd.is-scrolled .sk-hd__bar { background: var(--sk-bg); color: #000; box-shadow: 0 1px 0 var(--sk-line); }
+  .sk-hd.is-solid .sk-hd__bar { background: var(--sk-bg); color: #000; box-shadow: 0 1px 0 var(--sk-line); }
+  /* scrolled over the hero: frosted glass like Sky (dark tint + heavy blur, light text) */
+  .sk-hd.is-scrolled:not(.is-solid):not([data-transparent="false"]) .sk-hd__bar { background: rgba(0,0,0,.3); -webkit-backdrop-filter: blur(44px); backdrop-filter: blur(44px); color: var(--hd-fg, #fff); box-shadow: none; }
   .sk-hd.is-solid .sk-hd__inner, .sk-hd.is-scrolled .sk-hd__inner { border-bottom-color: transparent; }
-  .sk-hd.is-solid .sk-hd__btn, .sk-hd.is-scrolled .sk-hd__btn { background: rgba(0,0,0,.07); }
+  .sk-hd.is-solid .sk-hd__btn { background: rgba(0,0,0,.07); }
+  .sk-hd.is-scrolled:not(.is-solid):not([data-transparent="false"]) .sk-hd__btn { background: rgba(0,0,0,.22); }
   .sk-hd[data-solid-forced="true"] .sk-hd__spacer, .sk-hd[data-transparent="false"] .sk-hd__spacer { height: calc(var(--sk-header-h) + var(--sk-ann-h, 0px)); }
   .sk-hd[data-transparent="false"] .sk-hd__bar { background: var(--sk-bg); color: #000; }
   .sk-hd.is-hidden .sk-hd__bar { transform: translateY(-110%); }
