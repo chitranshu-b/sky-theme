@@ -62,10 +62,10 @@
     return out;
   }
 
-  function render(p, swatches) {
+  function render(p, swatches, stock) {
     var opts = optionsOf(p);
     var sel = (p.variants.filter(function (v) { return v.available; })[0] || p.variants[0]);
-    state = { p: p, opts: opts, swatches: swatches, chosen: opts.map(function (o, i) { return sel['option' + (i + 1)]; }), qty: 1, idx: 0 };
+    state = { p: p, opts: opts, swatches: swatches, stock: stock || {}, chosen: opts.map(function (o, i) { return sel['option' + (i + 1)]; }), qty: 1, idx: 0 };
     var urls = (p.images || []).map(imgSrc);
     var desc = (p.description || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
     if (desc.length > 160) desc = desc.slice(0, 157).replace(/\s+\S*$/, '') + '…';
@@ -92,6 +92,8 @@
               : '<button type="button" class="sk-qv__pill" data-val="' + esc(v) + '">' + esc(v) + '</button>';
           }).join('') + '</div></fieldset>';
       }).join('') : '') +
+      '<p class="sk-qv__stock" data-qv-stock></p>' +
+      whBlock() +
       '<div class="sk-qv__buy">' +
         '<div class="sk-qv__qty"><button type="button" data-qv-minus aria-label="Decrease quantity">' + ICON.minus + '</button><input type="number" min="1" value="1" data-qv-qty aria-label="Quantity"><button type="button" data-qv-plus aria-label="Increase quantity">' + ICON.plus + '</button></div>' +
         '<button type="button" class="sk-qv__atc" data-qv-atc>Add to cart</button>' +
@@ -103,6 +105,19 @@
     sync(true);
   }
 
+  function whBlock() { var t = root.parentNode.querySelector('[data-qv-wh-block]'); return t ? t.innerHTML : ''; }
+  function stockLine(v) {
+    var el = body.querySelector('[data-qv-stock]'); if (!el) return;
+    var q = v ? state.stock[String(v.id)] : undefined;
+    var low = +(root.dataset.low || 0), cls = 'ok', txt = '';
+    if (!v) { el.textContent = ''; el.className = 'sk-qv__stock'; return; }
+    if (q == null || q < 0) txt = v.available ? 'In stock, Get yours today!' : 'Out of stock';
+    else if (q > 0) txt = (low && q <= low) ? 'Only ' + q + ' left in stock, order soon!' : q + ' in stock, Get yours today!';
+    else txt = v.available ? 'In stock, Get yours today!' : 'Out of stock';
+    if (!v.available) cls = 'out'; else if (q != null && q > 0 && low && q <= low) cls = 'low';
+    el.className = 'sk-qv__stock is-' + cls;
+    el.innerHTML = '<i></i><span>' + esc(txt) + '</span>';
+  }
   function currentVariant() {
     var c = state.chosen;
     return state.p.variants.filter(function (v) { return c.every(function (x, i) { return v['option' + (i + 1)] === x; }); })[0];
@@ -126,6 +141,7 @@
         b.classList.toggle('is-out', !m || !m.available);
       });
     });
+    stockLine(v);
     var price = body.querySelector('[data-qv-price]');
     if (v) {
       price.innerHTML = '<b>' + money(v.price) + '</b>' + (v.compare_at_price > v.price ? ' <s>' + money(v.compare_at_price) + '</s>' : '');
@@ -153,15 +169,17 @@
     var t = e.target.closest('[data-qv]');
     if (t) {
       e.preventDefault(); lastTrigger = t;
-      var swatches = {}; try { swatches = JSON.parse(t.dataset.swatches || '{}'); } catch (x) {}
+      var swatches = {}, stock = {}; try { swatches = JSON.parse(t.dataset.swatches || '{}'); } catch (x) {} try { stock = JSON.parse(t.dataset.stock || '{}'); } catch (x) {}
       body.innerHTML = '<div class="sk-qv__loading">Loading…</div>';
       open();
       fetch('/products/' + t.dataset.qv + '.js', { headers: { Accept: 'application/json' } })
         .then(function (r) { if (!r.ok) throw 0; return r.json(); })
-        .then(function (p) { render(p, swatches); })
+        .then(function (p) { render(p, swatches, stock); })
         .catch(function () { body.innerHTML = '<div class="sk-qv__loading">Could not load this product. <a href="/products/' + esc(t.dataset.qv) + '">Open product page</a></div>'; });
       return;
     }
+    if (e.target.closest('[data-wh-open]')) { whOpen(); return; }
+    if (e.target.closest('[data-wh-close]')) { whClose(); return; }
     if (e.target.closest('[data-qv-close]')) { close(); return; }
     if (!state || root.hidden) return;
     var b;
@@ -182,5 +200,8 @@
         .catch(function (err) { b.disabled = false; msg.textContent = err.message; });
     }
   });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !root.hidden) close(); });
+  var wh = document.querySelector('[data-wh-root]');
+  function whOpen() { if (!wh) return; wh.hidden = false; requestAnimationFrame(function () { requestAnimationFrame(function () { wh.classList.add('is-open'); }); }); }
+  function whClose() { if (!wh) return; wh.classList.remove('is-open'); setTimeout(function () { wh.hidden = true; }, 400); }
+  document.addEventListener('keydown', function (e) { if (e.key !== 'Escape') return; if (wh && !wh.hidden) whClose(); else if (!root.hidden) close(); });
 })();

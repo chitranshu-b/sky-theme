@@ -1,4 +1,4 @@
-<div class="sk-qv" data-qv-root hidden role="dialog" aria-modal="true" aria-label="Quick view">
+<div class="sk-qv" data-qv-root data-low="{{ settings.qv_low_stock | default: 10 }}" hidden role="dialog" aria-modal="true" aria-label="Quick view">
   <div class="sk-qv__backdrop" data-qv-close></div>
   <div class="sk-qv__sheet">
     <div class="sk-qv__head">
@@ -6,5 +6,34 @@
       <button type="button" class="sk-qv__close" data-qv-close aria-label="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
     </div>
     <div class="sk-qv__body" data-qv-body data-lenis-prevent></div>
+  </div>
+</div>
+
+<template data-qv-wh-block>
+  <button type="button" class="sk-qv__wh" data-wh-open aria-haspopup="dialog">
+    <span class="sk-qv__wh-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9.5L5 4h14l1.5 5.5M3.5 9.5h17M3.5 9.5v10.5h17V9.5M9.5 20v-5.5h5V20"/></svg></span>
+    <span class="sk-qv__wh-text"><b>{{ settings.wh_title | default: 'Manufacturer Warehouse Information' | escape }}</b>{% if settings.wh_hours != blank %}<small>{{ settings.wh_hours | escape }}</small>{% endif %}</span>
+    <span class="sk-qv__wh-go"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg></span>
+  </button>
+</template>
+
+<div class="sk-wh" data-wh-root hidden role="dialog" aria-modal="true" aria-label="{{ settings.wh_title | default: 'Manufacturer Warehouse Information' | escape }}">
+  <div class="sk-qv__backdrop" data-wh-close></div>
+  <div class="sk-qv__sheet sk-wh__sheet">
+    <div class="sk-qv__head">
+      <span class="sk-qv__heading">{{ settings.wh_title | default: 'Manufacturer Warehouse Information' | escape }}</span>
+      <button type="button" class="sk-qv__close" data-wh-close aria-label="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
+    </div>
+    <div class="sk-qv__body" data-lenis-prevent>
+      <div class="sk-wh__card">
+        {%- if settings.wh_name != blank -%}<div class="sk-wh__name">{{ settings.wh_name | escape }}</div>{%- endif -%}
+        {%- if settings.wh_address != blank -%}<address class="sk-wh__row"><span>Address</span><p>{{ settings.wh_address | escape | newline_to_br }}</p></address>{%- endif -%}
+        {%- if settings.wh_phone != blank -%}<div class="sk-wh__row"><span>Phone</span><p><a href="tel:{{ settings.wh_phone | strip | replace: ' ', '' }}">{{ settings.wh_phone | escape }}</a></p></div>{%- endif -%}
+        {%- if settings.wh_email != blank -%}<div class="sk-wh__row"><span>Email</span><p><a href="mailto:{{ settings.wh_email | strip }}">{{ settings.wh_email | escape }}</a></p></div>{%- endif -%}
+        {%- if settings.wh_address == blank and settings.wh_phone == blank and settings.wh_email == blank -%}
+          <p class="sk-wh__empty">Add the warehouse address, phone and email in Theme settings &rarr; Quick view &amp; warehouse.</p>
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 </div>

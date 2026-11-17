@@ -162,3 +162,28 @@ ul { margin: 0; padding: 0; list-style: none; }
 .sk-qv__atc:disabled { opacity: .5; cursor: not-allowed; }
 .sk-qv__msg { margin-top: 10px; min-height: 0; color: #c0392b; font-size: 13px; }
 .sk-qv__full { display: inline-block; margin-top: 14px; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+
+/* quick view: stock + warehouse */
+.sk-qv__stock { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; font-size: 14px; }
+.sk-qv__stock i { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle, #fff 0 24%, var(--dot) 26% 100%); }
+.sk-qv__stock.is-ok { --dot: #60ad5b; color: #3d8a39; }
+.sk-qv__stock.is-low { --dot: #e8890c; color: #b8690a; }
+.sk-qv__stock.is-out { --dot: #d93025; color: #b3261e; }
+.sk-qv__wh { display: flex; align-items: center; gap: 12px; width: 100%; margin: 0 0 16px; padding: 12px 14px; border: 1px solid #e3e3e4; border-radius: 12px; background: #fff; text-align: left; color: #000; }
+.sk-qv__wh-ico svg { width: 24px; height: 24px; }
+.sk-qv__wh-text { flex: 1; display: grid; gap: 2px; font-size: 14px; }
+.sk-qv__wh-text small { font-size: 12px; opacity: .6; }
+.sk-qv__wh-go { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #efeff1; }
+.sk-qv__wh-go svg { width: 12px; height: 12px; }
+.sk-wh { position: fixed; inset: 0; z-index: 210; }
+.sk-wh[hidden] { display: none; }
+.sk-wh.is-open .sk-qv__backdrop { opacity: 1; }
+.sk-wh.is-open .sk-qv__sheet { transform: none; }
+.sk-wh__sheet { height: auto; max-height: calc(100% - 160px); }
+.sk-wh__card { background: #fff; border-radius: 20px; padding: 20px 24px; display: grid; gap: 16px; }
+.sk-wh__name { font-weight: 700; font-size: 15px; }
+.sk-wh__row { display: grid; gap: 2px; font-style: normal; }
+.sk-wh__row span { font-size: 12px; opacity: .55; text-transform: uppercase; letter-spacing: .04em; }
+.sk-wh__row p { font-size: 14px; line-height: 1.55; }
+.sk-wh__row a { text-decoration: underline; text-underline-offset: 3px; }
+.sk-wh__empty { font-size: 13px; color: #777; }

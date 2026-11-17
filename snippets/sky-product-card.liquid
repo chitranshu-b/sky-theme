@@ -13,6 +13,9 @@
     "{{ v.name | escape }}":"{{ sw }}"{%- unless forloop.last -%},{%- endunless -%}
   {%- endfor -%}{%- endif -%}
 {%- endcapture -%}
+{%- capture stock_json -%}
+  {%- for v in p.variants -%}"{{ v.id }}":{% if v.inventory_management == 'shopify' %}{{ v.inventory_quantity }}{% else %}-1{% endif %}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}
+{%- endcapture -%}
 <article class="sk-card">
   <a href="{{ p.url }}" class="sk-card__media" aria-label="{{ p.title | escape }}">
     {%- if badge != blank -%}<span class="sk-card__badge">{{ badge }}</span>{%- endif -%}
@@ -36,7 +39,7 @@
       </span>
     {%- endif -%}
   </a>
-  <button type="button" class="sk-circle sk-card__qv" data-qv="{{ p.handle }}" data-swatches='{ {{ sw_json | strip_newlines }} }' aria-label="Quick view: {{ p.title | escape }}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 10S4.7 4.2 10 4.2 18.5 10 18.5 10 15.3 15.8 10 15.8 1.5 10 1.5 10Z"/><circle cx="10" cy="10" r="2.4" fill="currentColor" stroke="none"/></svg></button>
+  <button type="button" class="sk-circle sk-card__qv" data-qv="{{ p.handle }}" data-swatches='{ {{ sw_json | strip_newlines }} }' data-stock='{ {{ stock_json | strip_newlines }} }' aria-label="Quick view: {{ p.title | escape }}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 10S4.7 4.2 10 4.2 18.5 10 18.5 10 15.3 15.8 10 15.8 1.5 10 1.5 10Z"/><circle cx="10" cy="10" r="2.4" fill="currentColor" stroke="none"/></svg></button>
   <div class="sk-card__info">
     <a href="{{ p.url }}" class="sk-card__title">{{ p.title }}</a>
     <span class="sk-card__price">
