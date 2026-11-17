@@ -221,6 +221,9 @@
         "s2",
         "s3"
       ],
+      "custom_css": [
+        ".sk-sc__glass{left: 52%;}"
+      ],
       "settings": {
         "heading": "Dress Up Your Beautiful Moments",
         "eyebrow": "Our Collections",
