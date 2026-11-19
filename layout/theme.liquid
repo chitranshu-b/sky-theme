@@ -15,6 +15,7 @@
     {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
 
     {{ 'sky-base.css' | asset_url | stylesheet_tag }}
+    {{ 'sky-cart.css' | asset_url | stylesheet_tag }}
     <style>
       :root {
         --sk-bg: {{ settings.bg_color }};
@@ -44,6 +45,12 @@
     {% sections 'sky-footer-group' %}
 
     {% render 'sky-back-to-top' %}
+    {% render 'sky-quick-view' %}
+    {% section 'sky-cart-drawer' %}
+    <sky-cart-success class="sk-cs" data-hide-delay="5" aria-live="polite" data-cart-url="{{ routes.cart_url }}"><div data-cs-slot></div></sky-cart-success>
+    <script>window.SkyShop = { moneyFormat: {{ shop.money_format | json }}, cartUrl: {{ routes.cart_url | json }} };</script>
+    <script src="{{ 'sky-quickview.js' | asset_url }}" defer></script>
+    <script src="{{ 'sky-cartbar.js' | asset_url }}" defer></script>
 
     {%- if settings.smooth_scroll -%}
       <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js" defer></script>

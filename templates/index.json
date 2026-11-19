@@ -1,9 +1,30 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "sky-hero-banner",
       "settings": {
-        "marquee_text": "Spring Sale"
+        "pt": 0,
+        "pb": 0,
+        "image": "shopify://shop_images/Hero_Banner.jpg",
+        "height": 100,
+        "overlay": 40,
+        "text_color": "#ffffff",
+        "marquee_text": "Spring Sale",
+        "marquee_size": 180,
+        "marquee_pxs": 85,
+        "heading": "The New Season Starts Here",
+        "button_label": "Shop Now",
+        "button_link": "",
+        "text": "Curated wardrobe staples crafted from premium fabrics, blending timeless silhouettes with effortless versatility to create confident style for every season."
       }
     },
     "mosaic": {
@@ -12,63 +33,82 @@
         "m1": {
           "type": "collection",
           "settings": {
-            "span": 2,
-            "ratio": "0.85"
+            "collection": "anime-collection",
+            "title": "",
+            "new_row": true
           }
         },
         "m2": {
           "type": "collection",
           "settings": {
-            "span": 2,
-            "ratio": "1"
+            "collection": "men-t-shirts",
+            "title": "",
+            "new_row": false
           }
         },
         "m3": {
           "type": "collection",
           "settings": {
-            "span": 2,
-            "ratio": "0.85"
+            "collection": "peek-a-boo-collection",
+            "title": "",
+            "new_row": false
           }
         },
         "m4": {
           "type": "collection",
           "settings": {
-            "span": 3,
-            "ratio": "1"
+            "collection": "women-t-shirts",
+            "title": "",
+            "new_row": false
           }
         },
         "m5": {
           "type": "collection",
           "settings": {
-            "span": 3,
-            "ratio": "0.85"
+            "collection": "marvel-doomsday-collection",
+            "title": "",
+            "new_row": false
           }
         },
         "m6": {
           "type": "collection",
           "settings": {
-            "span": 2,
-            "ratio": "1"
+            "collection": "peek-a-boo-collection",
+            "title": "",
+            "new_row": false
           }
         },
         "m7": {
           "type": "collection",
           "settings": {
-            "span": 2,
-            "ratio": "0.85"
+            "collection": "anime-collection",
+            "title": "",
+            "new_row": true
+          }
+        },
+        "m10": {
+          "type": "collection",
+          "settings": {
+            "collection": "women-t-shirts",
+            "title": "",
+            "new_row": false
           }
         },
         "m8": {
           "type": "video_text",
           "settings": {
-            "span": 5
+            "text": "Drop",
+            "video": "shopify://files/videos/Drop Video.mp4",
+            "image": "shopify://shop_images/Drop_Image.jpg",
+            "new_row": false
           }
         },
         "m9": {
           "type": "collection",
           "settings": {
-            "span": 3,
-            "ratio": "1"
+            "collection": "anime-collection",
+            "title": "",
+            "new_row": false
           }
         }
       },
@@ -80,63 +120,124 @@
         "m5",
         "m6",
         "m7",
+        "m10",
         "m8",
         "m9"
-      ]
+      ],
+      "settings": {
+        "heading": "Discover Signature Collections",
+        "link_label": "Explore All Collections",
+        "link_url": "shopify://collections/all-products",
+        "text_size": 200,
+        "pt": 48,
+        "pb": 0
+      }
     },
     "slider": {
       "type": "sky-product-slider",
-      "settings": {}
+      "settings": {
+        "heading": "Fresh picks have just dropped for you.",
+        "text": "Thoughtfully selected styles designed for everyday comfort, effortless layering, and timeless appeal.",
+        "link_label": "View All",
+        "collection": "",
+        "limit": 10,
+        "per_view": 5,
+        "pt": 48,
+        "pb": 0
+      }
     },
     "panels": {
       "type": "sky-collection-panels",
       "blocks": {
         "p1": {
           "type": "panel",
-          "settings": {}
+          "settings": {
+            "eyebrow": "Style meets confidence",
+            "title": "Shop Men",
+            "image": "shopify://shop_images/men_front.png",
+            "image_hover": "shopify://shop_images/men_back.png",
+            "features": "Proper Fit|check\nComfort Fit Style|person\nEasy Care|hand-heart\nWind Resistant|wind\nLightweight Material|feather",
+            "link_label": "Discover The Edit",
+            "link": "shopify://collections/all-products",
+            "bg": "#e4e8ea",
+            "fg": "#000000"
+          }
         },
         "p2": {
           "type": "panel",
           "settings": {
             "eyebrow": "Elevate your style",
             "title": "Shop Women",
-            "features": "Soft Touch\nRelaxed Fit\nEveryday Layering",
-            "link_label": "Browse All Styles"
+            "image": "shopify://shop_images/women_front.png",
+            "image_hover": "shopify://shop_images/women_back.png",
+            "features": "Skin Friendly|hand-leaf\nVersatile Style|dress\nComfort Fit Style|person\nQuick Dry|waves\nShape Retention|magnet",
+            "link_label": "Browse All Styles",
+            "link": "shopify://collections/all-products",
+            "bg": "#e4e8ea",
+            "fg": "#000000"
           }
         }
       },
       "block_order": [
         "p1",
         "p2"
-      ]
+      ],
+      "settings": {
+        "pt": 0,
+        "pb": 0,
+        "title_font": "Protest Riot"
+      }
     },
     "showcase": {
       "type": "sky-showcase-pinned",
       "blocks": {
-        "s1": {
-          "type": "collection",
-          "settings": {}
-        },
         "s2": {
           "type": "collection",
           "settings": {
-            "title": "Sports Wear",
+            "collection": "",
+            "title": "Daily Wear",
+            "link": "shopify://collections/peek-a-boo-collection",
+            "image": "shopify://shop_images/box-bee-men-02.png",
             "text": "Classic stripes and polished knits made for everyday comfort and easy layering."
           }
         },
         "s3": {
           "type": "collection",
           "settings": {
-            "title": "Relaxed Fit",
+            "collection": "",
+            "title": "Anime Fan Club",
+            "link": "shopify://collections/anime-collection",
+            "image": "shopify://shop_images/5_9659f476-9bea-4d31-aa6c-2aa0eadd3888.jpg",
             "text": "Easy silhouettes with soft fabrics for all-day wear."
+          }
+        },
+        "s1": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "title": "Creator's Choice",
+            "link": "shopify://collections/hikabae-creators-choice-collection",
+            "image": "shopify://shop_images/a3.png",
+            "text": "Stylish jackets crafted for warmth, comfort, and everyday confidence."
           }
         }
       },
       "block_order": [
-        "s1",
         "s2",
-        "s3"
-      ]
+        "s3",
+        "s1"
+      ],
+      "custom_css": [
+        ".sk-sc__glass {left: 52%;}"
+      ],
+      "settings": {
+        "pt": 0,
+        "pb": 40,
+        "bg_image": "shopify://shop_images/Task-147065578-2-1-4K.png",
+        "heading": "Dress Up Your\nBeautiful Moments",
+        "eyebrow": "Our Collections",
+        "ticker": "Designed to Stand Out  •  Elevate Your Wardrobe  •  Timeless Fits, Modern Style."
+      }
     },
     "tabs": {
       "type": "sky-product-tabs",
@@ -144,19 +245,22 @@
         "t1": {
           "type": "tab",
           "settings": {
-            "label": "Premium"
+            "label": "Premium",
+            "collection": "anime-collection"
           }
         },
         "t2": {
           "type": "tab",
           "settings": {
-            "label": "Fresh Picks"
+            "label": "Fresh Picks",
+            "collection": "men-t-shirts"
           }
         },
         "t3": {
           "type": "tab",
           "settings": {
-            "label": "Trending"
+            "label": "Trending",
+            "collection": "women-t-shirts"
           }
         }
       },
@@ -164,7 +268,15 @@
         "t1",
         "t2",
         "t3"
-      ]
+      ],
+      "settings": {
+        "heading": "Fresh picks just dropped",
+        "columns": 4,
+        "limit": 12,
+        "show_view_all": false,
+        "pt": 30,
+        "pb": 0
+      }
     },
     "look": {
       "type": "sky-shop-the-look",
@@ -172,6 +284,7 @@
         "h1": {
           "type": "hotspot",
           "settings": {
+            "product": "fall-skeleton-men-offwhite",
             "x": 50,
             "y": 55
           }
@@ -179,6 +292,7 @@
         "h2": {
           "type": "hotspot",
           "settings": {
+            "product": "fall-skeleton-men-lavender",
             "x": 72,
             "y": 58
           }
@@ -187,26 +301,57 @@
       "block_order": [
         "h1",
         "h2"
-      ]
+      ],
+      "settings": {
+        "pt": 40,
+        "pb": 40,
+        "image": "shopify://shop_images/fall-skeleton-men-offwhite-05.png",
+        "height": 90,
+        "overlay": 40,
+        "text_color": "#ffffff",
+        "heading": "Enduring Stylish Sophistication",
+        "text": "Enduring Stylish Sophistication blends timeless elegance with lasting style.",
+        "look_name": "Office Wear"
+      }
     },
     "featured": {
       "type": "sky-featured-product",
-      "settings": {}
+      "custom_css": [],
+      "settings": {
+        "product": "marvel-doctor-doom-the-broken-world",
+        "discount_heading": "Where's the discount?",
+        "discount_text": "Buy 2, get $20 off by using this code",
+        "discount_code": "SAVE20",
+        "pt": 48,
+        "pb": 48
+      }
     },
     "lookbook": {
       "type": "sky-lookbook",
       "blocks": {
         "l1": {
-          "type": "look"
+          "type": "look",
+          "settings": {
+            "product": ""
+          }
         },
         "l2": {
-          "type": "look"
+          "type": "look",
+          "settings": {
+            "product": ""
+          }
         },
         "l3": {
-          "type": "look"
+          "type": "look",
+          "settings": {
+            "product": ""
+          }
         },
         "l4": {
-          "type": "look"
+          "type": "look",
+          "settings": {
+            "product": ""
+          }
         }
       },
       "block_order": [
@@ -214,51 +359,115 @@
         "l2",
         "l3",
         "l4"
-      ]
+      ],
+      "settings": {
+        "pt": 40,
+        "pb": 40,
+        "heading": "Spring Summer 2026",
+        "text": "Every piece of clothing is made to bring effortless style to everyday moments. From relaxed essentials to standout layers, our collections are designed for modern living.",
+        "bg": "#dfe5ea"
+      }
     },
     "countdown": {
       "type": "sky-countdown-bar",
-      "settings": {}
+      "settings": {
+        "pt": 0,
+        "pb": 0,
+        "eyebrow": "Dress Up Your Moments",
+        "heading": "Hurry, Your Style Won't Wait",
+        "end_date": "2026-12-31 23:59",
+        "ended_text": "Offer ended",
+        "text": "All orders $25+ ship free within 1 business day via USPS Priority Mail",
+        "button_label": "Shop Now",
+        "button_link": "",
+        "bg": "#000000",
+        "fg": "#ffffff"
+      }
     },
     "floating": {
       "type": "sky-floating-text",
       "blocks": {
         "i1": {
-          "type": "image"
+          "type": "image",
+          "settings": {}
         },
         "i2": {
-          "type": "image"
+          "type": "image",
+          "settings": {}
         },
         "i3": {
-          "type": "image"
+          "type": "image",
+          "settings": {}
         }
       },
       "block_order": [
         "i1",
         "i2",
         "i3"
-      ]
+      ],
+      "settings": {
+        "heading": "Discover fashion designed to empower, inspire, and celebrate your unique sense of style.",
+        "text": "Made for real life, each piece blends everyday comfort with timeless style and thoughtful details, designed pieces that bring comfort and confidence to everyday dressing.",
+        "pt": 80,
+        "pb": 80
+      }
     },
     "instagram": {
       "type": "sky-instagram-stack",
       "blocks": {
         "g1": {
-          "type": "post"
+          "type": "post",
+          "settings": {
+            "link": "",
+            "product_1": "",
+            "product_2": "",
+            "product_3": ""
+          }
         },
         "g2": {
-          "type": "post"
+          "type": "post",
+          "settings": {
+            "link": "",
+            "product_1": "",
+            "product_2": "",
+            "product_3": ""
+          }
         },
         "g3": {
-          "type": "post"
+          "type": "post",
+          "settings": {
+            "link": "",
+            "product_1": "",
+            "product_2": "",
+            "product_3": ""
+          }
         },
         "g4": {
-          "type": "post"
+          "type": "post",
+          "settings": {
+            "link": "",
+            "product_1": "",
+            "product_2": "",
+            "product_3": ""
+          }
         },
         "g5": {
-          "type": "post"
+          "type": "post",
+          "settings": {
+            "link": "",
+            "product_1": "",
+            "product_2": "",
+            "product_3": ""
+          }
         },
         "g6": {
-          "type": "post"
+          "type": "post",
+          "settings": {
+            "link": "",
+            "product_1": "",
+            "product_2": "",
+            "product_3": ""
+          }
         }
       },
       "block_order": [
@@ -268,7 +477,16 @@
         "g4",
         "g5",
         "g6"
-      ]
+      ],
+      "settings": {
+        "heading": "Discover More on Instagram",
+        "text": "Discover trending outfits and stylish picks loved by our fashion community.",
+        "speed": 3,
+        "gap": 20,
+        "pause_on_hover": true,
+        "bg": "#000000",
+        "fg": "#ffffff"
+      }
     },
     "brands": {
       "type": "sky-brand-list",
@@ -276,25 +494,37 @@
         "b1": {
           "type": "brand",
           "settings": {
-            "name": "Sol\u00e8ne"
+            "name": "Solène",
+            "type": "Curated Collection",
+            "count": "15 Products",
+            "link": ""
           }
         },
         "b2": {
           "type": "brand",
           "settings": {
-            "name": "Urbanmuse"
+            "name": "Urbanmuse",
+            "type": "Curated Collection",
+            "count": "15 Products",
+            "link": ""
           }
         },
         "b3": {
           "type": "brand",
           "settings": {
-            "name": "Lenora"
+            "name": "Lenora",
+            "type": "Curated Collection",
+            "count": "15 Products",
+            "link": ""
           }
         },
         "b4": {
           "type": "brand",
           "settings": {
-            "name": "Elira"
+            "name": "Elira",
+            "type": "Curated Collection",
+            "count": "15 Products",
+            "link": ""
           }
         }
       },
@@ -303,7 +533,14 @@
         "b2",
         "b3",
         "b4"
-      ]
+      ],
+      "settings": {
+        "pt": 28,
+        "pb": 40,
+        "heading": "Shop By Brand",
+        "bg": "#000000",
+        "fg": "#ffffff"
+      }
     }
   },
   "order": [

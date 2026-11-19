@@ -1,5 +1,5 @@
 {%- assign s = section.settings -%}
-<sky-countdown class="sk-cd" data-end="{{ s.end_date }}" data-end-text="{{ s.ended_text | escape }}" style="--cd-bg: {{ s.bg }}; --cd-fg: {{ s.fg }};">
+<sky-countdown class="sk-cd" data-end="{{ s.end_date }}" data-end-text="{{ s.ended_text | escape }}" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px; --cd-bg: {{ s.bg }}; --cd-fg: {{ s.fg }};">
   <div class="sk-cd__inner sk-container">
     <div class="sk-cd__title">
       <span>{{ s.eyebrow }}</span>
@@ -14,7 +14,7 @@
 </sky-countdown>
 
 {% stylesheet %}
-  sky-countdown { display: block; background: var(--cd-bg, #000); color: var(--cd-fg, #fff); }
+  sky-countdown { display: block; background: var(--cd-bg, #000); color: var(--cd-fg, #fff); padding: var(--sk-pt, 0px) 0 var(--sk-pb, 0px); }
   .sk-cd__inner { display: grid; grid-template-columns: 1fr auto 1fr auto; align-items: center; gap: 24px; padding-top: 28px; padding-bottom: 28px; }
   .sk-cd__title span { font-size: 12px; }
   .sk-cd__title h2 { color: var(--cd-fg, #fff); font-size: clamp(22px, 2.2vw, 30px); font-weight: 500; margin-top: 4px; max-width: 9ch; }
@@ -52,6 +52,9 @@
 {
   "name": "Countdown bar",
   "settings": [
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
     { "type": "text", "id": "eyebrow", "label": "Small text", "default": "Dress Up Your Moments" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Hurry, Your Style Won't Wait" },
     { "type": "text", "id": "end_date", "label": "End date & time", "default": "2026-12-31 23:59", "info": "Format: YYYY-MM-DD HH:MM (store time zone of the visitor's browser)." },

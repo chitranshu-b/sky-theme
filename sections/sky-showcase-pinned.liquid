@@ -1,120 +1,214 @@
 {%- assign s = section.settings -%}
 {%- assign n = section.blocks.size -%}
-<sky-showcase class="sk-sc" style="--n: {{ n }}; --steps: {{ n | plus: 2 }};" data-count="{{ n }}">
-  <div class="sk-sc__stage">
-    <h2 class="sk-sc__heading">{{ s.heading }}</h2>
+{%- assign ticker_items = s.ticker | replace: '•', '|' | split: '|' -%}
+<div class="sk-space" style="padding-top: {{ s.pt }}px; padding-bottom: {{ s.pb }}px;">
+<sky-showcase class="sk-sc" style="--n: {{ n }};" data-count="{{ n }}">
 
-    <div class="sk-sc__left" data-left>
-      <span class="sk-sc__eyebrow">{{ s.eyebrow }}</span>
-      <ul class="sk-sc__list" data-list>
-        {%- for block in section.blocks -%}
-          <li data-i="{{ forloop.index0 }}" {{ block.shopify_attributes }}><a href="{{ block.settings.link | default: block.settings.collection.url | default: '#' }}">{{ block.settings.title | default: block.settings.collection.title }}</a></li>
-        {%- endfor -%}
-      </ul>
-      {%- if s.ticker != blank -%}
-        <div class="sk-sc__ticker" data-sk-marquee aria-hidden="true"><div class="sk-marquee__inner"><span>{{ s.ticker }}</span></div></div>
+  <div class="sk-sc__banner" data-banner>
+    <div class="sk-sc__bg">
+      {%- if s.bg_image != blank -%}
+        <img src="{{ s.bg_image | image_url: width: 2400 }}" srcset="{{ s.bg_image | image_url: width: 1200 }} 1200w, {{ s.bg_image | image_url: width: 2400 }} 2400w" sizes="100vw" alt="" width="2400" height="{{ 2400 | divided_by: s.bg_image.aspect_ratio | round }}" loading="lazy">
       {%- endif -%}
     </div>
-
-    <div class="sk-sc__right" data-right>
-      {%- for block in section.blocks -%}
-        {%- assign b = block.settings -%}
-        <figure class="sk-sc__slide{% if forloop.first %} is-active{% endif %}" data-i="{{ forloop.index0 }}">
-          {%- if b.image != blank -%}
-            <img src="{{ b.image | image_url: width: 1600 }}" alt="{{ b.image.alt | escape }}" width="1600" height="{{ 1600 | divided_by: b.image.aspect_ratio | round }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
-          {%- else -%}
-            {{ 'lifestyle-1' | placeholder_svg_tag: 'sk-ph' }}
-          {%- endif -%}
-          <figcaption class="sk-sc__glass">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l-8 5 3 6 3-2v17h14V14l3 2 3-6-8-5a6 6 0 0 1-10 0z"/></svg>
-            <span>{{ b.text }}</span>
-          </figcaption>
-        </figure>
-      {%- endfor -%}
+    <div class="sk-sc__banner-in sk-container">
+      <h2 class="sk-sc__heading" data-sk-words>{{ s.heading | newline_to_br }}</h2>
     </div>
   </div>
 
-  <div class="sk-sc__m">
-    {%- assign first = section.blocks.first.settings.image -%}
-    {%- if first != blank -%}<img class="sk-sc__mbg" src="{{ first | image_url: width: 1000 }}" alt="" loading="lazy" width="1000" height="{{ 1000 | divided_by: first.aspect_ratio | round }}">{%- endif -%}
-    <h2>{{ s.heading }}</h2>
-    <div class="sk-sc__mrow">
-      {%- for block in section.blocks -%}
-        {%- assign b = block.settings -%}
-        <a class="sk-sc__mcard" href="{{ b.link | default: b.collection.url | default: '#' }}">
-          {%- if b.image != blank -%}<img src="{{ b.image | image_url: width: 700 }}" alt="" loading="lazy" width="700" height="{{ 700 | divided_by: b.image.aspect_ratio | round }}">{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'sk-ph' }}{%- endif -%}
-          <span class="sk-sc__mt">{{ b.title | default: b.collection.title }}</span>
-          <span class="sk-sc__mg"><svg width="30" height="30" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l-8 5 3 6 3-2v17h14V14l3 2 3-6-8-5a6 6 0 0 1-10 0z"/></svg>{{ b.text }}</span>
-        </a>
-      {%- endfor -%}
+  <div class="sk-sc__wrap" data-wrap>
+    <div class="sk-sc__outer">
+
+      <div class="sk-sc__menu">
+        <div class="sk-sc__menu-title">{{ s.eyebrow }}</div>
+        <div class="sk-sc__list" data-list>
+          <div class="sk-sc__list-in" data-list-in>
+            {%- for block in section.blocks -%}
+              <a href="{{ block.settings.link | default: block.settings.collection.url | default: '#' }}" class="sk-sc__item{% if forloop.first %} is-active{% endif %}" data-item {{ block.shopify_attributes }}>{{ block.settings.title | default: block.settings.collection.title }}</a>
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- if ticker_items.size > 0 and s.ticker != blank -%}
+          <div class="sk-sc__ticker" aria-hidden="true">
+            <div class="sk-sc__ticker-in">
+              {%- for i in (1..2) -%}
+                <div class="sk-sc__ticker-node">
+                  {%- for t in ticker_items -%}{%- assign tt = t | strip -%}{%- if tt != blank -%}<span class="sk-sc__ticker-item">{{ tt }}</span>{%- endif -%}{%- endfor -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="sk-sc__images">
+        <div class="sk-sc__image-list">
+          {%- for block in section.blocks -%}
+            {%- assign b = block.settings -%}
+            <a href="{{ b.link | default: b.collection.url | default: '#' }}" class="sk-sc__image" data-image aria-label="{{ b.title | default: b.collection.title | escape }}" tabindex="-1">
+              <div class="sk-sc__media">
+                {%- if b.image != blank -%}
+                  <img src="{{ b.image | image_url: width: 1600 }}" srcset="{{ b.image | image_url: width: 800 }} 800w, {{ b.image | image_url: width: 1600 }} 1600w" sizes="(min-width: 1200px) 60vw, (min-width: 1025px) 55vw, 42vw" alt="{{ b.image.alt | escape }}" width="1600" height="{{ 1600 | divided_by: b.image.aspect_ratio | round }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'sk-ph' }}
+                {%- endif -%}
+              </div>
+              <div class="sk-sc__mob">
+                <span class="sk-sc__mob-title">{{ b.title | default: b.collection.title }}</span>
+                <div class="sk-sc__cardi">
+                  {%- render 'sky-showcase-icon', icon: b.icon -%}
+                  <div class="sk-sc__cardt">{{ b.text }}</div>
+                </div>
+              </div>
+            </a>
+          {%- endfor -%}
+        </div>
+
+        <div class="sk-sc__card" data-card>
+          <div class="sk-sc__card-in" data-card-in>
+            {%- for block in section.blocks -%}
+              <div class="sk-sc__cardi" data-cardi>
+                {%- render 'sky-showcase-icon', icon: block.settings.icon -%}
+                <div class="sk-sc__cardt">{{ block.settings.text }}</div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </sky-showcase>
+</div>
 
 {% stylesheet %}
-  sky-showcase { display: block; position: relative; height: calc(var(--steps) * 100vh); background: #000; }
-  .sk-sc__stage { position: sticky; top: 0; height: 100vh; overflow: hidden; padding: 14px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
-  .sk-sc__heading { position: absolute; left: var(--sk-gutter); top: 50%; transform: translateY(-50%); z-index: 6; max-width: 11ch; font-size: clamp(40px, 6vw, 84px); font-weight: 500; line-height: 1.12; color: #fff; pointer-events: none; transition: opacity .3s; }
-  .sk-sc__left { min-width: 0; overflow: hidden; position: relative; z-index: 3; display: flex; flex-direction: column; justify-content: space-between; padding: 22px 0 18px; border-radius: 26px; background: #fff; opacity: 0; transform: translateX(-30px); transition: opacity .5s, transform .6s cubic-bezier(.2,.7,.2,1); }
-  .sk-sc.is-split .sk-sc__left { opacity: 1; transform: none; }
-  .sk-sc__eyebrow { text-align: center; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
-  .sk-sc__list { display: grid; gap: 14px; text-align: center; padding: 0 20px; }
-  .sk-sc__list li { font-family: var(--sk-font-head); font-size: clamp(20px, 2.4vw, 32px); font-weight: 600; color: rgba(0,0,0,.4); transition: color .4s, transform .4s; transform-origin: 50% 50%; }
-  .sk-sc__list li.is-active { color: #000; transform: scale(1.12); }
-  .sk-sc__ticker { overflow: hidden; border-top: 1px solid transparent; padding-top: 10px; font-size: 12px; white-space: nowrap; }
-  .sk-sc__ticker .sk-marquee__inner { display: inline-flex; gap: 0; width: max-content; animation: sk-mq 26s linear infinite; }
-  .sk-sc__ticker span { padding-right: 36px; }
-  .sk-sc__right { position: absolute; inset: 0; z-index: 2; overflow: hidden; margin: 0; clip-path: inset(0 0 0 0 round 0); will-change: clip-path; }
-  .sk-sc__slide { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity .7s ease; }
-  .sk-sc__slide.is-active { opacity: 1; }
-  .sk-sc__slide img, .sk-sc__slide .sk-ph { width: 100%; height: 100%; object-fit: cover; }
-  .sk-sc__slide::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,calc(.32 * (1 - var(--split, 0)))); }
-  .sk-sc__glass { position: absolute; z-index: 2; left: 5%; right: 5%; bottom: 6%; display: grid; gap: 40px; min-height: 36%; align-content: space-between; padding: 22px; border-radius: 22px; color: #fff; font-size: clamp(16px, 1.7vw, 22px); line-height: 1.25; background: rgba(255,255,255,.18); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); opacity: 0; transform: translateY(20px); transition: opacity .5s .15s, transform .6s .15s; }
-  .sk-sc.is-split .is-active .sk-sc__glass { opacity: 1; transform: none; }
-  .sk-sc__left { grid-row: 1; grid-column: 1; }
-  .sk-sc__m { display: none; }
-  @media (max-width: 749px) {
-    sky-showcase { height: auto; }
-    .sk-sc__stage { display: none; }
-    .sk-sc__m { position: relative; display: block; padding: 44px 0 34px; overflow: hidden; }
-    .sk-sc__mbg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .sk-sc__m::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.28); }
-    .sk-sc__m h2 { position: relative; z-index: 2; padding: 0 24px; text-align: center; color: #fff; font-size: 32px; font-weight: 500; line-height: 1.15; }
-    .sk-sc__mrow { position: relative; z-index: 2; display: flex; gap: 12px; margin-top: 26px; padding: 0 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-    .sk-sc__mrow::-webkit-scrollbar { display: none; }
-    .sk-sc__mcard { position: relative; flex: 0 0 66%; aspect-ratio: 3 / 4; border-radius: 22px; overflow: hidden; scroll-snap-align: start; color: #fff; background: #333; }
-    .sk-sc__mcard img, .sk-sc__mcard .sk-ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .sk-sc__mt { position: absolute; top: 16px; left: 18px; z-index: 2; font-size: 14px; font-weight: 600; }
-    .sk-sc__mg { position: absolute; z-index: 2; left: 10px; right: 10px; bottom: 10px; display: grid; gap: 28px; min-height: 42%; align-content: space-between; padding: 16px; border-radius: 18px; font-size: 14px; font-weight: 600; line-height: 1.3; background: rgba(255,255,255,.2); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+  sky-showcase { display: block; position: relative; background: #000; color: #fff; }
+  .sk-sc__banner { position: relative; display: grid; overflow: hidden; background: #000; --ho: 0; }
+  .sk-sc__bg, .sk-sc__banner-in { grid-area: 1 / -1; }
+  .sk-sc__bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sk-sc__banner::after { content: ""; position: absolute; inset: 0; background: #000; opacity: var(--ho); pointer-events: none; }
+  .sk-sc__banner-in { position: relative; z-index: 1; display: flex; flex-direction: column; padding-block: 60px 80px; }
+  .sk-sc__heading { color: #fff; font-size: 37.7px; font-weight: 600; line-height: 1.2; }
+  @media (min-width: 768px) { .sk-sc__heading { font-size: 51.5px; } }
+  @media (min-width: 1025px) { .sk-sc__heading { font-size: 72px; } .sk-sc__banner-in { padding-block: 100px; } }
+
+  .sk-sc__wrap { position: relative; padding-inline: 0; }
+  .sk-sc__outer { padding-block: 0 40px; }
+
+  .sk-sc__menu { display: none; }
+  .sk-sc__card { display: none; }
+  .sk-sc__images { position: relative; }
+  .sk-sc__image-list { display: flex; gap: 10px; padding-inline: var(--sk-gutter); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .sk-sc__image-list::-webkit-scrollbar { display: none; }
+  .sk-sc__image { position: relative; flex: 0 0 42%; scroll-snap-align: start; display: block; aspect-ratio: 2 / 3; border-radius: 15px; overflow: hidden; background: #111; color: #fff; }
+  @media (min-width: 768px) { .sk-sc__image { flex-basis: calc((100% - 2 * var(--sk-gutter) - 20px) / 3); } }
+  .sk-sc__media, .sk-sc__media img, .sk-sc__media .sk-ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sk-sc__mob { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px; display: grid; gap: 10px; text-align: center; }
+  .sk-sc__mob-title { font-family: var(--sk-font-head); font-size: 20px; font-weight: 600; line-height: 1.2; text-shadow: 0 1px 10px rgba(0,0,0,.35); }
+  .sk-sc__mob .sk-sc__cardi { display: flex; flex-direction: column; justify-content: space-between; gap: 20px; padding: 20px; text-align: left; border-radius: 15px; background: rgba(103,103,103,.3); -webkit-backdrop-filter: blur(15px); backdrop-filter: blur(15px); }
+  .sk-sc__mob .sk-sc__ico { width: 30px; }
+  .sk-sc__cardt { font-size: 14px; line-height: 1.3; }
+  @media (min-width: 768px) { .sk-sc__cardt { font-size: 16px; line-height: 1.5; } }
+  .sk-sc__ico { display: block; width: 60px; height: 60px; }
+  .sk-sc__ico img, .sk-sc__ico svg { width: 100%; height: 100%; object-fit: contain; aspect-ratio: 1; }
+
+  @media (min-width: 1025px) {
+    sky-showcase { height: calc((var(--n) + 1.5) * 100vh); height: calc((var(--n) + 1.5) * 100dvh); }
+    .sk-sc__banner { position: sticky; top: 0; height: 100vh; height: 100dvh; }
+    .sk-sc__wrap { position: sticky; top: 0; height: 100vh; height: 100dvh; padding-inline: var(--sk-gutter); }
+    .sk-sc__outer { height: 100%; display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; padding-block: 70px; }
+    .sk-sc__menu { display: grid; grid-template-rows: auto 1fr auto; padding-block: 60px 24px; border-radius: 30px; background: #fff; color: #000; min-height: 0; }
+    .sk-sc__menu-title { padding-inline: 30px; text-align: center; font-family: var(--sk-font-head); font-size: 16px; font-weight: 600; line-height: 1.5; text-transform: uppercase; }
+    .sk-sc__list { margin-block: auto; max-width: 100%; overflow: hidden; height: 168px; padding: 56px 30px 0; }
+    .sk-sc__list-in { display: flex; flex-direction: column; text-align: center; transition: transform .6s cubic-bezier(.25,1,.5,1); will-change: transform; }
+    .sk-sc__item { display: block; padding-block: 10px; font-family: var(--sk-font-head); font-size: 30px; font-weight: 600; line-height: 1.2; white-space: nowrap; color: #000; opacity: .5; transition: opacity .4s; }
+    .sk-sc__item.is-active { opacity: 1; }
+    .sk-sc__ticker { overflow: hidden; }
+    .sk-sc__ticker-in { display: flex; width: max-content; animation: sk-sc-mq 24s linear infinite; }
+    .sk-sc__ticker-node { display: flex; flex: 0 0 auto; }
+    .sk-sc__ticker-item { position: relative; padding-inline: 25px; font-size: 14px; line-height: 1.5; white-space: nowrap; }
+    .sk-sc__ticker-item::before { content: ""; position: absolute; left: 0; top: 50%; width: 5px; height: 5px; border-radius: 50%; background: #000; transform: translateY(-50%); }
+    @keyframes sk-sc-mq { to { transform: translateX(-50%); } }
+    .sk-sc__images { height: 100%; border-radius: 30px; overflow: hidden; min-height: 0; }
+    .sk-sc__image-list { display: block; position: absolute; inset: 0; padding: 0; overflow: hidden; }
+    .sk-sc__image { position: absolute; inset: 0; flex: none; aspect-ratio: auto; border-radius: 0; clip-path: inset(100% 0 0); backface-visibility: hidden; transform: translateZ(0); }
+    .sk-sc__image:first-child { clip-path: inset(0 0 0); }
+    .sk-sc__media img, .sk-sc__media .sk-ph { transform: translate3d(0, 8px, 0); will-change: transform; }
+    .sk-sc__image:first-child .sk-sc__media img { transform: none; }
+    .sk-sc__mob { display: none; }
+    .sk-sc__card { display: block; position: absolute; z-index: 3; right: 20px; bottom: 20px; width: 100%; max-width: calc(100% - 40px); height: var(--card-h, 268px); overflow: hidden; border-radius: 30px; background: rgba(103,103,103,.3); -webkit-backdrop-filter: blur(15px); backdrop-filter: blur(15px); color: #fff; transition: height .5s cubic-bezier(.25,1,.5,1); }
+    .sk-sc__card-in { transition: transform .6s cubic-bezier(.25,1,.5,1); will-change: transform; }
+    .sk-sc__card .sk-sc__cardi { display: flex; flex-direction: column; justify-content: space-between; gap: 90px; padding: 30px; min-height: 250px; }
+    .sk-sc__card .sk-sc__cardt { font-size: 24px; line-height: 1.2; font-weight: 400; }
   }
+  @media (min-width: 1200px) {
+    .sk-sc__outer { grid-template-columns: 1fr 1.5fr; }
+    .sk-sc__card { max-width: 500px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .sk-sc__ticker-in { animation: none; } }
 {% endstylesheet %}
 
 {% javascript %}
   class SkyShowcase extends HTMLElement {
     connectedCallback() {
       if (this.ready) return; this.ready = true;
-      var n = +this.dataset.count || 1, self = this;
-      var right = this.querySelector('[data-right]'), heading = this.querySelector('.sk-sc__heading');
-      var items = this.querySelectorAll('.sk-sc__list li'), slides = this.querySelectorAll('.sk-sc__slide');
-      var last = -1;
-      var run = function () {
-        var p = Sky.pinProgress(self);
-        var split = Math.min(1, Math.max(0, (p - 0.05) / 0.12));      /* image shrinks into the right card */
-        var wide = window.innerWidth > 749, e = split;
-        var top = wide ? 14 * e + 'px' : 'calc(38% * ' + e + ' + ' + 14 * e + 'px)';
-        var left = wide ? 'calc(50% * ' + e + ' + ' + 7 * e + 'px)' : 14 * e + 'px';
-        right.style.clipPath = 'inset(' + top + ' ' + 14 * e + 'px ' + 14 * e + 'px ' + left + ' round ' + 26 * e + 'px)';
-        self.style.setProperty('--split', split);
-        heading.style.opacity = split > 0.6 ? 0 : 1;
-        self.classList.toggle('is-split', split > 0.85);
-        var idx = Math.min(n - 1, Math.max(0, Math.floor((p - 0.22) / (0.78 / n))));
-        if (idx !== last) {
-          last = idx;
-          items.forEach(function (li, i) { li.classList.toggle('is-active', i === idx); });
-          slides.forEach(function (sl, i) { sl.classList.toggle('is-active', i === idx); });
+      var self = this;
+      this.banner = this.querySelector('[data-banner]');
+      this.wrap = this.querySelector('[data-wrap]');
+      this.images = [].slice.call(this.querySelectorAll('[data-image]'));
+      this.items = [].slice.call(this.querySelectorAll('[data-item]'));
+      this.cardis = [].slice.call(this.querySelectorAll('[data-cardi]'));
+      this.listIn = this.querySelector('[data-list-in]');
+      this.card = this.querySelector('[data-card]');
+      this.cardIn = this.querySelector('[data-card-in]');
+      this.n = this.images.length;
+      this.active = -1;
+      this.mq = window.matchMedia('(min-width: 1025px)');
+      this.measure = function () {
+        self.ih = self.items.map(function (e) { return e.offsetHeight; });
+        self.ch = self.cardis.map(function (e) { return e.offsetHeight; });
+        self.start = self.getBoundingClientRect().top + window.scrollY + self.banner.offsetHeight;
+        self.active = -1;
+        self.run();
+      };
+      this.run = function () {
+        if (!self.mq.matches) { self.reset(); return; }
+        var vh = window.innerHeight, total = vh * self.n + vh * .1;
+        var scrolled = Math.max(0, Math.min(window.scrollY - self.start, total));
+        /* banner darkens as the cards slide over it */
+        var fs = self.start - vh * .6, fr = self.start - vh * .1 - fs, op = 0;
+        if (self.start > 0 && fr > 0) op = Math.min(1, Math.max(0, (window.scrollY - fs) / fr));
+        self.banner.style.setProperty('--ho', op);
+        for (var i = 1; i < self.n; i++) {
+          var a = vh * (i - 1), b = vh * i, reveal = vh, move = 8;
+          if (scrolled >= a && scrolled <= b) { var p = (scrolled - a) / vh; reveal = vh * (1 - p); move = 8 - p * 8; }
+          else if (scrolled > b) { reveal = 0; move = 0; }
+          self.images[i].style.clipPath = 'inset(' + reveal + 'px 0 0)';
+          var im = self.images[i].querySelector('img, svg');
+          if (im) im.style.transform = 'translate3d(0,' + move + 'px,0)';
+        }
+        var idx = Math.min(Math.floor(scrolled / vh), self.n - 1);
+        if (idx !== self.active) {
+          self.active = idx;
+          self.items.forEach(function (e, k) { e.classList.toggle('is-active', k === idx); });
+          var ty = 0, cy = 0;
+          for (var j = 0; j < idx; j++) { ty += self.ih[j] || 0; cy += self.ch[j] || 0; }
+          if (self.listIn) self.listIn.style.transform = 'translate3d(0,-' + ty + 'px,0)';
+          if (self.cardIn) self.cardIn.style.transform = 'translate3d(0,-' + cy + 'px,0)';
+          if (self.card && self.ch[idx]) self.card.style.setProperty('--card-h', self.ch[idx] + 'px');
         }
       };
-      Sky.onScroll(run);
+      this.reset = function () {
+        self.images.forEach(function (e) { e.style.clipPath = ''; var im = e.querySelector('img, svg'); if (im) im.style.transform = ''; });
+        if (self.listIn) self.listIn.style.transform = '';
+        if (self.cardIn) self.cardIn.style.transform = '';
+        self.active = -1;
+      };
+      var rt;
+      window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(self.measure, 150); });
+      window.addEventListener('load', self.measure);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(self.measure);
+      this.measure();
+      (window.Sky && Sky.onScroll ? Sky.onScroll : function (f) { window.addEventListener('scroll', f, { passive: true }); f(); })(self.run);
     }
   }
   if (!customElements.get('sky-showcase')) customElements.define('sky-showcase', SkyShowcase);
@@ -124,9 +218,15 @@
 {
   "name": "Pinned collections",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Dress Up Your Beautiful Moments" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+    { "type": "header", "content": "Banner" },
+    { "type": "image_picker", "id": "bg_image", "label": "Banner background image (optional)" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Dress Up Your\nBeautiful Moments" },
+    { "type": "header", "content": "Collections card" },
     { "type": "text", "id": "eyebrow", "label": "Small title on card", "default": "Our Collections" },
-    { "type": "text", "id": "ticker", "label": "Running text at the bottom", "default": "Designed to Stand Out  •  Elevate Your Wardrobe  •  Timeless Fits, Modern Style." }
+    { "type": "text", "id": "ticker", "label": "Running text at the bottom", "info": "Separate phrases with the • symbol.", "default": "Designed to Stand Out • Elevate Your Wardrobe • Timeless Fits. Modern Style." }
   ],
   "blocks": [
     {
@@ -136,11 +236,12 @@
         { "type": "text", "id": "title", "label": "Name (optional)", "default": "Jackets" },
         { "type": "url", "id": "link", "label": "Link (optional)" },
         { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "icon", "label": "Icon on the text card (optional, SVG/PNG, white works best)" },
         { "type": "textarea", "id": "text", "label": "Text on image card", "default": "Stylish jackets crafted for warmth, comfort, and everyday confidence." }
       ]
     }
   ],
   "max_blocks": 6,
-  "presets": [{ "name": "Pinned collections", "blocks": [{ "type": "collection" }, { "type": "collection", "settings": { "title": "Sports Wear", "text": "Classic stripes and polished knits made for everyday comfort and easy layering." } }, { "type": "collection", "settings": { "title": "Relaxed Fit", "text": "Easy silhouettes with soft fabrics for all-day wear." } }] }]
+  "presets": [{ "name": "Pinned collections", "blocks": [{ "type": "collection" }, { "type": "collection", "settings": { "title": "Sports Wear", "text": "Classic stripes and polished knits made for everyday comfort and easy layering." } }, { "type": "collection", "settings": { "title": "Relaxed Fit", "text": "Relaxed silhouettes offering effortless comfort for every casual occasion." } }] }]
 }
 {% endschema %}

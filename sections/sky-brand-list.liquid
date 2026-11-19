@@ -1,5 +1,5 @@
 {%- assign s = section.settings -%}
-<section class="sk-br" style="--br-bg: {{ s.bg }}; --br-fg: {{ s.fg }};">
+<section class="sk-br" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px; --br-bg: {{ s.bg }}; --br-fg: {{ s.fg }};">
   <div class="sk-container">
     <h2 class="sk-br__title">{{ s.heading }}</h2>
     <ul class="sk-br__list">
@@ -16,7 +16,7 @@
 </section>
 
 {% stylesheet %}
-  .sk-br { background: var(--br-bg, #000); color: var(--br-fg, #fff); padding: 28px 0 40px; }
+  .sk-br { background: var(--br-bg, #000); color: var(--br-fg, #fff); padding: var(--sk-pt, 28px) 0 var(--sk-pb, 40px); }
   .sk-br__title { color: var(--br-fg, #fff); font-size: 22px; font-weight: 500; padding-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,.14); }
   .sk-br__list { display: flex; flex-wrap: wrap; gap: 14px 34px; padding: 30px 0; border-bottom: 1px solid rgba(255,255,255,.14); }
   .sk-br__list a { display: inline-flex; align-items: flex-end; gap: 10px; transition: opacity .3s; }
@@ -37,6 +37,9 @@
 {
   "name": "Shop by brand",
   "settings": [
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Shop By Brand" },
     { "type": "color", "id": "bg", "label": "Background", "default": "#000000" },
     { "type": "color", "id": "fg", "label": "Text", "default": "#ffffff" }

@@ -1,5 +1,5 @@
 {%- assign s = section.settings -%}
-<sky-scatter class="sk-ig" style="--ig-bg: {{ s.bg }}; --ig-fg: {{ s.fg }};" data-speed="{{ s.speed }}" data-pause="{{ s.pause_on_hover }}" data-gap="{{ s.gap }}">
+<sky-scatter class="sk-ig" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px; --ig-bg: {{ s.bg }}; --ig-fg: {{ s.fg }};" data-speed="{{ s.speed }}" data-pause="{{ s.pause_on_hover }}" data-gap="{{ s.gap }}">
   <div class="sk-container sk-ig__head">
     <h2 class="sk-ig__title" data-sk-words>{{ s.heading }}</h2>
     <p class="sk-ig__text" data-sk-reveal>{{ s.text }}</p>
@@ -30,7 +30,7 @@
 </sky-scatter>
 
 {% stylesheet %}
-  sky-scatter { display: block; background: var(--ig-bg, #000); color: var(--ig-fg, #fff); overflow: hidden; padding: 70px 0 80px; }
+  sky-scatter { display: block; background: var(--ig-bg, #000); color: var(--ig-fg, #fff); overflow: hidden; padding: var(--sk-pt, 70px) 0 var(--sk-pb, 80px); }
   .sk-ig__head { display: grid; justify-items: center; text-align: center; gap: 16px; }
   .sk-ig__title { color: var(--ig-fg, #fff); font-size: clamp(34px, 5vw, 64px); font-weight: 500; }
   .sk-ig__text { max-width: 340px; font-size: 14px; }
@@ -42,7 +42,7 @@
   .sk-ig__prods a { width: 32px; height: 32px; margin-right: -8px; border-radius: 50%; overflow: hidden; border: 2px solid #fff; background: #fff; }
   .sk-ig__prods img { width: 100%; height: 100%; object-fit: cover; }
   .sk-ig__open { position: absolute; inset: 0 0 48px 0; }
-  @media (max-width: 749px) { sky-scatter { padding: 44px 0 50px; } }
+  @media (max-width: 749px) { sky-scatter { padding: min(var(--sk-pt, 70px), 48px) 0 min(var(--sk-pb, 80px), 56px); } }
 {% endstylesheet %}
 
 {% javascript %}
@@ -146,6 +146,9 @@
 {
   "name": "Instagram / UGC",
   "settings": [
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 70 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Discover More on Instagram" },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Discover trending outfits and stylish picks loved by our fashion community." },
     { "type": "range", "id": "speed", "label": "Slide speed", "min": 1, "max": 10, "step": 1, "default": 3 },

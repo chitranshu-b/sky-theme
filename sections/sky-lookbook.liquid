@@ -1,5 +1,6 @@
 {%- assign s = section.settings -%}
 {%- assign n = section.blocks.size -%}
+<div class="sk-space" style="padding-top: {{ section.settings.pt }}px; padding-bottom: {{ section.settings.pb }}px;">
 <sky-lookbook class="sk-lb" style="--lb-steps: {{ n | times: 0.7 | plus: 1.2 }}; --lb-bg: {{ s.bg }};" data-count="{{ n }}">
   <div class="sk-lb__stage">
     <div class="sk-lb__main">
@@ -35,6 +36,7 @@
     </aside>
   </div>
 </sky-lookbook>
+</div>
 
 {% stylesheet %}
   sky-lookbook { display: block; position: relative; height: calc(var(--lb-steps) * 100vh); background: var(--lb-bg, #dfe5ea); }
@@ -91,6 +93,9 @@
 {
   "name": "Lookbook (pinned scroll)",
   "settings": [
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Spring Summer 2026" },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Every piece of clothing is made to bring effortless style to everyday moments. From relaxed essentials to standout layers, our collections are designed for modern living." },
     { "type": "color", "id": "bg", "label": "Background", "default": "#dfe5ea" }

@@ -6,22 +6,28 @@
       {%- if s.link_label != blank -%}<a href="{{ s.link_url | default: routes.collections_url }}" class="sk-link">{{ s.link_label }}</a>{%- endif -%}
     </header>
 
-    <div class="sk-mos__grid">
+    {%- assign row_open = '<div class="sk-mos__row"><div class="sk-mos__items">' -%}
+    {%- assign row_close = '</div></div>' -%}
+    <div class="sk-mos__rows" style="--sk-ts: {{ s.text_size }}px;">
       {%- for block in section.blocks -%}
+        {%- if forloop.first or block.settings.new_row -%}
+          {%- unless forloop.first -%}{{- row_close -}}{%- endunless -%}
+          {{- row_open -}}
+        {%- endif -%}
         {%- case block.type -%}
           {%- when 'collection' -%}
             {%- assign col = block.settings.collection -%}
             {%- assign img = block.settings.image | default: col.featured_image -%}
-            <a href="{{ col.url | default: '#' }}" class="sk-mos__tile" style="--span: {{ block.settings.span }}; --ratio: {{ block.settings.ratio }};" data-sk-reveal {{ block.shopify_attributes }}>
+            <a href="{{ col.url | default: '#' }}" class="sk-mos__tile" data-sk-reveal {{ block.shopify_attributes }}>
               {%- if img -%}
-                <img src="{{ img | image_url: width: 700 }}" alt="{{ img.alt | default: col.title | escape }}" width="700" height="{{ 700 | divided_by: img.aspect_ratio | round }}" loading="lazy">
+                <img src="{{ img | image_url: width: 900 }}" alt="{{ img.alt | default: col.title | escape }}" width="900" height="{{ 900 | divided_by: img.aspect_ratio | round }}" loading="lazy">
               {%- else -%}
                 {{ 'collection-1' | placeholder_svg_tag: 'sk-ph' }}
               {%- endif -%}
               <span class="sk-mos__label">{{ block.settings.title | default: col.title }}</span>
             </a>
           {%- when 'video_text' -%}
-            <div class="sk-mos__tile sk-mos__vt" style="--span: {{ block.settings.span }}; --ratio: {{ block.settings.ratio }};" data-sk-reveal {{ block.shopify_attributes }}>
+            <div class="sk-mos__vt" style="clip-path: url(#cp-{{ block.id }});" data-sk-reveal {{ block.shopify_attributes }}>
               {%- if block.settings.video != blank -%}
                 {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, image_size: '800x' }}
               {%- elsif block.settings.image != blank -%}
@@ -29,34 +35,43 @@
               {%- else -%}
                 <span class="sk-vt-fallback"></span>
               {%- endif -%}
-              <span class="sk-mos__mask" aria-label="{{ block.settings.text | escape }}"><b>{{ block.settings.text }}</b></span>
+              <span class="sk-mos__word" aria-label="{{ block.settings.text | escape }}">{{ block.settings.text }}</span>
+              <svg class="sk-mos__defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><clipPath id="cp-{{ block.id }}" clipPathUnits="userSpaceOnUse"><text class="sk-mos__cpt" x="0" y="0.86em">{{ block.settings.text | upcase | escape }}</text></clipPath></defs></svg>
             </div>
         {%- endcase -%}
+        {%- if forloop.last -%}{{- row_close -}}{%- endif -%}
       {%- endfor -%}
     </div>
   </div>
 </section>
 
 {% stylesheet %}
+  .sk-mos__head .sk-h2 { font-size: 54px; }
+  @media (max-width: 1024px) { .sk-mos__head .sk-h2 { font-size: 38.6px; } }
+  @media (max-width: 767px) { .sk-mos__head .sk-h2 { font-size: 28.3px; } }
   @media (max-width: 749px) { .sk-mos.sk-hide-m { display: none; } }
   .sk-mos__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
-  .sk-mos__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; align-items: end; }
-  .sk-mos__tile { position: relative; grid-column: span var(--span, 3); aspect-ratio: var(--ratio, 0.85); overflow: hidden; border-radius: 18px; background: #ddd; transition-property: opacity, transform; }
+  .sk-mos__row + .sk-mos__row { margin-top: 13px; }
+  .sk-mos__items { display: flex; align-items: center; column-gap: 12px; }
+  .sk-mos__tile { position: relative; display: block; flex: 1 1 0%; min-width: 100px; height: calc(var(--sk-ts, 200px) * .8); min-height: 150px; overflow: hidden; border-radius: 12px; background: #ddd; transition-property: opacity, transform; }
   .sk-mos__tile img, .sk-mos__tile video, .sk-mos__tile .sk-ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
   a.sk-mos__tile:hover img { transform: scale(1.07); }
   .sk-mos__label { position: absolute; left: 12px; bottom: 12px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.85); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 13px; font-weight: 500; opacity: 0; transform: translateY(8px); transition: .35s; }
   a.sk-mos__tile:hover .sk-mos__label { opacity: 1; transform: none; }
-  .sk-mos__vt { background: #fff; border-radius: 0; isolation: isolate; }
-  .sk-mos__vt video, .sk-mos__vt img { z-index: 0; }
-  .sk-vt-fallback { position: absolute; inset: 0; background: linear-gradient(120deg, #6a1b2c, #f08a4b, #3b6c7a); }
-  /* white layer + black text with "screen" blend = the video is visible only inside the letters */
-  .sk-mos__mask { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; background: #fff; mix-blend-mode: screen; }
-  .sk-mos__mask b { font-family: var(--sk-font-head); font-weight: 700; font-size: clamp(60px, 10vw, 150px); line-height: 1; letter-spacing: -.02em; color: #000; text-transform: uppercase; }
-  .sk-mos__vt { background: transparent; }
-  @media (max-width: 749px) {
-    .sk-mos__grid { grid-template-columns: repeat(6, 1fr); }
-    .sk-mos__tile { grid-column: span 3; }
-    .sk-mos__vt { grid-column: span 6; }
+  /* the word sets the width; the video is clipped to the letters, so the page background shows around them */
+  .sk-mos__vt { position: relative; flex: 0 1 auto; }
+  .sk-mos__vt video, .sk-mos__vt img, .sk-vt-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sk-vt-fallback { background: linear-gradient(120deg, #6a1b2c, #f08a4b, #3b6c7a); }
+  .sk-mos__word { position: relative; display: block; font-family: var(--sk-font-head); font-weight: 700; font-size: calc(var(--sk-ts, 200px) * .8); line-height: 1; text-transform: uppercase; white-space: nowrap; color: transparent; }
+  .sk-mos__defs { position: absolute; width: 0; height: 0; }
+  .sk-mos__cpt { font-family: var(--sk-font-head); font-weight: 700; font-size: calc(var(--sk-ts, 200px) * .8); }
+  @media (max-width: 767px) {
+    .sk-mos__row { overflow: auto hidden; margin-inline-end: -16px; scrollbar-width: none; }
+    .sk-mos__row::-webkit-scrollbar { display: none; }
+    .sk-mos__items { width: 1200px; padding-inline-end: 16px; }
+    .sk-mos__tile { min-height: 90px; }
+    .sk-mos__word, .sk-mos__cpt { font-size: calc(var(--sk-ts, 200px) * .5); }
+    .sk-mos__tile { height: calc(var(--sk-ts, 200px) * .5); }
   }
 {% endstylesheet %}
 
@@ -65,35 +80,108 @@
   "name": "Collection mosaic",
   "settings": [
     { "type": "checkbox", "id": "hide_mobile", "label": "Hide on phones (the Mobile categories section is shown there instead)", "default": true },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Discover Signature Collections" },
-    { "type": "text", "id": "link_label", "label": "Link label", "default": "Explore All Collections" },
-    { "type": "url", "id": "link_url", "label": "Link" },
-    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
-    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Discover Signature Collections"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link label",
+      "default": "Explore All Collections"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Row height / word size",
+      "min": 100,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
   ],
   "blocks": [
     {
-      "type": "collection", "name": "Collection tile",
+      "type": "collection",
+      "name": "Collection tile",
       "settings": [
-        { "type": "collection", "id": "collection", "label": "Collection" },
-        { "type": "image_picker", "id": "image", "label": "Image (optional, otherwise collection image)" },
-        { "type": "text", "id": "title", "label": "Label (optional)" },
-        { "type": "range", "id": "span", "label": "Width (of 12 columns)", "min": 2, "max": 6, "step": 1, "default": 2 },
-        { "type": "select", "id": "ratio", "label": "Shape", "default": "0.85", "options": [
-          { "value": "0.7", "label": "Tall" }, { "value": "0.85", "label": "Portrait" }, { "value": "1", "label": "Square" }, { "value": "1.2", "label": "Landscape" }
-        ] }
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (optional, otherwise collection image)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_row",
+          "label": "Start a new row here",
+          "default": false
+        }
       ]
     },
     {
-      "type": "video_text", "name": "Video inside text",
+      "type": "video_text",
+      "name": "Video inside text",
       "settings": [
-        { "type": "text", "id": "text", "label": "Word", "default": "Drop" },
-        { "type": "video", "id": "video", "label": "Video (shows through the letters)" },
-        { "type": "image_picker", "id": "image", "label": "Fallback image" },
-        { "type": "range", "id": "span", "label": "Width (of 12 columns)", "min": 3, "max": 8, "step": 1, "default": 4 },
-        { "type": "select", "id": "ratio", "label": "Shape", "default": "1.5", "options": [
-          { "value": "1", "label": "Square" }, { "value": "1.2", "label": "Landscape" }, { "value": "1.5", "label": "Wide" }
-        ] }
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Word",
+          "default": "Drop"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (shows through the letters)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Fallback image"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_row",
+          "label": "Start a new row here",
+          "default": false
+        }
       ]
     }
   ],
@@ -102,15 +190,50 @@
     {
       "name": "Collection mosaic",
       "blocks": [
-        { "type": "collection", "settings": { "span": 2, "ratio": "0.85" } },
-        { "type": "collection", "settings": { "span": 2, "ratio": "1" } },
-        { "type": "collection", "settings": { "span": 2, "ratio": "0.85" } },
-        { "type": "collection", "settings": { "span": 3, "ratio": "1" } },
-        { "type": "collection", "settings": { "span": 3, "ratio": "0.85" } },
-        { "type": "collection", "settings": { "span": 2, "ratio": "1" } },
-        { "type": "collection", "settings": { "span": 2, "ratio": "0.85" } },
-        { "type": "video_text", "settings": { "span": 5 } },
-        { "type": "collection", "settings": { "span": 3, "ratio": "1" } }
+        {
+          "type": "collection",
+          "settings": {
+            "new_row": true
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {}
+        },
+        {
+          "type": "collection",
+          "settings": {}
+        },
+        {
+          "type": "collection",
+          "settings": {}
+        },
+        {
+          "type": "collection",
+          "settings": {}
+        },
+        {
+          "type": "collection",
+          "settings": {}
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "new_row": true
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {}
+        },
+        {
+          "type": "video_text",
+          "settings": {}
+        },
+        {
+          "type": "collection",
+          "settings": {}
+        }
       ]
     }
   ]

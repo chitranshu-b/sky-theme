@@ -27,32 +27,54 @@
 </sky-tabs>
 
 {% stylesheet %}
-  .sk-pt__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 28px; }
-  .sk-pt__tabs { display: flex; flex-wrap: wrap; gap: 8px; }
-  .sk-pt__tab { height: 40px; padding: 0 20px; border: 1px solid var(--sk-line); border-radius: 999px; background: #fff; font-size: 14px; font-weight: 500; transition: background .25s, color .25s; }
-  .sk-pt__tab.is-active { background: #000; color: #fff; border-color: #000; }
-  .sk-pt__panel { display: none; }
-  .sk-pt__panel.is-active { display: block; animation: sk-fade .5s ease; }
-  @keyframes sk-fade { from { opacity: 0; transform: translateY(14px); } }
-  .sk-pt__grid { display: grid; grid-template-columns: repeat(var(--cols, 4), 1fr); border-top: 1px solid var(--sk-line); border-bottom: 1px solid var(--sk-line); }
-  .sk-pt__grid li { border-bottom: 1px solid var(--sk-line); min-width: 0; }
-  @media (max-width: 989px) { .sk-pt__grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 599px) { .sk-pt__grid { grid-template-columns: repeat(2, 1fr); } }
+  .sk-pt__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 20px; }
+  .sk-pt__head .sk-h2 { font-size: 42px; }
+  @media (max-width: 1024px) { .sk-pt__head .sk-h2 { font-size: 30px; } }
+  @media (max-width: 767px) { .sk-pt__head .sk-h2 { font-size: 22px; } }
+  .sk-pt__tabs { display: flex; flex-wrap: wrap; }
+  .sk-pt__tab { min-width: 100px; padding: 8px 20px; margin-right: 5px; border: .8px solid #e3e3e4; border-radius: 30px; background: #fff; color: #202020; font-family: var(--sk-font-head); font-size: 16px; font-weight: 400; line-height: 24px; letter-spacing: -.4px; cursor: pointer; transition: background .5s cubic-bezier(.3,1,.3,1), color .5s cubic-bezier(.3,1,.3,1), border-color .5s cubic-bezier(.3,1,.3,1); }
+  .sk-pt__tab:last-child { margin-right: 0; }
+  .sk-pt__tab.is-active { background: #202020; color: #fff; }
+  .sk-pt__panel { display: none; overflow: hidden; }
+  .sk-pt__panel.is-active { display: block; }
+  .sk-pt__grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 768px) { .sk-pt__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1200px) { .sk-pt__grid { grid-template-columns: repeat(var(--cols, 4), 1fr); } }
+  @media (min-width: 1500px) { .sk-pt__grid { grid-template-columns: repeat(5, 1fr); } }
+  .sk-pt__grid li { min-width: 0; border: .8px solid #e3e3e4; margin: 0 0 -1px -1px; opacity: 0; transform: translateY(3.5rem); transition: opacity .6s cubic-bezier(.3,1,.3,1) var(--d, 0s), transform .6s cubic-bezier(.3,1,.3,1) var(--d, 0s); }
+  .sk-pt__grid li.is-in { opacity: 1; transform: none; }
+  .sk-pt .sk-card { border-right: 0; }
+  .sk-pt .sk-card__info { padding-inline: 20px; }
   .sk-pt__more { display: flex; justify-content: center; margin-top: 28px; }
+  @media (prefers-reduced-motion: reduce) { .sk-pt__grid li { opacity: 1; transform: none; transition: none; } }
 {% endstylesheet %}
 
 {% javascript %}
   class SkyTabs extends HTMLElement {
     connectedCallback() {
       if (this.ready) return; this.ready = true;
-      var tabs = this.querySelectorAll('[data-tab]'), panels = this.querySelectorAll('[data-panel]');
+      var self = this, tabs = this.querySelectorAll('[data-tab]'), panels = this.querySelectorAll('[data-panel]');
+      var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -6% 0px', threshold: 0.05 }) : null;
+      function arm(panel) {
+        var cols = Math.max(1, getComputedStyle(panel.querySelector('.sk-pt__grid')).gridTemplateColumns.split(' ').length);
+        panel.querySelectorAll('.sk-pt__grid > li').forEach(function (li, i) {
+          li.classList.remove('is-in');
+          li.style.setProperty('--d', ((i % cols) * 0.08) + 's');
+          if (io) io.observe(li); else li.classList.add('is-in');
+        });
+      }
       tabs.forEach(function (t) {
         t.addEventListener('click', function () {
-          var i = t.dataset.tab;
+          var i = t.dataset.tab, shown;
           tabs.forEach(function (x) { var on = x === t; x.classList.toggle('is-active', on); x.setAttribute('aria-selected', on); });
-          panels.forEach(function (p) { p.classList.toggle('is-active', p.dataset.panel === i); });
+          panels.forEach(function (p) { var on = p.dataset.panel === i; p.classList.toggle('is-active', on); if (on) shown = p; });
+          if (shown) requestAnimationFrame(function () { arm(shown); });
         });
       });
+      var first = this.querySelector('.sk-pt__panel.is-active');
+      if (first) arm(first);
     }
   }
   if (!customElements.get('sky-tabs')) customElements.define('sky-tabs', SkyTabs);
@@ -64,10 +86,10 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Fresh picks just dropped" },
     { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 3, "max": 5, "step": 1, "default": 4 },
-    { "type": "range", "id": "limit", "label": "Products per tab", "min": 4, "max": 20, "step": 4, "default": 8 },
-    { "type": "checkbox", "id": "show_view_all", "label": "Show 'View all' button", "default": true },
-    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
-    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+    { "type": "range", "id": "limit", "label": "Products per tab", "min": 4, "max": 20, "step": 4, "default": 12 },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show 'View all' button", "default": false },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 30 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 }
   ],
   "blocks": [
     {

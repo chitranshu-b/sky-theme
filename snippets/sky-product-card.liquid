@@ -7,6 +7,15 @@
   {%- assign oname = o.name | downcase -%}
   {%- if oname == 'color' or oname == 'colour' or oname == 'colors' -%}{%- assign color_opt = o -%}{%- endif -%}
 {%- endfor -%}
+{%- capture sw_json -%}
+  {%- if color_opt -%}{%- for v in color_opt.values -%}
+    {%- if v.swatch.color -%}{%- assign sw = v.swatch.color -%}{%- else -%}{%- assign sw = v.name | handleize | split: '-' | last -%}{%- endif -%}
+    "{{ v.name | escape }}":"{{ sw }}"{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}{%- endif -%}
+{%- endcapture -%}
+{%- capture stock_json -%}
+  {%- for v in p.variants -%}"{{ v.id }}":{% if v.inventory_management == 'shopify' %}{{ v.inventory_quantity }}{% else %}-1{% endif %}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}
+{%- endcapture -%}
 <article class="sk-card">
   <a href="{{ p.url }}" class="sk-card__media" aria-label="{{ p.title | escape }}">
     {%- if badge != blank -%}<span class="sk-card__badge">{{ badge }}</span>{%- endif -%}
@@ -24,20 +33,23 @@
         <span class="sk-card__dots">
           {%- for v in color_opt.values limit: 6 -%}
             {%- if v.swatch.color -%}{%- assign sw = v.swatch.color -%}{%- else -%}{%- assign sw = v.name | handleize | split: '-' | last -%}{%- endif -%}
-            <span class="sk-card__dot" style="background: {{ sw }}" title="{{ v.name | escape }}"></span>
+            {%- assign opt_key = 'option' | append: color_opt.position -%}
+            {%- assign sw_variant = p.variants | where: opt_key, v.name | first -%}
+            {%- assign sw_img = sw_variant.featured_image | default: p.featured_image -%}
+            <span class="sk-card__dot" style="background: {{ sw }}" title="{{ v.name | escape }}">
+              {%- if sw_img -%}<span class="sk-card__thumb"><img src="{{ sw_img | image_url: width: 150 }}" alt="{{ p.title | escape }} - {{ v.name | escape }}" width="62" height="62" loading="lazy"></span>{%- endif -%}
+            </span>
           {%- endfor -%}
         </span>
       </span>
     {%- endif -%}
   </a>
+  <button type="button" class="sk-circle sk-card__qv" data-qv="{{ p.handle }}" data-swatches='{ {{ sw_json | strip_newlines }} }' data-stock='{ {{ stock_json | strip_newlines }} }' aria-label="Quick view: {{ p.title | escape }}"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8.66701C4.4 3.33365 11.6 3.33365 14 8.66701" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.00003 11.333C7.73736 11.333 7.47729 11.2812 7.23463 11.1808C6.99198 11.0803 6.7715 10.9329 6.58578 10.7472C6.40007 10.5615 6.25275 10.341 6.15224 10.0984C6.05174 9.85573 6 9.59565 6 9.33301C6 9.07037 6.05174 8.81029 6.15224 8.56765C6.25275 8.32501 6.40007 8.10453 6.58578 7.9188C6.7715 7.73308 6.99198 7.58576 7.23463 7.48525C7.47729 7.38474 7.73736 7.33301 8.00003 7.33301C8.53043 7.33301 9.03915 7.54373 9.41419 7.9188C9.78931 8.29389 10 8.80261 10 9.33301C10 9.86341 9.78931 10.3721 9.41419 10.7472C9.03915 11.1223 8.53043 11.333 8.00003 11.333Z" fill="currentColor" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <div class="sk-card__info">
     <a href="{{ p.url }}" class="sk-card__title">{{ p.title }}</a>
     <span class="sk-card__price">
       {{ p.price | money }}
       {%- if p.compare_at_price > p.price %}<s>{{ p.compare_at_price | money }}</s>{% endif -%}
     </span>
-    {%- if p.has_only_default_variant == false -%}
-      <a href="{{ p.url }}" class="sk-card__choose">Choose Options</a>
-    {%- endif -%}
   </div>
 </article>

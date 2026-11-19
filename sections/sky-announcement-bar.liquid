@@ -35,16 +35,16 @@
 </div>
 
 {% stylesheet %}
-  .sk-ann { background: var(--ann-bg); color: var(--ann-fg); font-size: 13px; }
-  .sk-ann__inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; min-height: 43px; padding: 6px 20px; }
-  .sk-ann__menu { display: flex; gap: 22px; font-weight: 500; }
-  .sk-ann__msg { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
-  .sk-ann__cta { text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
-  .sk-ann__loc { display: flex; justify-content: flex-end; gap: 12px; }
+  .sk-ann { background: var(--ann-bg); color: var(--ann-fg); font-size: 12px; line-height: 1.35; border-bottom: .8px solid rgba(255,255,255,.16); padding: 6px 0; }
+  .sk-ann__inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; min-height: 24px; padding: 0 25px; }
+  .sk-ann__menu { display: flex; gap: 20px; font-weight: 400; }
+  .sk-ann__msg { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; text-align: center; }
+  .sk-ann__cta { text-decoration: underline; text-underline-offset: 2px; font-weight: 400; }
+  .sk-ann__loc { display: flex; justify-content: flex-end; align-items: center; gap: 20px; }
   .sk-ann__form select { appearance: none; border: 0; background: transparent; color: inherit; font: inherit; padding: 2px 14px 2px 2px; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' fill='none' stroke='%23fff' stroke-width='1.2'%3E%3Cpath d='M1 1l3 3 3-3'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right center; }
   .sk-ann__form option { color: #000; }
   @media (max-width: 749px) {
-    .sk-ann__inner { grid-template-columns: 1fr; justify-items: center; padding: 8px 14px; }
+    .sk-ann__inner { grid-template-columns: 1fr; justify-items: center; padding: 0 14px; }
     .sk-ann__menu, .sk-ann__loc { display: none; }
   }
 {% endstylesheet %}

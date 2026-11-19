@@ -1,4 +1,5 @@
 {%- assign s = section.settings -%}
+<div class="sk-space" style="padding-top: {{ section.settings.pt }}px; padding-bottom: {{ section.settings.pb }}px;">
 <sky-look class="sk-sl" style="--sl-h: {{ s.height }}vh; --sl-ov: {{ s.overlay | divided_by: 100.0 }}; --sl-fg: {{ s.text_color }};">
   <div class="sk-sl__bg">
     {%- if s.image != blank -%}
@@ -32,6 +33,7 @@
     {%- endif -%}
   </div>
 </sky-look>
+</div>
 
 {% stylesheet %}
   sky-look { position: relative; display: block; min-height: max(620px, var(--sl-h)); overflow: hidden; color: var(--sl-fg); background: #222; }
@@ -78,6 +80,9 @@
 {
   "name": "Shop the look banner",
   "settings": [
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
     { "type": "image_picker", "id": "image", "label": "Banner image" },
     { "type": "range", "id": "height", "label": "Height", "min": 60, "max": 110, "step": 5, "unit": "vh", "default": 90 },
     { "type": "range", "id": "overlay", "label": "Dark overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 40 },
