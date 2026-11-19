@@ -23,7 +23,7 @@
 .sk-cd__goal svg { opacity: 0; transition: opacity .3s; }
 .sk-cd__goal.is-hit { background: linear-gradient(127deg, #fc0 11%, #f40 81%); }
 .sk-cd__goal.is-hit svg { opacity: 1; }
-.sk-cd__goal-label { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px; font-size: 12px; line-height: 16px; font-weight: 500; text-transform: uppercase; white-space: nowrap; }
+.sk-cd__goal-label { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px; font-size: 12px; line-height: 16px; font-weight: 500; text-transform: uppercase; white-space: nowrap; color: var(--cd-text); }
 .sk-cd__goals-pad { height: 26px; }
 
 /* body */
@@ -46,7 +46,7 @@
 .sk-cd__qin::-webkit-outer-spin-button, .sk-cd__qin::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .sk-cd__side { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; }
 .sk-cd__rm { width: 33px; height: 33px; padding: 0; border: .8px solid rgba(0,0,0,.07); border-radius: 100%; background: #fff; display: grid; place-items: center; color: var(--cd-text); }
-.sk-cd__price { text-align: right; }
+.sk-cd__price { text-align: right; white-space: nowrap; }
 .sk-cd__price b { font-weight: 700; letter-spacing: -.3px; display: block; }
 .sk-cd__price s { opacity: .6; display: block; margin-top: 4px; }
 .sk-cd__acc { background: #fff; border-radius: 15px; padding: 17px 15px; }
