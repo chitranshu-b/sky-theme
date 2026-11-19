@@ -1,4 +1,3 @@
-{%- comment -%} featured product v3 {%- endcomment -%}
 {%- assign s = section.settings -%}
 {%- assign product = s.product -%}
 {%- if product == blank -%}
@@ -245,7 +244,7 @@
     { "type": "text", "id": "discount_text", "label": "Text", "default": "Buy 2, get $20 off by using this code" },
     { "type": "text", "id": "discount_code", "label": "Coupon code", "default": "SAVE20" },
     { "type": "header", "content": "Warehouse popup" },
-    { "type": "checkbox", "id": "pickup_enabled", "label": "Show warehouse info row (details: Theme settings → Quick view & warehouse)", "default": true },
+    { "type": "checkbox", "id": "pickup_enabled", "label": "Show warehouse info row", "default": true },
     { "type": "header", "content": "Accordions" },
     { "type": "text", "id": "tab1_title", "label": "Description tab title", "default": "Product Description" },
     { "type": "text", "id": "tab2_title", "label": "Second tab title", "default": "Clothing Care Instructions" },
