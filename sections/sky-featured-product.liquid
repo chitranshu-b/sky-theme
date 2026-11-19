@@ -4,53 +4,83 @@
   <section class="sk-section"><div class="sk-container"><p>Choose a product in this section's settings.</p></div></section>
 {%- else -%}
 {%- assign current = product.selected_or_first_available_variant -%}
-<sky-fp class="sk-fp sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px;" data-variants='{{ product.variants | json | escape }}' data-money="{{ shop.money_format | escape }}">
-  <div class="sk-container sk-fp__grid">
+{%- capture stock_json -%}{ {%- for v in product.variants -%}"{{ v.id }}":{% if v.available %}{% if v.inventory_management and v.inventory_quantity > 0 %}{{ v.inventory_quantity }}{% else %}-1{% endif %}{% else %}0{% endif %}{% unless forloop.last %},{% endunless %}{%- endfor -%} }{%- endcapture -%}
+<sky-fp class="sk-fp sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px;" data-variants='{{ product.variants | json | escape }}' data-stock='{{ stock_json | strip_newlines }}' data-money="{{ shop.money_format | escape }}">
+  <div class="sk-fp__grid">
     <div class="sk-fp__media">
-      <ul class="sk-fp__thumbs">
-        {%- for m in product.media limit: 6 -%}
-          <li><button type="button" class="{% if forloop.first %}is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }}"><img src="{{ m.preview_image | image_url: width: 120 }}" alt="" width="60" height="80" loading="lazy"></button></li>
+      <div class="sk-fp__thumbs" data-thumbs>
+        {%- for m in product.media limit: 10 -%}
+          <button type="button" class="{% if forloop.first %}is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }}"><img src="{{ m.preview_image | image_url: width: 280 }}" alt="" width="138" height="120" loading="lazy"></button>
         {%- endfor -%}
-      </ul>
+      </div>
       <div class="sk-fp__stage" data-stage>
-        {%- for m in product.media limit: 6 -%}
-          <img class="{% if forloop.first %}is-active{% endif %}" data-img="{{ forloop.index0 }}" src="{{ m.preview_image | image_url: width: 1000 }}" alt="{{ m.alt | escape }}" width="1000" height="{{ 1000 | divided_by: m.preview_image.aspect_ratio | round }}" loading="lazy">
+        {%- for m in product.media limit: 10 -%}
+          <img class="{% if forloop.first %}is-active{% endif %}" data-img="{{ forloop.index0 }}" src="{{ m.preview_image | image_url: width: 1200 }}" alt="{{ m.alt | escape }}" width="1000" height="1000" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
         {%- endfor -%}
+        {%- if product.media.size > 1 -%}
+          <div class="sk-fp__arrows">
+            <button type="button" data-nav="-1" aria-label="Previous image"><svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5H1M5 1L1 5l4 4"/></svg></button>
+            <button type="button" data-nav="1" aria-label="Next image"><svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 5h14M11 1l4 4-4 4"/></svg></button>
+          </div>
+        {%- endif -%}
       </div>
     </div>
 
-    <div class="sk-fp__card">
-      {%- if s.discount_heading != blank -%}
-        <details class="sk-fp__disc">
-          <summary>{{ s.discount_heading }}<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg></summary>
-          <div><span>{{ s.discount_text }}</span>{%- if s.discount_code != blank -%}<button type="button" data-copy="{{ s.discount_code | escape }}">{{ s.discount_code }}</button>{%- endif -%}</div>
-        </details>
-      {%- endif -%}
-      <div class="sk-fp__body">
-        <h2 class="sk-fp__title">{{ product.title }}</h2>
-        <div class="sk-fp__desc">{{ product.description | strip_html | truncatewords: 28 }}</div>
-        <p class="sk-fp__price"><span data-price>{{ current.price | money }}</span>{%- if current.compare_at_price > current.price %} <s data-compare>{{ current.compare_at_price | money }}</s>{% endif -%}</p>
-
-        {%- form 'product', product, class: 'sk-fp__form' -%}
-          <input type="hidden" name="id" value="{{ current.id }}" data-id>
-          {%- unless product.has_only_default_variant -%}
-            {%- for option in product.options_with_values -%}
-              <fieldset class="sk-fp__opt" data-opt="{{ forloop.index0 }}">
-                <legend>{{ option.name }}: <span data-opt-val>{{ option.selected_value }}</span></legend>
-                <div>
-                  {%- for v in option.values -%}
-                    <button type="button" class="sk-fp__pill{% if v.selected %} is-active{% endif %}" data-value="{{ v | escape }}">{{ v }}</button>
-                  {%- endfor -%}
-                </div>
-              </fieldset>
-            {%- endfor -%}
-          {%- endunless -%}
-          <div class="sk-fp__row">
-            <div class="sk-fp__qty"><button type="button" data-q="-1" aria-label="Less">&minus;</button><input type="number" name="quantity" value="1" min="1" aria-label="Quantity"><button type="button" data-q="1" aria-label="More">+</button></div>
-            <button type="submit" class="sk-btn sk-btn--dark sk-fp__add" data-add {% unless current.available %}disabled{% endunless %}>{% if current.available %}Add To Cart{% else %}Sold out{% endif %}</button>
+    <div class="sk-fp__info">
+      <div class="sk-fp__sticky">
+        {%- if s.discount_heading != blank -%}
+          <div class="sk-fp__disc" data-disc>
+            <button type="button" class="sk-fp__disc-btn" aria-expanded="false"><span>{{ s.discount_heading }}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5l5 5 5-5"/></svg></button>
+            <div class="sk-fp__disc-body"><div>
+              {%- if s.discount_code != blank -%}<button type="button" class="sk-fp__code" data-copy="{{ s.discount_code | escape }}"><span>{{ s.discount_code }}</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg></button>{%- endif -%}
+              <p>{{ s.discount_text }}</p>
+            </div></div>
           </div>
-        {%- endform -%}
-        <a class="sk-link" href="{{ product.url }}">View full details</a>
+        {%- endif -%}
+        <div class="sk-fp__card{% if s.discount_heading == blank %} sk-fp__card--solo{% endif %}">
+          <a class="sk-fp__title" href="{{ product.url }}">{{ product.title }}</a>
+          <div class="sk-fp__b sk-fp__desc">{{ product.description | strip_html | truncatewords: 22 }}</div>
+          <div class="sk-fp__b sk-fp__price"><span class="sk-fp__now" data-price>{{ current.price | money }}</span>{%- if current.compare_at_price > current.price %}<s data-compare>{{ current.compare_at_price | money }}</s>{%- else -%}<s data-compare hidden></s>{% endif -%}</div>
+          {%- if s.note != blank -%}<div class="sk-fp__b"><div class="sk-fp__note">{{ s.note }}</div></div>{%- endif -%}
+
+          {%- form 'product', product, class: 'sk-fp__form' -%}
+            <input type="hidden" name="id" value="{{ current.id }}" data-id>
+            {%- unless product.has_only_default_variant -%}
+              <div class="sk-fp__b sk-fp__opts">
+              {%- for option in product.options_with_values -%}
+                {%- assign oname = option.name | downcase -%}
+                {%- assign is_color = false -%}
+                {%- if oname contains 'color' or oname contains 'colour' %}{% assign is_color = true %}{% endif -%}
+                <fieldset class="sk-fp__opt" data-opt="{{ forloop.index0 }}">
+                  <legend><b>{{ option.name }}:</b> <span data-opt-val>{{ option.selected_value }}</span></legend>
+                  <div class="sk-fp__vals">
+                    {%- for v in option.values -%}
+                      {%- if is_color -%}
+                        {%- assign swc = v.swatch.color | default: v | handle | replace: '-', '' -%}
+                        <button type="button" class="sk-fp__sw{% if v.selected %} is-active{% endif %}" data-value="{{ v | escape }}" title="{{ v | escape }}" aria-label="{{ v | escape }}"><span style="background: {{ swc }}"></span></button>
+                      {%- else -%}
+                        <button type="button" class="sk-fp__pill{% if v.selected %} is-active{% endif %}" data-value="{{ v | escape }}">{{ v }}</button>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </fieldset>
+              {%- endfor -%}
+              </div>
+            {%- endunless -%}
+            <div class="sk-fp__b"><p class="sk-fp__stock" data-stock-line><span class="sk-fp__stock-ic"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M4.6 8.2l2.3 2.3 4.5-4.6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-stock-text></span></p></div>
+            <div class="sk-fp__b sk-fp__buy">
+              <div class="sk-fp__qty"><button type="button" data-q="-1" aria-label="Decrease quantity"><svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 6h8"/></svg></button><input type="number" name="quantity" value="1" min="1" aria-label="Quantity"><button type="button" data-q="1" aria-label="Increase quantity"><svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 6h8M6 2v8"/></svg></button></div>
+              <button type="submit" class="sk-fp__add" data-add {% unless current.available %}disabled{% endunless %}>{% if current.available %}Add to cart{% else %}Sold out{% endif %}</button>
+            </div>
+          {%- endform -%}
+
+          {%- if product.description != blank -%}
+            <details class="sk-fp__tab"><summary><span>{{ s.tab1_title | default: 'Product Description' }}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5l5 5 5-5"/></svg></summary><div class="sk-fp__tab-c">{{ product.description }}</div></details>
+          {%- endif -%}
+          {%- if s.tab2_text != blank -%}
+            <details class="sk-fp__tab"><summary><span>{{ s.tab2_title }}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5l5 5 5-5"/></svg></summary><div class="sk-fp__tab-c">{{ s.tab2_text }}</div></details>
+          {%- endif -%}
+        </div>
       </div>
     </div>
   </div>
@@ -58,67 +88,137 @@
 {%- endif -%}
 
 {% stylesheet %}
-  .sk-fp__grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: start; }
-  .sk-fp__media { display: grid; grid-template-columns: 76px 1fr; gap: 12px; }
-  .sk-fp__thumbs { display: grid; gap: 8px; align-content: start; padding: 8px; border-radius: 14px; background: #fff; }
-  .sk-fp__thumbs button { display: block; width: 100%; padding: 0; border: 2px solid transparent; border-radius: 8px; overflow: hidden; background: none; }
-  .sk-fp__thumbs button.is-active { border-color: #000; }
-  .sk-fp__thumbs img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
-  .sk-fp__stage { position: relative; aspect-ratio: 3 / 4; border-radius: 22px; overflow: hidden; background: #fff; }
-  .sk-fp__stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .5s; }
+  .sk-fp { padding-left: 0; padding-right: 0; }
+  .sk-fp__grid { display: flex; align-items: flex-start; }
+  .sk-fp__media { flex: 0 0 60%; max-width: 60%; display: flex; gap: 0; min-width: 0; }
+  .sk-fp__thumbs { flex: 0 0 150px; width: 150px; padding: 6px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; scrollbar-width: none; align-self: stretch; max-height: calc((100vw * .6 - 150px)); }
+  .sk-fp__thumbs::-webkit-scrollbar { display: none; }
+  .sk-fp__thumbs button { flex: 0 0 auto; display: block; width: 100%; height: 120px; padding: 0; border: 0; background: none; overflow: hidden; opacity: .5; transition: opacity .25s; cursor: pointer; }
+  .sk-fp__thumbs button.is-active, .sk-fp__thumbs button:hover { opacity: 1; }
+  .sk-fp__thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sk-fp__stage { position: relative; flex: 1; min-width: 0; aspect-ratio: 1; overflow: hidden; }
+  .sk-fp__thumbs { max-height: none; height: 0; min-height: 100%; }
+  .sk-fp__stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .45s; }
   .sk-fp__stage img.is-active { opacity: 1; }
-  .sk-fp__card { border-radius: 26px; overflow: hidden; background: #fff; }
-  .sk-fp__disc { background: #000; color: #fff; }
-  .sk-fp__disc summary { display: flex; justify-content: space-between; align-items: center; padding: 14px 26px; cursor: pointer; list-style: none; font-weight: 600; }
-  .sk-fp__disc summary::-webkit-details-marker { display: none; }
-  .sk-fp__disc > div { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 26px 16px; font-size: 13px; }
-  .sk-fp__disc button { height: 32px; padding: 0 14px; border: 1px dashed #fff; border-radius: 999px; background: none; color: #fff; font-weight: 700; letter-spacing: 1px; }
-  .sk-fp__body { display: grid; gap: 14px; padding: 26px; }
-  .sk-fp__title { font-size: clamp(26px, 3vw, 40px); font-weight: 500; }
-  .sk-fp__desc { color: rgba(0,0,0,.6); }
-  .sk-fp__price { font-size: 17px; font-weight: 700; } .sk-fp__price s { font-weight: 400; opacity: .5; }
-  .sk-fp__form { display: grid; gap: 16px; }
-  .sk-fp__opt { border: 0; padding: 0; margin: 0; } .sk-fp__opt legend { padding: 0 0 8px; font-weight: 600; } .sk-fp__opt legend span { font-weight: 400; opacity: .6; }
-  .sk-fp__opt > div { display: flex; flex-wrap: wrap; gap: 8px; }
-  .sk-fp__pill { min-width: 52px; height: 42px; padding: 0 16px; border: 1px solid var(--sk-line); border-radius: 999px; background: #fff; font-weight: 600; transition: .2s; }
-  .sk-fp__pill:hover { border-color: #000; } .sk-fp__pill.is-active { background: #000; color: #fff; border-color: #000; }
-  .sk-fp__row { display: flex; gap: 12px; align-items: center; }
-  .sk-fp__qty { display: inline-flex; align-items: center; height: 48px; border: 1px solid var(--sk-line); border-radius: 999px; }
-  .sk-fp__qty button { width: 40px; height: 46px; border: 0; background: none; font-size: 18px; }
-  .sk-fp__qty input { width: 38px; border: 0; background: none; text-align: center; font: inherit; font-weight: 600; -moz-appearance: textfield; }
+  .sk-fp__arrows { position: absolute; right: 20px; bottom: 30px; display: flex; gap: 8px; z-index: 2; }
+  .sk-fp__arrows button { width: 40px; height: 50px; display: flex; align-items: center; justify-content: center; border: .8px solid #e5e5e5; border-radius: 15px; background: #fff; color: #000; cursor: pointer; transition: background .2s, color .2s; }
+  .sk-fp__arrows button:hover { background: #000; color: #fff; }
+  .sk-fp__info { flex: 1; min-width: 0; padding: 20px 38.7px 20px 30px; align-self: stretch; }
+  .sk-fp__sticky { position: sticky; top: 20px; }
+  .sk-fp__disc { background: #000; color: #fff; border-radius: 20px 20px 0 0; padding-bottom: 20px; }
+  .sk-fp__disc-btn { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 15px 30px; border: 0; background: none; color: #fff; font: inherit; font-size: 14px; font-weight: 700; letter-spacing: .1px; cursor: pointer; }
+  .sk-fp__disc-btn svg { transition: transform .25s; } .sk-fp__disc-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .sk-fp__disc-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s; }
+  .sk-fp__disc-body > div { overflow: hidden; padding: 0 30px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .sk-fp__disc.is-open .sk-fp__disc-body { grid-template-rows: 1fr; } .sk-fp__disc.is-open .sk-fp__disc-body > div { padding-top: 4px; padding-bottom: 6px; }
+  .sk-fp__disc-body p { margin: 0; font-size: 12px; opacity: .85; }
+  .sk-fp__code { display: inline-flex; align-items: center; gap: 10px; height: 34px; padding: 0 14px; border: 1px dashed rgba(255,255,255,.7); border-radius: 8px; background: none; color: #fff; font: inherit; font-weight: 700; letter-spacing: 1px; cursor: pointer; }
+  .sk-fp__card { position: relative; background: #fff; border-radius: 20px; padding: 30px; margin-top: -20px; }
+  .sk-fp__card--solo { margin-top: 0; }
+  .sk-fp__title { display: block; font-family: var(--sk-font-head); font-size: 30px; line-height: 36px; font-weight: 600; letter-spacing: -.4px; color: #000; }
+  .sk-fp__b { padding: 10px 0; }
+  .sk-fp__desc { font-size: 14px; line-height: 21px; color: #202020; }
+  .sk-fp__price { display: flex; align-items: center; gap: 8px; }
+  .sk-fp__now { font-size: 18px; line-height: 29.7px; font-weight: 700; }
+  .sk-fp__price s { font-size: 12px; color: rgba(32,32,32,.7); } .sk-fp__price s[hidden] { display: none; }
+  .sk-fp__note { background: #f2f2f4; border-radius: 6px; padding: 12px 15px; font-size: 12px; line-height: 16.2px; }
+  .sk-fp__form { display: block; margin: 0; }
+  .sk-fp__opts { display: grid; gap: 14px; }
+  .sk-fp__opt { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .sk-fp__opt legend { display: flex; gap: 4px; padding: 0 2px; margin: 0 0 6px; font-size: 14px; line-height: 21px; float: none; width: 100%; }
+  .sk-fp__opt legend b { font-weight: 700; }
+  .sk-fp__vals { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sk-fp__sw { width: 35px; height: 35px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 0 #202020; transition: box-shadow .2s; }
+  .sk-fp__sw span { width: 33px; height: 33px; border-radius: 50%; display: block; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); transition: transform .2s; }
+  .sk-fp__sw.is-active { box-shadow: 0 0 0 1.5px #202020; } .sk-fp__sw.is-active span { transform: scale(.86); }
+  .sk-fp__pill { min-width: 70px; height: 42px; padding: 0 24px; border: .8px solid #e3e3e4; border-radius: 30px; background: #fff; color: #202020; font: inherit; font-size: 14px; letter-spacing: .1px; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+  .sk-fp__pill:hover { border-color: #000; } .sk-fp__pill.is-active { background: #000; border-color: #000; color: #fff; }
+  .sk-fp__stock { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 14px; line-height: 21px; color: #417d3d; }
+  .sk-fp__stock-ic { display: flex; } .sk-fp__stock.is-out { color: #b3261e; }
+  .sk-fp__buy { display: flex; gap: 10px; align-items: center; }
+  .sk-fp__qty { display: flex; align-items: center; flex: 0 0 120px; width: 120px; height: 44px; border: .8px solid #e3e3e4; border-radius: 40px; overflow: hidden; }
+  .sk-fp__qty button { flex: 0 0 40px; height: 100%; border: 0; background: none; color: #202020; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .sk-fp__qty input { width: 38px; min-width: 0; padding: 0 5px; border: 0; background: none; text-align: center; font-size: 12px; color: #202020; -moz-appearance: textfield; }
   .sk-fp__qty input::-webkit-outer-spin-button, .sk-fp__qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .sk-fp__add { flex: 1; justify-content: center; padding: 0 24px; } .sk-fp__add[disabled] { opacity: .5; }
-  @media (max-width: 989px) { .sk-fp__grid { grid-template-columns: 1fr; } }
-  @media (max-width: 599px) { .sk-fp__media { grid-template-columns: 1fr; } .sk-fp__thumbs { grid-auto-flow: column; grid-auto-columns: 56px; overflow-x: auto; order: 2; } }
+  .sk-fp__add { flex: 1; height: 44px; padding: 4px 20px; border: 0; border-radius: 40px; background: #000; color: #fff; font: inherit; font-size: 14px; cursor: pointer; transition: opacity .2s; }
+  .sk-fp__add:hover { opacity: .85; } .sk-fp__add[disabled] { opacity: .45; cursor: not-allowed; }
+  .sk-fp__tab { border-top: .8px solid #e3e3e4; }
+  .sk-fp__form + .sk-fp__tab { margin-top: 10px; }
+  .sk-fp__tab summary { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; font-size: 14px; line-height: 21px; font-weight: 700; cursor: pointer; list-style: none; }
+  .sk-fp__tab summary::-webkit-details-marker { display: none; }
+  .sk-fp__tab summary svg { transition: transform .25s; } .sk-fp__tab[open] summary svg { transform: rotate(180deg); }
+  .sk-fp__tab-c { padding: 0 0 14px; font-size: 14px; line-height: 21px; }
+  .sk-fp__tab-c > :first-child { margin-top: 0; }
+  @media (max-width: 989px) {
+    .sk-fp__grid { flex-direction: column; } .sk-fp__media { flex: none; max-width: none; width: 100%; flex-direction: column-reverse; }
+    .sk-fp__thumbs { flex: none; width: 100%; height: auto; min-height: 0; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 6px 16px; }
+    .sk-fp__thumbs button { flex: 0 0 90px; height: 90px; }
+    .sk-fp__info { width: 100%; padding: 16px; } .sk-fp__sticky { position: static; }
+  }
+  @media (max-width: 599px) { .sk-fp__card { padding: 20px; } .sk-fp__disc-btn { padding: 15px 20px; } .sk-fp__disc-body > div { padding-left: 20px; padding-right: 20px; } .sk-fp__title { font-size: 24px; line-height: 30px; } }
 {% endstylesheet %}
 
 {% javascript %}
   class SkyFP extends HTMLElement {
     connectedCallback() {
       if (this.ready) return; this.ready = true;
-      var self = this, variants = JSON.parse(this.dataset.variants || '[]');
-      var idInput = this.querySelector('[data-id]'), add = this.querySelector('[data-add]'), price = this.querySelector('[data-price]');
-      var thumbs = this.querySelectorAll('[data-thumb]'), imgs = this.querySelectorAll('[data-img]');
+      var self = this, variants = JSON.parse(this.dataset.variants || '[]'), stock = {};
+      try { stock = JSON.parse(this.dataset.stock || '{}'); } catch (e) {}
+      var idInput = this.querySelector('[data-id]'), add = this.querySelector('[data-add]'), price = this.querySelector('[data-price]'), cmp = this.querySelector('[data-compare]');
+      var thumbs = this.querySelectorAll('[data-thumb]'), imgs = this.querySelectorAll('[data-img]'), cur = 0;
+      var stockLine = this.querySelector('[data-stock-line]'), stockText = this.querySelector('[data-stock-text]');
+      function show(i) {
+        if (!imgs.length) return; cur = (+i + imgs.length) % imgs.length;
+        thumbs.forEach(function (t) { var on = t.dataset.thumb === String(cur); t.classList.toggle('is-active', on); if (on) { var box = t.parentNode; if (box.scrollHeight > box.clientHeight + 2 && box.scrollWidth <= box.clientWidth + 2) box.scrollTo({ top: t.offsetTop - 6, behavior: 'smooth' }); else if (box.scrollWidth > box.clientWidth + 2) box.scrollTo({ left: t.offsetLeft - 16, behavior: 'smooth' }); } });
+        imgs.forEach(function (m) { m.classList.toggle('is-active', m.dataset.img === String(cur)); });
+      }
       thumbs.forEach(function (t) { t.addEventListener('click', function () { show(t.dataset.thumb); }); });
-      function show(i) { thumbs.forEach(function (t) { t.classList.toggle('is-active', t.dataset.thumb === String(i)); }); imgs.forEach(function (m) { m.classList.toggle('is-active', m.dataset.img === String(i)); }); }
+      this.querySelectorAll('[data-nav]').forEach(function (b) { b.addEventListener('click', function () { show(cur + +b.dataset.nav); }); });
       function money(c) { return (window.Shopify && Shopify.formatMoney) ? Shopify.formatMoney(c, self.dataset.money) : (c / 100).toFixed(2); }
       function selected() { return [].map.call(self.querySelectorAll('[data-opt]'), function (f) { var a = f.querySelector('.is-active'); return a ? a.dataset.value : null; }); }
+      function setStock(v) {
+        if (!stockLine) return; var q = v ? stock[v.id] : 0;
+        stockLine.classList.toggle('is-out', !(q === -1 || q > 0));
+        stockText.textContent = !v ? 'This combination is unavailable' : q === -1 ? 'In stock, Get yours today!' : q > 0 ? q + ' in stock, Get yours today!' : 'Sold out';
+      }
       function sync() {
-        var sel = selected(); if (!sel.length) return;
-        var v = variants.filter(function (x) { return x.options.every(function (o, i) { return o === sel[i]; }); })[0];
-        self.querySelectorAll('[data-opt]').forEach(function (f, i) { f.querySelector('[data-opt-val]').textContent = sel[i]; });
+        var sel = selected(), v;
+        if (sel.length) {
+          v = variants.filter(function (x) { return x.options.every(function (o, i) { return o === sel[i]; }); })[0];
+          self.querySelectorAll('[data-opt]').forEach(function (f, i) { f.querySelector('[data-opt-val]').textContent = sel[i]; });
+        } else v = variants[0];
+        setStock(v);
         if (!v) { add.disabled = true; add.textContent = 'Unavailable'; return; }
-        idInput.value = v.id; add.disabled = !v.available; add.textContent = v.available ? 'Add To Cart' : 'Sold out';
-        if (price && window.Shopify && Shopify.formatMoney) price.textContent = money(v.price);
+        idInput.value = v.id; add.disabled = !v.available; add.textContent = v.available ? 'Add to cart' : 'Sold out';
+        if (price) price.textContent = money(v.price);
+        if (cmp) { var has = v.compare_at_price && v.compare_at_price > v.price; cmp.hidden = !has; if (has) cmp.textContent = money(v.compare_at_price); }
         if (v.featured_media) { var pos = v.featured_media.position - 1; if (pos >= 0 && pos < imgs.length) show(pos); }
       }
-      this.querySelectorAll('.sk-fp__pill').forEach(function (b) {
-        b.addEventListener('click', function () { b.parentNode.querySelectorAll('.sk-fp__pill').forEach(function (x) { x.classList.remove('is-active'); }); b.classList.add('is-active'); sync(); });
+      this.querySelectorAll('.sk-fp__pill, .sk-fp__sw').forEach(function (b) {
+        b.addEventListener('click', function () { b.parentNode.querySelectorAll('.is-active').forEach(function (x) { x.classList.remove('is-active'); }); b.classList.add('is-active'); sync(); });
       });
+      sync();
       var q = this.querySelector('input[name=quantity]');
       this.querySelectorAll('[data-q]').forEach(function (b) { b.addEventListener('click', function () { q.value = Math.max(1, (+q.value || 1) + +b.dataset.q); }); });
+      var disc = this.querySelector('[data-disc]');
+      if (disc) disc.querySelector('.sk-fp__disc-btn').addEventListener('click', function () { var o = disc.classList.toggle('is-open'); this.setAttribute('aria-expanded', o); });
       var cp = this.querySelector('[data-copy]');
-      if (cp) cp.addEventListener('click', function () { try { navigator.clipboard.writeText(cp.dataset.copy); } catch (e) {} var t = cp.textContent; cp.textContent = 'Copied!'; setTimeout(function () { cp.textContent = t; }, 1500); });
+      if (cp) cp.addEventListener('click', function () { try { navigator.clipboard.writeText(cp.dataset.copy); } catch (e) {} var s = cp.querySelector('span'), t = s.textContent; s.textContent = 'Copied!'; setTimeout(function () { s.textContent = t; }, 1500); });
+      var form = this.querySelector('form');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault(); if (add.disabled) return;
+        var label = add.textContent; add.disabled = true; add.textContent = 'Adding...';
+        fetch('/cart/add.js', { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) })
+          .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.description || j.message || 'Error'); return j; }); })
+          .then(function (item) {
+            return fetch('/cart.js', { headers: { Accept: 'application/json' } }).then(function (r) { return r.json(); }).then(function (c) {
+              document.querySelectorAll('[data-cart-count]').forEach(function (n) { n.textContent = c.item_count; n.hidden = !c.item_count; });
+              document.dispatchEvent(new CustomEvent('sky:cart-added', { detail: { item: item, cart: c } }));
+            });
+          })
+          .catch(function (err) { add.textContent = err.message.slice(0, 30); setTimeout(function () { add.textContent = label; add.disabled = false; }, 2200); return 'err'; })
+          .then(function (x) { if (x !== 'err') { add.textContent = label; add.disabled = false; } });
+      });
     }
   }
   if (!customElements.get('sky-fp')) customElements.define('sky-fp', SkyFP);
@@ -129,11 +229,18 @@
   "name": "Featured product",
   "settings": [
     { "type": "product", "id": "product", "label": "Product" },
-    { "type": "text", "id": "discount_heading", "label": "Discount strip heading", "default": "Where's the discount?" },
-    { "type": "text", "id": "discount_text", "label": "Discount text", "default": "Buy 2, get $20 off by using this code" },
+    { "type": "text", "id": "note", "label": "Note box (e.g. model size)", "default": "The model is 173 cm tall and is wearing size S" },
+    { "type": "header", "content": "Discount strip" },
+    { "type": "text", "id": "discount_heading", "label": "Heading", "default": "Where's The Discount?" },
+    { "type": "text", "id": "discount_text", "label": "Text", "default": "Buy 2, get $20 off by using this code" },
     { "type": "text", "id": "discount_code", "label": "Coupon code", "default": "SAVE20" },
-    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
-    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+    { "type": "header", "content": "Accordions" },
+    { "type": "text", "id": "tab1_title", "label": "Description tab title", "default": "Product Description" },
+    { "type": "text", "id": "tab2_title", "label": "Second tab title", "default": "Clothing Care Instructions" },
+    { "type": "richtext", "id": "tab2_text", "label": "Second tab content" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 }
   ],
   "presets": [{ "name": "Featured product" }]
 }

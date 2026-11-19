@@ -326,11 +326,13 @@
       "custom_css": [],
       "settings": {
         "product": "marvel-doctor-doom-the-broken-world",
-        "discount_heading": "Where's the discount?",
+        "discount_heading": "Where's The Discount?",
+        "note": "The model is 173 cm tall and is wearing size S",
+        "tab1_title": "Product Description",
         "discount_text": "Buy 2, get $20 off by using this code",
         "discount_code": "SAVE20",
-        "pt": 48,
-        "pb": 48
+        "pt": 0,
+        "pb": 0
       }
     },
     "lookbook": {
