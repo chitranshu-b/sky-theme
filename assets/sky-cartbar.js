@@ -4,7 +4,7 @@
   var bar = document.querySelector('sky-cart-success');
   if (!bar) return;
   var slot = bar.querySelector('[data-cs-slot]');
-  var delay = (+bar.dataset.hideDelay || 5) * 1000, timer = null;
+  var delay = (+bar.dataset.hideDelay || 5) * 1000, timer = null, hovering = false;
   var cartUrl = bar.dataset.cartUrl || '/cart';
 
   function money(c) { return (window.SkyShop && SkyShop.money) ? SkyShop.money(c) : '$' + (c / 100).toFixed(2); }
@@ -24,8 +24,11 @@
       '</div>';
     bar.classList.add('is-visible');
     clearTimeout(timer);
-    timer = setTimeout(hide, delay);
+    if (!hovering) timer = setTimeout(hide, delay);
   }
+
+  bar.addEventListener('mouseenter', function () { hovering = true; clearTimeout(timer); });
+  bar.addEventListener('mouseleave', function () { hovering = false; if (bar.classList.contains('is-visible')) { clearTimeout(timer); timer = setTimeout(hide, delay); } });
 
   document.addEventListener('sky:cart-added', function (e) { var d = e.detail || {}; show(d.item, d.cart); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
