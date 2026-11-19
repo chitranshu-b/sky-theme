@@ -28,7 +28,7 @@
             <a class="sk-lb__prod" href="{{ p.url }}" data-i="{{ forloop.index0 }}">
               <span class="sk-lb__pimg">{%- if p.featured_image -%}<img src="{{ p.featured_image | image_url: width: 500 }}" alt="{{ p.title | escape }}" width="500" height="{{ 500 | divided_by: p.featured_image.aspect_ratio | round }}" loading="lazy">{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'sk-ph' }}{%- endif -%}</span>
               <span class="sk-lb__pt">{{ p.title }}</span>
-              <span class="sk-lb__pp">{{ p.price | money }}</span>
+              <span class="sk-lb__pp">{{ p.price | money_without_currency | prepend: '₹' }}</span>
             </a>
           {%- endif -%}
         {%- endfor -%}

@@ -19,7 +19,7 @@
           <div class="sk-cart__rec" data-handle="{{ p.handle }}">
             <div class="sk-cart__rec-row">
               <a class="sk-cart__rec-img" href="{{ p.url }}">{% if p.featured_image %}{{ p.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '160', alt: p.title }}{% endif %}</a>
-              <div class="sk-cart__rec-info"><a href="{{ p.url }}" class="sk-cart__rec-title">{{ p.title }}</a><span class="sk-cart__rec-price">{% if p.price_varies %}From {% endif %}{{ p.price | money }}</span></div>
+              <div class="sk-cart__rec-info"><a href="{{ p.url }}" class="sk-cart__rec-title">{{ p.title }}</a><span class="sk-cart__rec-price">{% if p.price_varies %}From {% endif %}{{ p.price | money_without_currency | prepend: '₹' }}</span></div>
               <button type="button" class="sk-cart__rec-toggle" data-rec-toggle aria-expanded="false" aria-label="Choose options"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2v10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
             </div>
             <div class="sk-cart__rec-panel"><div class="sk-cart__rec-panel-in" data-rec-panel></div></div>
@@ -80,7 +80,7 @@
                       <a class="sk-cart__deal-img" href="{{ p.url }}">{% if p.featured_image %}{{ p.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '160', alt: p.title }}{% endif %}</a>
                       <div class="sk-cart__deal-info">
                         <a class="sk-cart__deal-title" href="{{ p.url }}">{{ p.title }}</a>
-                        <div class="sk-cart__deal-price"><b>{% if p.price_varies %}From {% endif %}{{ p.price | money }}</b>{% if p.compare_at_price > p.price %} <s>{{ p.compare_at_price | money }}</s>{% endif %}</div>
+                        <div class="sk-cart__deal-price"><b>{% if p.price_varies %}From {% endif %}{{ p.price | money_without_currency | prepend: '₹' }}</b>{% if p.compare_at_price > p.price %} <s>{{ p.compare_at_price | money_without_currency | prepend: '₹' }}</s>{% endif %}</div>
                       </div>
                       {%- if p.variants.size > 1 -%}
                         <button type="button" class="sk-cart__deal-add" data-qv="{{ p.handle }}" aria-label="Choose options: {{ p.title | escape }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 8h14l-1 12H6L5 8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>

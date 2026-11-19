@@ -329,6 +329,8 @@
         "discount_heading": "Where's The Discount?",
         "note": "The model is 173 cm tall and is wearing size S",
         "tab1_title": "Product Description",
+        "tab2_title": "Clothing Care Instructions",
+        "tab2_text": "<ul><li><strong>Machine wash cold:</strong> Wash inside out with similar colors on a gentle cycle.</li><li><strong>Do not bleach:</strong> Bleach can damage the print and fabric.</li><li><strong>Tumble dry low or line dry:</strong> Avoid high heat to protect the print.</li><li><strong>Iron inside out:</strong> Do not iron directly on the print.</li></ul>",
         "discount_text": "Buy 2, get $20 off by using this code",
         "discount_code": "SAVE20",
         "pt": 0,

@@ -39,7 +39,7 @@
                     <div class="sk-stl__info">
                       <div class="sk-stl__meta">
                         <a class="sk-stl__ptitle" href="{{ p.url | default: '#' }}">{{ p.title | default: 'Choose a product' }}</a>
-                        {%- if p != blank -%}<span class="sk-stl__price">{% if p.price_varies %}From {% endif %}{{ p.price | money }}</span>{%- endif -%}
+                        {%- if p != blank -%}<span class="sk-stl__price">{% if p.price_varies %}From {% endif %}{{ p.price | money_without_currency | prepend: '₹' }}</span>{%- endif -%}
                       </div>
                       {%- if p != blank -%}
                       <div class="sk-stl__btns">

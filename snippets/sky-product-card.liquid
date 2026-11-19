@@ -48,8 +48,8 @@
   <div class="sk-card__info">
     <a href="{{ p.url }}" class="sk-card__title">{{ p.title }}</a>
     <span class="sk-card__price">
-      {{ p.price | money }}
-      {%- if p.compare_at_price > p.price %}<s>{{ p.compare_at_price | money }}</s>{% endif -%}
+      {{ p.price | money_without_currency | prepend: '₹' }}
+      {%- if p.compare_at_price > p.price %}<s>{{ p.compare_at_price | money_without_currency | prepend: '₹' }}</s>{% endif -%}
     </span>
   </div>
 </article>
