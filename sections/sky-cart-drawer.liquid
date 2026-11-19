@@ -100,6 +100,7 @@
       </div>
       {%- endif -%}
       {%- endif -%}
+      <div class="sk-cd__saved" data-cd-saved hidden></div>
       <div class="sk-cd__items" data-cd-items></div>
       {%- if section.settings.show_note -%}
         <div class="sk-cd__acc" data-cd-acc>
@@ -133,6 +134,7 @@
 <script type="application/json" data-cd-config>
 {
   "offer": {{ section.settings.offer_enabled | json }},
+  "saved": {{ section.settings.saved_enabled | json }},
   "tiers": [
     {%- assign first = true -%}
     {%- if t1 > 0 -%}{%- unless first -%},{%- endunless -%}{"qty": {{ t1 }}, "label": {{ section.settings.tier1_label | json }}}{%- assign first = false -%}{%- endif -%}
@@ -142,6 +144,7 @@
   "textProgress": {{ section.settings.text_progress | json }},
   "textStart": {{ section.settings.text_start | json }},
   "textDone": {{ section.settings.text_done | json }},
+  "savedText": {{ section.settings.saved_text | json }},
   "removeLabel": {{ 'Remove' | json }}
 }
 </script>
@@ -163,6 +166,10 @@
     { "type": "text", "id": "empty_text", "label": "Empty cart text", "default": "Your cart is empty" },
     { "type": "text", "id": "continue_label", "label": "Continue shopping label", "default": "Continue shopping" },
     { "type": "url", "id": "continue_url", "label": "Continue shopping link" },
+
+    { "type": "header", "content": "Savings bar" },
+    { "type": "checkbox", "id": "saved_enabled", "label": "Show green savings bar", "default": true },
+    { "type": "text", "id": "saved_text", "label": "Savings text", "info": "Use {amount} for the saved amount.", "default": "You're saving {amount} on this order" },
 
     { "type": "header", "content": "Deals tabs (inside the cart)" },
     { "type": "checkbox", "id": "deals_enabled", "label": "Show deals tabs", "default": true },

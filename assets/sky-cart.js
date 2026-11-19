@@ -65,6 +65,29 @@
     f.style.setProperty('--o', p > 0 ? '12px' : '0px');
   }
 
+  /* ---------- savings bar (discounts + compare-at price drops) ---------- */
+  var prodCache = {};
+  function getProduct(h) { return prodCache[h] || (prodCache[h] = fetch('/products/' + h + '.js').then(function (r) { return r.json(); }).catch(function () { return null; })); }
+  function renderSaved(c) {
+    var el = $('[data-cd-saved]'); if (!el) return;
+    if (!cfg.saved) { el.hidden = true; return; }
+    var handles = {}; c.items.forEach(function (it) { handles[it.handle] = 1; });
+    Promise.all(Object.keys(handles).map(getProduct)).then(function (ps) {
+      if (c !== cart) return;
+      var byH = {}; ps.forEach(function (p) { if (p) byH[p.handle] = p; });
+      var save = c.total_discount || 0;
+      c.items.forEach(function (it) {
+        var p = byH[it.handle]; if (!p) return;
+        var v = p.variants.filter(function (x) { return x.id === it.variant_id; })[0];
+        if (v && v.compare_at_price > it.original_price) save += (v.compare_at_price - it.original_price) * it.quantity;
+      });
+      if (save > 0) {
+        el.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 1.5l2.4 2 3.1-.3 1.1 2.9 2.9 1.1-.3 3.1 2 2.4-2 2.4.3 3.1-2.9 1.1-1.1 2.9-3.1-.3-2.4 2-2.4-2-3.1.3-1.1-2.9-2.9-1.1.3-3.1-2-2.4 2-2.4-.3-3.1 2.9-1.1 1.1-2.9 3.1.3L12 1.5Z" fill="#fff"/><path d="M9 15l6-6" stroke="#4a933d" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="9.2" r="1.3" fill="#4a933d"/><circle cx="15" cy="14.8" r="1.3" fill="#4a933d"/></svg><span>' + fill(esc(cfg.savedText), { amount: '<b>' + money(save) + '</b>' }) + '</span>';
+        el.hidden = false;
+      } else el.hidden = true;
+    });
+  }
+
   /* ---------- render ---------- */
   function render() {
     var empty = !cart || cart.item_count === 0;
@@ -89,6 +112,7 @@
     totalEl.textContent = money(cart.total_price) + (cart.currency ? ' ' + cart.currency : '');
     if (noteEl && document.activeElement !== noteEl) noteEl.value = cart.note || '';
     renderOffer(cart.item_count);
+    renderSaved(cart);
   }
 
   function setCart(c) { cart = c; render(); return c; }
