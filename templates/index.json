@@ -344,9 +344,14 @@
         "l1": {
           "type": "look",
           "settings": {
-            "image": "shopify://shop_images/1.png",
-            "product": "marvel-doctor-doom-the-broken-world"
-          }
+        "heading": "Spring Summer 2026",
+        "text": "Every piece of clothing is made to bring effortless style to everyday\nmoments. From relaxed essentials to standout layers, our collections\nare designed for modern living.",
+        "limit": 10,
+        "bg": "#e2e9ed",
+        "bg_aside": "#c6cdd2",
+        "pt": 0,
+        "pb": 0
+      }
         },
         "l2": {
           "type": "look",
