@@ -147,3 +147,6 @@
 .sk-cd__saved[hidden] { display: none; }
 .sk-cd__saved span { line-height: 1; }
 .sk-cd__saved b { font-weight: 700; }
+
+.sk-cd__plus-v { transform-origin: 7px 7px; transition: transform .3s ease, opacity .3s ease; }
+.sk-cd__rec-open[aria-expanded="true"] .sk-cd__plus-v { transform: scaleY(0); opacity: 0; }

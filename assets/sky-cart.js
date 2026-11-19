@@ -26,7 +26,7 @@
   function close() {
     root.classList.remove('is-open');
     root.setAttribute('aria-hidden', 'true');
-    if (rec) { rec.classList.remove('is-visible'); rec.setAttribute('aria-hidden', 'true'); }
+    if (rec) recToggle(false);
     if (window.Sky && Sky.unlockScroll) Sky.unlockScroll(); else document.documentElement.style.overflow = '';
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
@@ -174,9 +174,10 @@
     if (!rec) return;
     rec.classList.toggle('is-visible', on);
     rec.setAttribute('aria-hidden', on ? 'false' : 'true');
+    var ob = $('[data-cd-rec-open]'); if (ob) ob.setAttribute('aria-expanded', on ? 'true' : 'false');
   }
   root.addEventListener('click', function (e) {
-    if (e.target.closest('[data-cd-rec-open]')) return recToggle(true);
+    if (e.target.closest('[data-cd-rec-open]')) return recToggle(!rec.classList.contains('is-visible'));
     if (e.target.closest('[data-cd-rec-close]')) return recToggle(false);
     var tg = e.target.closest('[data-rec-toggle]');
     if (tg) openRec(tg.closest('.sk-cd__rec'));
