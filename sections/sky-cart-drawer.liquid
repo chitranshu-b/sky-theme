@@ -9,6 +9,28 @@
 <div class="sk-cd" id="SkyCartDrawer" role="dialog" aria-modal="true" aria-labelledby="sk-cd-title" aria-hidden="true">
   <div class="sk-cd__overlay" data-cd-close></div>
   <div class="sk-cd__panel">
+    {%- if section.settings.rec_enabled and section.settings.rec_collection != blank -%}
+    <aside class="sk-cd__side-panel" data-cd-rec aria-hidden="true">
+      <div class="sk-cd__rec-head">
+        <span class="sk-cd__title">{{ section.settings.rec_label }}</span>
+        <button type="button" class="sk-cd__close" data-cd-rec-close aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.75 5.13 5.25 18.85M5.25 5.13l13.5 13.72" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+      <div class="sk-cd__rec-list" data-lenis-prevent>
+        {%- for p in section.settings.rec_collection.products limit: section.settings.rec_limit -%}
+          {%- assign v0 = p.selected_or_first_available_variant -%}
+          <div class="sk-cd__rec" data-handle="{{ p.handle }}">
+            <div class="sk-cd__rec-row">
+              <a class="sk-cd__rec-img" href="{{ p.url }}">{% if p.featured_image %}{{ p.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '160', alt: p.title }}{% endif %}</a>
+              <div class="sk-cd__rec-info"><a href="{{ p.url }}" class="sk-cd__rec-title">{{ p.title }}</a><span class="sk-cd__rec-price">{% if p.price_varies %}From {% endif %}{{ p.price | money }}</span></div>
+              <button type="button" class="sk-cd__rec-toggle" data-rec-toggle aria-expanded="false" aria-label="Choose options"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2v10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
+            </div>
+            <div class="sk-cd__rec-panel"><div class="sk-cd__rec-panel-in" data-rec-panel></div></div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </aside>
+    {%- endif -%}
+    <div class="sk-cd__content">
     <div class="sk-cd__head">
       <div class="sk-cd__title-row">
         <span class="sk-cd__title" id="sk-cd-title">{{ section.settings.heading }}</span>
@@ -19,6 +41,65 @@
       <div class="sk-cd__offer" data-cd-offer></div>
     </div>
     <div class="sk-cd__body" data-cd-body data-lenis-prevent>
+      {%- if section.settings.deals_enabled -%}
+      {%- liquid
+        assign n_tabs = 0
+        if section.settings.deal1_collection != blank
+          assign n_tabs = n_tabs | plus: 1
+        endif
+        if section.settings.deal2_collection != blank
+          assign n_tabs = n_tabs | plus: 1
+        endif
+        if section.settings.deal3_collection != blank
+          assign n_tabs = n_tabs | plus: 1
+        endif
+      -%}
+      {%- if n_tabs > 0 -%}
+      <div class="sk-cd__deals" data-cd-deals>
+        <div class="sk-cd__tabs" role="tablist">
+          {%- assign ti = 0 -%}
+          {%- for n in (1..3) -%}
+            {%- assign ck = 'deal' | append: n | append: '_collection' -%}
+            {%- assign lk = 'deal' | append: n | append: '_label' -%}
+            {%- if section.settings[ck] != blank -%}
+              <button type="button" role="tab" class="sk-cd__tab{% if ti == 0 %} is-active{% endif %}" data-tab="{{ n }}">{{ section.settings[lk] }}</button>
+              {%- assign ti = ti | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        <div class="sk-cd__tabpanel">
+          {%- assign ti = 0 -%}
+          {%- for n in (1..3) -%}
+            {%- assign ck = 'deal' | append: n | append: '_collection' -%}
+            {%- assign tk = 'deal' | append: n | append: '_text' -%}
+            {%- if section.settings[ck] != blank -%}
+              <div class="sk-cd__tabbody{% if ti == 0 %} is-active{% endif %}" data-panel="{{ n }}">
+                {%- if section.settings[tk] != blank -%}<p class="sk-cd__deal-text">{{ section.settings[tk] }}</p>{%- endif -%}
+                <div class="sk-cd__deal-row" data-lenis-prevent>
+                  {%- for p in section.settings[ck].products limit: section.settings.deals_limit -%}
+                    {%- assign v0 = p.selected_or_first_available_variant -%}
+                    <div class="sk-cd__deal">
+                      <a class="sk-cd__deal-img" href="{{ p.url }}">{% if p.featured_image %}{{ p.featured_image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '160', alt: p.title }}{% endif %}</a>
+                      <div class="sk-cd__deal-info">
+                        <a class="sk-cd__deal-title" href="{{ p.url }}">{{ p.title }}</a>
+                        <div class="sk-cd__deal-price"><b>{% if p.price_varies %}From {% endif %}{{ p.price | money }}</b>{% if p.compare_at_price > p.price %} <s>{{ p.compare_at_price | money }}</s>{% endif %}</div>
+                      </div>
+                      {%- if p.variants.size > 1 -%}
+                        <button type="button" class="sk-cd__deal-add" data-qv="{{ p.handle }}" aria-label="Choose options: {{ p.title | escape }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 8h14l-1 12H6L5 8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+                      {%- else -%}
+                        <button type="button" class="sk-cd__deal-add" data-add="{{ v0.id }}"{% unless v0.available %} disabled{% endunless %} aria-label="Add to cart: {{ p.title | escape }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 8h14l-1 12H6L5 8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+                      {%- endif -%}
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+              {%- assign ti = ti | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- endif -%}
+      {%- endif -%}
       <div class="sk-cd__items" data-cd-items></div>
       {%- if section.settings.show_note -%}
         <div class="sk-cd__acc" data-cd-acc>
@@ -27,6 +108,9 @@
             <textarea data-cd-note placeholder="{{ section.settings.note_placeholder | escape }}"></textarea>
           </details>
         </div>
+      {%- endif -%}
+      {%- if section.settings.rec_enabled and section.settings.rec_collection != blank -%}
+        <button type="button" class="sk-cd__rec-open" data-cd-rec-open><span>{{ section.settings.rec_label }}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M7 2v10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
       {%- endif -%}
     </div>
     <div class="sk-cd__empty" data-cd-empty>
@@ -41,6 +125,7 @@
         <a class="sk-cd__btn sk-cd__btn--line" href="{{ routes.cart_url }}">{{ section.settings.view_cart_label }}</a>
         <button type="submit" name="checkout" class="sk-cd__btn sk-cd__btn--fill">{{ section.settings.checkout_label }}</button>
       </form>
+    </div>
     </div>
   </div>
 </div>
@@ -78,6 +163,25 @@
     { "type": "text", "id": "empty_text", "label": "Empty cart text", "default": "Your cart is empty" },
     { "type": "text", "id": "continue_label", "label": "Continue shopping label", "default": "Continue shopping" },
     { "type": "url", "id": "continue_url", "label": "Continue shopping link" },
+
+    { "type": "header", "content": "Deals tabs (inside the cart)" },
+    { "type": "checkbox", "id": "deals_enabled", "label": "Show deals tabs", "default": true },
+    { "type": "range", "id": "deals_limit", "min": 2, "max": 12, "step": 1, "label": "Max products per tab", "default": 6 },
+    { "type": "text", "id": "deal1_label", "label": "Tab 1: name", "default": "Grab Deal" },
+    { "type": "collection", "id": "deal1_collection", "label": "Tab 1: collection" },
+    { "type": "text", "id": "deal1_text", "label": "Tab 1: text", "default": "Save 10% on the selected products" },
+    { "type": "text", "id": "deal2_label", "label": "Tab 2: name", "default": "Hot Deals" },
+    { "type": "collection", "id": "deal2_collection", "label": "Tab 2: collection" },
+    { "type": "text", "id": "deal2_text", "label": "Tab 2: text" },
+    { "type": "text", "id": "deal3_label", "label": "Tab 3: name", "default": "New Deals" },
+    { "type": "collection", "id": "deal3_collection", "label": "Tab 3: collection" },
+    { "type": "text", "id": "deal3_text", "label": "Tab 3: text" },
+
+    { "type": "header", "content": "Recommended panel" },
+    { "type": "checkbox", "id": "rec_enabled", "label": "Show Recommended panel", "default": true },
+    { "type": "text", "id": "rec_label", "label": "Title", "default": "Recommended" },
+    { "type": "collection", "id": "rec_collection", "label": "Collection" },
+    { "type": "range", "id": "rec_limit", "min": 2, "max": 20, "step": 1, "label": "Max products", "default": 8 },
 
     { "type": "header", "content": "Offer progress bar (buy more, save more)" },
     { "type": "paragraph", "content": "The bar counts the total number of items in the cart. Create the matching automatic discount in Shopify admin (for example 2 items = 300 off, 3 items = 600 off); this bar only shows the progress." },

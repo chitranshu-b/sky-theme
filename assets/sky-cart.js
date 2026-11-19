@@ -26,6 +26,7 @@
   function close() {
     root.classList.remove('is-open');
     root.setAttribute('aria-hidden', 'true');
+    if (rec) { rec.classList.remove('is-visible'); rec.setAttribute('aria-hidden', 'true'); }
     if (window.Sky && Sky.unlockScroll) Sky.unlockScroll(); else document.documentElement.style.overflow = '';
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
@@ -125,6 +126,69 @@
   });
   document.addEventListener('sky:cart-added', function (e) { if (e.detail && e.detail.cart) setCart(e.detail.cart); });
   document.addEventListener('sky:cart-open', open);
+
+
+  /* ---------- deals tabs, direct add ---------- */
+  function addVariant(id, qty) {
+    return fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: +id, quantity: qty || 1 }) })
+      .then(function (r) { if (!r.ok) throw new Error('add'); return r.json(); }).then(refresh);
+  }
+  root.addEventListener('click', function (e) {
+    var tab = e.target.closest('.sk-cd__tab');
+    if (tab) {
+      root.querySelectorAll('.sk-cd__tab').forEach(function (t) { t.classList.toggle('is-active', t === tab); });
+      root.querySelectorAll('.sk-cd__tabbody').forEach(function (b) { b.classList.toggle('is-active', b.dataset.panel === tab.dataset.tab); });
+      return;
+    }
+    var add = e.target.closest('[data-add]');
+    if (add) { add.classList.add('is-busy'); addVariant(add.dataset.add, 1).catch(function () {}).then(function () { add.classList.remove('is-busy'); }); }
+  });
+
+  /* ---------- recommended side panel ---------- */
+  var rec = $('[data-cd-rec]');
+  function recToggle(on) {
+    if (!rec) return;
+    rec.classList.toggle('is-visible', on);
+    rec.setAttribute('aria-hidden', on ? 'false' : 'true');
+  }
+  root.addEventListener('click', function (e) {
+    if (e.target.closest('[data-cd-rec-open]')) return recToggle(true);
+    if (e.target.closest('[data-cd-rec-close]')) return recToggle(false);
+    var tg = e.target.closest('[data-rec-toggle]');
+    if (tg) openRec(tg.closest('.sk-cd__rec'));
+  });
+  var recCache = {};
+  function openRec(card) {
+    var isOpen = card.classList.toggle('is-open');
+    card.querySelector('[data-rec-toggle]').setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    if (!isOpen || card.dataset.ready) return;
+    card.dataset.ready = '1';
+    var handle = card.dataset.handle, panel = card.querySelector('[data-rec-panel]');
+    panel.innerHTML = '<div class="sk-cd__rec-form"><span class="sk-cd__opt-name">Loading…</span></div>';
+    (recCache[handle] = recCache[handle] || fetch('/products/' + handle + '.js').then(function (r) { return r.json(); })).then(function (p) { buildRec(panel, p); });
+  }
+  function buildRec(panel, p) {
+    var opts = (p.options || []).map(function (o) { return typeof o === 'string' ? { name: o, values: [] } : o; });
+    opts.forEach(function (o, i) { var seen = {}; o.values = []; p.variants.forEach(function (v) { var x = v['option' + (i + 1)]; if (x != null && !seen[x]) { seen[x] = 1; o.values.push(x); } }); });
+    var first = p.variants.filter(function (v) { return v.available; })[0] || p.variants[0];
+    var chosen = opts.map(function (o, i) { return first['option' + (i + 1)]; });
+    var single = p.variants.length === 1;
+    function cur() { return p.variants.filter(function (v) { return chosen.every(function (c, i) { return v['option' + (i + 1)] === c; }); })[0]; }
+    function draw() {
+      var v = cur();
+      panel.innerHTML = '<div class="sk-cd__rec-form">' + (single ? '' : opts.map(function (o, i) {
+        return '<div><div class="sk-cd__opt-name">' + esc(o.name) + ': <b>' + esc(chosen[i]) + '</b></div><div class="sk-cd__opt-vals">' + o.values.map(function (val) {
+          var t = chosen.slice(); t[i] = val;
+          var m = p.variants.filter(function (x) { return t.every(function (c, k) { return x['option' + (k + 1)] === c; }); })[0];
+          return '<button type="button" class="sk-cd__ov' + (val === chosen[i] ? ' is-on' : '') + (!m || !m.available ? ' is-out' : '') + '" data-i="' + i + '" data-v="' + esc(val) + '">' + esc(val) + '</button>';
+        }).join('') + '</div></div>';
+      }).join('')) + '<button type="button" class="sk-cd__rec-add"' + (v && v.available ? '' : ' disabled') + '>' + (v && v.available ? 'Add to cart' : 'Sold out') + '</button></div>';
+      panel.querySelectorAll('.sk-cd__ov').forEach(function (b) { b.onclick = function () { chosen[+b.dataset.i] = b.dataset.v; draw(); }; });
+      var a = panel.querySelector('.sk-cd__rec-add');
+      a.onclick = function () { if (!v || !v.available) return; a.disabled = true; a.textContent = 'Adding…'; addVariant(v.id, 1).then(function () { a.textContent = 'Added ✓'; setTimeout(draw, 1200); }).catch(function () { a.textContent = 'Try again'; a.disabled = false; }); };
+    }
+    draw();
+  }
 
   refresh();
 })();

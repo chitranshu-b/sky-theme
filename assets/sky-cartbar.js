@@ -12,6 +12,7 @@
 
   function hide() { clearTimeout(timer); bar.classList.remove('is-visible'); }
   function show(item, cart) {
+    if (document.querySelector('.sk-cd.is-open')) return;
     var title = item ? (item.product_title || item.title || '') : '';
     var vt = item && item.variant_title && item.variant_title !== 'Default Title' ? ' - ' + item.variant_title : '';
     var msg = title ? '\u201C' + title + vt + '\u201D has been added to your cart.' : 'Added to your cart.';
