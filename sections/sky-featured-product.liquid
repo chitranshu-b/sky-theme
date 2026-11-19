@@ -183,7 +183,7 @@
       }
       thumbs.forEach(function (t) { t.addEventListener('click', function () { show(t.dataset.thumb); }); });
       this.querySelectorAll('[data-nav]').forEach(function (b) { b.addEventListener('click', function () { show(cur + +b.dataset.nav); }); });
-      function money(c) { return (window.Shopify && Shopify.formatMoney) ? Shopify.formatMoney(c, self.dataset.money) : (c / 100).toFixed(2); }
+      function money(c) { if (window.SkyShop && SkyShop.money) return SkyShop.money(c); return '\u20B9' + (c / 100).toFixed(2); }
       function selected() { return [].map.call(self.querySelectorAll('[data-opt]'), function (f) { var a = f.querySelector('.is-active'); return a ? a.dataset.value : null; }); }
       function setStock(v) {
         if (!stockLine) return; var q = v ? stock[v.id] : 0;
