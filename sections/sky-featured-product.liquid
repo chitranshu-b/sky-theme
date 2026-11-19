@@ -5,7 +5,7 @@
 {%- else -%}
 {%- assign current = product.selected_or_first_available_variant -%}
 {%- capture stock_json -%}{ {%- for v in product.variants -%}"{{ v.id }}":{% if v.available %}{% if v.inventory_management and v.inventory_quantity > 0 %}{{ v.inventory_quantity }}{% else %}-1{% endif %}{% else %}0{% endif %}{% unless forloop.last %},{% endunless %}{%- endfor -%} }{%- endcapture -%}
-<sky-fp class="sk-fp sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px;" data-variants='{{ product.variants | json | escape }}' data-stock='{{ stock_json | strip_newlines }}' data-money="₹{% raw %}{{amount}}{% endraw %}">
+<sky-fp class="sk-fp sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px;" data-variants='{{ product.variants | json | escape }}' data-stock='{{ stock_json | strip_newlines }}' data-low="{{ settings.qv_low_stock | default: 10 }}" data-money="₹{% raw %}{{amount}}{% endraw %}">
   <div class="sk-fp__grid">
     <div class="sk-fp__media">
       <div class="sk-fp__thumbs" data-thumbs>
@@ -67,7 +67,7 @@
               {%- endfor -%}
               </div>
             {%- endunless -%}
-            <div class="sk-fp__b"><p class="sk-fp__stock" data-stock-line><span class="sk-fp__stock-ic"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"/><path d="M4.6 8.2l2.3 2.3 4.5-4.6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-stock-text></span></p></div>
+            <div class="sk-fp__b"><p class="sk-qv__stock is-ok" data-stock-line></p></div>
             <div class="sk-fp__b sk-fp__buy">
               <div class="sk-fp__qty"><button type="button" data-q="-1" aria-label="Decrease quantity"><svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 6h8"/></svg></button><input type="number" name="quantity" value="1" min="1" aria-label="Quantity"><button type="button" data-q="1" aria-label="Increase quantity"><svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 6h8M6 2v8"/></svg></button></div>
               <button type="submit" class="sk-fp__add" data-add {% unless current.available %}disabled{% endunless %}>{% if current.available %}Add to cart{% else %}Sold out{% endif %}</button>
@@ -142,8 +142,7 @@
   .sk-fp__sw.is-active { box-shadow: 0 0 0 1.5px #202020; } .sk-fp__sw.is-active span { transform: scale(.86); }
   .sk-fp__pill { min-width: 70px; height: 42px; padding: 0 24px; border: .8px solid #e3e3e4; border-radius: 30px; background: #fff; color: #202020; font: inherit; font-size: 14px; letter-spacing: .1px; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
   .sk-fp__pill:hover { border-color: #000; } .sk-fp__pill.is-active { background: #000; border-color: #000; color: #fff; }
-  .sk-fp__stock { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 14px; line-height: 21px; color: #417d3d; }
-  .sk-fp__stock-ic { display: flex; } .sk-fp__stock.is-out { color: #b3261e; }
+  .sk-fp .sk-qv__stock { margin: 0; }
   .sk-fp__buy { display: flex; gap: 10px; align-items: center; }
   .sk-fp__qty { display: flex; align-items: center; flex: 0 0 120px; width: 120px; height: 44px; border: .8px solid #e3e3e4; border-radius: 40px; overflow: hidden; }
   .sk-fp__qty button { flex: 0 0 40px; height: 100%; border: 0; background: none; color: #202020; display: flex; align-items: center; justify-content: center; cursor: pointer; }
@@ -181,7 +180,7 @@
       try { stock = JSON.parse(this.dataset.stock || '{}'); } catch (e) {}
       var idInput = this.querySelector('[data-id]'), add = this.querySelector('[data-add]'), price = this.querySelector('[data-price]'), cmp = this.querySelector('[data-compare]');
       var thumbs = this.querySelectorAll('[data-thumb]'), imgs = this.querySelectorAll('[data-img]'), cur = 0;
-      var stockLine = this.querySelector('[data-stock-line]'), stockText = this.querySelector('[data-stock-text]');
+      var stockLine = this.querySelector('[data-stock-line]');
       function show(i) {
         if (!imgs.length) return; cur = (+i + imgs.length) % imgs.length;
         thumbs.forEach(function (t) { var on = t.dataset.thumb === String(cur); t.classList.toggle('is-active', on); if (on) { var box = t.parentNode; if (box.scrollHeight > box.clientHeight + 2 && box.scrollWidth <= box.clientWidth + 2) box.scrollTo({ top: t.offsetTop - 6, behavior: 'smooth' }); else if (box.scrollWidth > box.clientWidth + 2) box.scrollTo({ left: t.offsetLeft - 16, behavior: 'smooth' }); } });
@@ -192,9 +191,15 @@
       function money(c) { if (window.SkyShop && SkyShop.money) return SkyShop.money(c); return '\u20B9' + (c / 100).toFixed(2); }
       function selected() { return [].map.call(self.querySelectorAll('[data-opt]'), function (f) { var a = f.querySelector('.is-active'); return a ? a.dataset.value : null; }); }
       function setStock(v) {
-        if (!stockLine) return; var q = v ? stock[v.id] : 0;
-        stockLine.classList.toggle('is-out', !(q === -1 || q > 0));
-        stockText.textContent = !v ? 'This combination is unavailable' : q === -1 ? 'In stock, Get yours today!' : q > 0 ? q + ' in stock, Get yours today!' : 'Sold out';
+        if (!stockLine) return;
+        var q = v ? stock[String(v.id)] : undefined, low = +(self.dataset.low || 0), cls = 'ok', txt = '';
+        if (!v) { stockLine.textContent = ''; stockLine.className = 'sk-qv__stock'; return; }
+        if (q == null || q < 0) txt = v.available ? 'In stock, Get yours today!' : 'Out of stock';
+        else if (q > 0) txt = (low && q <= low) ? 'Only ' + q + ' left in stock, order soon!' : q + ' in stock, Get yours today!';
+        else txt = v.available ? 'In stock, Get yours today!' : 'Out of stock';
+        if (!v.available) cls = 'out'; else if (q != null && q > 0 && low && q <= low) cls = 'low';
+        stockLine.className = 'sk-qv__stock is-' + cls;
+        stockLine.innerHTML = '<i></i><span></span>'; stockLine.lastChild.textContent = txt;
       }
       function sync() {
         var sel = selected(), v;
