@@ -83,7 +83,7 @@
           {%- endif -%}
 
           {%- if product.description != blank -%}
-            <details class="sk-fp__tab"><summary><span>{{ s.tab1_title | default: 'Product Description' }}</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path class="v" d="M8 1V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/><path d="M1 8H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg></summary><div class="sk-fp__tab-c"><p>{{ product.description | strip_html | strip_newlines | truncatewords: 38, '' }}</p></div></details>
+            <details class="sk-fp__tab"><summary><span>{{ s.tab1_title | default: 'Product Description' }}</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path class="v" d="M8 1V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/><path d="M1 8H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg></summary><div class="sk-fp__tab-c"><p>{{ product.description | replace: '<br>', ' ' | replace: '</li>', ' ' | replace: '</h3>', ' ' | replace: '</p>', ' ' | strip_html | strip_newlines | truncatewords: 38, '' }}</p></div></details>
           {%- endif -%}
           {%- if s.tab2_text != blank -%}
             <details class="sk-fp__tab"><summary><span>{{ s.tab2_title }}</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path class="v" d="M8 1V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/><path d="M1 8H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg></summary><div class="sk-fp__tab-c">{{ s.tab2_text }}</div></details>
