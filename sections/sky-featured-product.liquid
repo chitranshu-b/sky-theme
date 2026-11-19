@@ -91,13 +91,13 @@
   .sk-fp { padding-left: 0; padding-right: 0; }
   .sk-fp__grid { display: flex; align-items: flex-start; }
   .sk-fp__media { flex: 0 0 60%; max-width: 60%; display: flex; gap: 0; min-width: 0; }
-  .sk-fp__thumbs { flex: 0 0 150px; width: 150px; padding: 6px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; scrollbar-width: none; align-self: stretch; max-height: calc((100vw * .6 - 150px)); }
+  .sk-fp__media { position: relative; }
+  .sk-fp__thumbs { position: absolute; left: 0; top: 0; bottom: 0; width: 150px; padding: 6px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; scrollbar-width: none; box-sizing: border-box; }
   .sk-fp__thumbs::-webkit-scrollbar { display: none; }
   .sk-fp__thumbs button { flex: 0 0 auto; display: block; width: 100%; height: 120px; padding: 0; border: 0; background: none; overflow: hidden; opacity: .5; transition: opacity .25s; cursor: pointer; }
   .sk-fp__thumbs button.is-active, .sk-fp__thumbs button:hover { opacity: 1; }
   .sk-fp__thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .sk-fp__stage { position: relative; flex: 1; min-width: 0; aspect-ratio: 1; overflow: hidden; }
-  .sk-fp__thumbs { max-height: none; height: 0; min-height: 100%; }
+  .sk-fp__stage { position: relative; flex: 1; min-width: 0; margin-left: 150px; aspect-ratio: 1; overflow: hidden; }
   .sk-fp__stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .45s; }
   .sk-fp__stage img.is-active { opacity: 1; }
   .sk-fp__arrows { position: absolute; right: 20px; bottom: 30px; display: flex; gap: 8px; z-index: 2; }
@@ -151,7 +151,8 @@
   .sk-fp__tab-c > :first-child { margin-top: 0; }
   @media (max-width: 989px) {
     .sk-fp__grid { flex-direction: column; } .sk-fp__media { flex: none; max-width: none; width: 100%; flex-direction: column-reverse; }
-    .sk-fp__thumbs { flex: none; width: 100%; height: auto; min-height: 0; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 6px 16px; }
+    .sk-fp__stage { margin-left: 0; }
+    .sk-fp__thumbs { position: static; width: 100%; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 6px 16px; }
     .sk-fp__thumbs button { flex: 0 0 90px; height: 90px; }
     .sk-fp__info { width: 100%; padding: 16px; } .sk-fp__sticky { position: static; }
   }
