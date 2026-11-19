@@ -15,6 +15,7 @@
     {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
 
     {{ 'sky-base.css' | asset_url | stylesheet_tag }}
+    {{ 'sky-cart.css' | asset_url | stylesheet_tag }}
     <style>
       :root {
         --sk-bg: {{ settings.bg_color }};
