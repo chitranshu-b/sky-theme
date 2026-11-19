@@ -344,28 +344,28 @@
         "l1": {
           "type": "look",
           "settings": {
-            "image": "shopify://shop_images/1.png",
+            "image": "shopify://shop_images/LC-5.png",
             "product": "marvel-doctor-doom-the-broken-world"
           }
         },
         "l2": {
           "type": "look",
           "settings": {
-            "image": "shopify://shop_images/5.png",
+            "image": "shopify://shop_images/LC-5.png",
             "product": "marvel-doctor-doom-i-was-a-god"
           }
         },
         "l3": {
           "type": "look",
           "settings": {
-            "image": "shopify://shop_images/3_bbac7620-07a5-4336-bc6f-5ac0643c0a07.jpg",
+            "image": "shopify://shop_images/LC-5.png",
             "product": "marvel-doctor-doom-fear-doom"
           }
         },
         "l4": {
           "type": "look",
           "settings": {
-            "image": "shopify://shop_images/magnific__sitting-male-model-wearing-the-same-d3ceba-tshirt-__41072.png",
+            "image": "shopify://shop_images/LC-5.png",
             "product": "marvel-doctor-doom-the-death"
           }
         }
@@ -379,6 +379,7 @@
       "settings": {
         "heading": "Spring Summer 2026",
         "text": "Every piece of clothing is made to bring effortless style to everyday\nmoments. From relaxed essentials to standout layers, our collections\nare designed for modern living.",
+        "collection": "",
         "limit": 10,
         "bg": "#e2e9ed",
         "bg_aside": "#c6cdd2",
