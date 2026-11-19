@@ -191,22 +191,12 @@
     "showcase": {
       "type": "sky-showcase-pinned",
       "blocks": {
-        "s1": {
-          "type": "collection",
-          "settings": {
-            "collection": "",
-            "title": "Jackets",
-            "link": "",
-            "image": "shopify://shop_images/a3.png",
-            "text": "Stylish jackets crafted for warmth, comfort, and everyday confidence."
-          }
-        },
         "s2": {
           "type": "collection",
           "settings": {
             "collection": "",
-            "title": "Sports Wear",
-            "link": "",
+            "title": "Daily Wear",
+            "link": "shopify://collections/peek-a-boo-collection",
             "image": "shopify://shop_images/box-bee-men-02.png",
             "text": "Classic stripes and polished knits made for everyday comfort and easy layering."
           }
@@ -215,17 +205,27 @@
           "type": "collection",
           "settings": {
             "collection": "",
-            "title": "Relaxed Fit",
-            "link": "",
+            "title": "Anime Fan Club",
+            "link": "shopify://collections/anime-collection",
             "image": "shopify://shop_images/5_9659f476-9bea-4d31-aa6c-2aa0eadd3888.jpg",
             "text": "Easy silhouettes with soft fabrics for all-day wear."
+          }
+        },
+        "s1": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "title": "Creator's Choice",
+            "link": "shopify://collections/hikabae-creators-choice-collection",
+            "image": "shopify://shop_images/a3.png",
+            "text": "Stylish jackets crafted for warmth, comfort, and everyday confidence."
           }
         }
       },
       "block_order": [
-        "s1",
         "s2",
-        "s3"
+        "s3",
+        "s1"
       ],
       "settings": {
         "pt": 0,
