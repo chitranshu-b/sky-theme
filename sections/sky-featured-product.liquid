@@ -83,10 +83,10 @@
           {%- endif -%}
 
           {%- if product.description != blank -%}
-            <details class="sk-fp__tab"><summary><span>{{ s.tab1_title | default: 'Product Description' }}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5l5 5 5-5"/></svg></summary><div class="sk-fp__tab-c">{{ product.description }}</div></details>
+            <details class="sk-fp__tab"><summary><span>{{ s.tab1_title | default: 'Product Description' }}</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path class="v" d="M8 1V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/><path d="M1 8H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg></summary><div class="sk-fp__tab-c"><p>{{ product.description | strip_html | strip_newlines | truncatewords: 38, '' }}</p></div></details>
           {%- endif -%}
           {%- if s.tab2_text != blank -%}
-            <details class="sk-fp__tab"><summary><span>{{ s.tab2_title }}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5l5 5 5-5"/></svg></summary><div class="sk-fp__tab-c">{{ s.tab2_text }}</div></details>
+            <details class="sk-fp__tab"><summary><span>{{ s.tab2_title }}</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path class="v" d="M8 1V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/><path d="M1 8H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg></summary><div class="sk-fp__tab-c">{{ s.tab2_text }}</div></details>
           {%- endif -%}
         </div>
       </div>
@@ -98,20 +98,22 @@
 {% stylesheet %}
   .sk-fp { padding-left: 0; padding-right: 0; }
   .sk-fp__grid { display: flex; align-items: flex-start; }
-  .sk-fp__media { flex: 0 0 60%; max-width: 60%; display: flex; gap: 0; min-width: 0; }
-  .sk-fp__media { position: sticky; top: 20px; }
-  .sk-fp__thumbs { position: absolute; left: 0; top: 0; bottom: 0; width: 150px; padding: 6px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; scrollbar-width: none; box-sizing: border-box; }
+  .sk-fp { --fp-thumb: 150px; --fp-media: 60%; }
+  .sk-fp__media { flex: 0 0 var(--fp-media); max-width: var(--fp-media); width: var(--fp-media); display: flex; gap: 0; min-width: 0; position: sticky; top: 20px; }
+  @media (min-width: 1280px) { .sk-fp { --fp-media: 68%; } }
+  @media (min-width: 1410px) { .sk-fp { --fp-thumb: 240px; } }
+  .sk-fp__thumbs { position: absolute; left: 0; top: 0; bottom: 0; width: var(--fp-thumb); padding: 6px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; scrollbar-width: none; box-sizing: border-box; }
   .sk-fp__thumbs::-webkit-scrollbar { display: none; }
-  .sk-fp__thumbs button { flex: 0 0 auto; display: block; width: 100%; height: 120px; padding: 0; border: 0; background: none; overflow: hidden; opacity: .5; transition: opacity .25s; cursor: pointer; }
+  .sk-fp__thumbs button { flex: 0 0 auto; display: block; width: 100%; height: calc((100% - 15px) / 4); padding: 0; border: 0; background: none; overflow: hidden; opacity: .5; transition: opacity .25s; cursor: pointer; }
   .sk-fp__thumbs button.is-active, .sk-fp__thumbs button:hover { opacity: 1; }
   .sk-fp__thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .sk-fp__stage { position: relative; flex: 1; min-width: 0; margin-left: 150px; aspect-ratio: 1; overflow: hidden; }
+  .sk-fp__stage { position: relative; flex: 1; min-width: 0; margin-left: var(--fp-thumb); aspect-ratio: 1; overflow: hidden; }
   .sk-fp__stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .45s; }
   .sk-fp__stage img.is-active { opacity: 1; }
   .sk-fp__arrows { position: absolute; right: 20px; bottom: 30px; display: flex; gap: 8px; z-index: 2; }
   .sk-fp__arrows button { width: 40px; height: 50px; display: flex; align-items: center; justify-content: center; border: .8px solid #e5e5e5; border-radius: 15px; background: #fff; color: #000; cursor: pointer; transition: background .2s, color .2s; }
   .sk-fp__arrows button:hover { background: #000; color: #fff; }
-  .sk-fp__info { flex: 1; min-width: 0; padding: 20px 38.7px 20px 30px; align-self: stretch; }
+  .sk-fp__info { flex: 1 1 0; min-width: 0; padding: 20px min(3.5vw, 65px) 20px 30px; align-self: stretch; }
   .sk-fp__disc { background: #000; color: #fff; border-radius: 20px 20px 0 0; padding-bottom: 20px; }
   .sk-fp__disc-btn { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 15px 30px; border: 0; background: none; color: #fff; font: inherit; font-size: 14px; font-weight: 700; letter-spacing: .1px; cursor: pointer; }
   .sk-fp__disc-btn svg { transition: transform .25s; } .sk-fp__disc-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
@@ -151,13 +153,17 @@
   .sk-fp__add:hover { opacity: .85; } .sk-fp__add[disabled] { opacity: .45; cursor: not-allowed; }
   .sk-fp__wh { margin: 10px 0; }
   .sk-fp__tab { border-top: .8px solid #e3e3e4; }
-  .sk-fp__form + .sk-fp__tab { margin-top: 10px; }
-  .sk-fp__tab summary { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; font-size: 14px; line-height: 21px; font-weight: 700; cursor: pointer; list-style: none; }
+  .sk-fp__tab:last-child { border-bottom: .8px solid #e3e3e4; }
+  .sk-fp__form + .sk-fp__tab, .sk-fp__wh + .sk-fp__tab { margin-top: 10px; }
+  .sk-fp__tab summary { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; font-size: 14px; line-height: 21px; font-weight: 700; color: #202020; cursor: pointer; list-style: none; }
   .sk-fp__tab summary::-webkit-details-marker { display: none; }
-  .sk-fp__tab summary svg { transition: transform .25s; } .sk-fp__tab[open] summary svg { transform: rotate(180deg); }
-  .sk-fp__tab-c { padding: 0 0 14px; font-size: 14px; line-height: 21px; }
-  .sk-fp__tab-c > :first-child { margin-top: 0; }
+  .sk-fp__tab summary svg { width: 8px; height: 8px; flex: none; } .sk-fp__tab summary svg path { transition: transform .25s, opacity .25s; transform-origin: center; }
+  .sk-fp__tab[open] summary svg .v { transform: scaleY(0); opacity: 0; }
+  .sk-fp__tab-c { padding: 0 0 20px; font-size: 14px; line-height: 21px; color: #202020; }
+  .sk-fp__tab-c > :first-child { margin-top: 0; } .sk-fp__tab-c > :last-child { margin-bottom: 0; }
+  .sk-fp__tab-c p { margin: 0; } .sk-fp__tab-c ul { margin: 0; padding-left: 20px; list-style: disc; } .sk-fp__tab-c li:not(:last-child) { margin-bottom: 21px; } .sk-fp__tab-c strong { font-weight: 700; }
   @media (max-width: 989px) {
+    .sk-fp { --fp-media: 100%; }
     .sk-fp__grid { flex-direction: column; } .sk-fp__media { flex: none; max-width: none; width: 100%; flex-direction: column-reverse; }
     .sk-fp__stage { margin-left: 0; }
     .sk-fp__thumbs { position: static; width: 100%; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 6px 16px; }
