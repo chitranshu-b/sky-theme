@@ -394,11 +394,11 @@
         "pb": 0,
         "eyebrow": "Dress Up Your Moments",
         "heading": "Hurry, Your Style Won't Wait",
-        "end_date": "2026-12-31 23:59",
+        "end_date": "2026-12-18 10:30",
         "ended_text": "Offer ended",
-        "text": "All orders $25+ ship free within 1 business day via USPS Priority Mail",
+        "text": "All orders ship free within 2 business days\nvia DELHIVERY Priority Mail",
         "button_label": "Shop Now",
-        "button_link": "",
+        "button_link": "shopify://collections",
         "bg": "#000000",
         "fg": "#ffffff"
       }
