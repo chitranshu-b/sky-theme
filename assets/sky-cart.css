@@ -140,3 +140,4 @@
   .sk-cd__side-panel.is-visible { transform: none; }
   .sk-cd__deal { flex-basis: 85%; }
 }
+.sk-cd__panel { z-index: 1; isolation: isolate; }
