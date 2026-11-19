@@ -45,6 +45,8 @@
     if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
   }
 
+  window.SkyShop = window.SkyShop || {}; window.SkyShop.money = money;
+
   function isColorOption(name) { return /^(colou?rs?)$/i.test(name || ''); }
   function swatchColor(val, map) {
     if (map && map[val]) return map[val];
@@ -196,7 +198,15 @@
       var msg = body.querySelector('[data-qv-msg]'); b.disabled = true; msg.textContent = '';
       fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: v.id, quantity: Math.max(1, +q.value || 1) }) })
         .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.description || j.message || 'Could not add'); return j; }); })
-        .then(function () { b.textContent = 'Added ✓'; msg.textContent = ''; updateCount(); setTimeout(function () { if (state) { b.disabled = false; b.textContent = 'Add to cart'; } }, 1600); })
+        .then(function (item) {
+          b.textContent = 'Added ✓'; msg.textContent = '';
+          fetch('/cart.js', { headers: { Accept: 'application/json' } }).then(function (r) { return r.json(); }).then(function (c) {
+            document.querySelectorAll('[data-cart-count]').forEach(function (e) { e.textContent = c.item_count; e.hidden = !c.item_count; });
+            close();
+            document.dispatchEvent(new CustomEvent('sky:cart-added', { detail: { item: item, cart: c } }));
+          }).catch(function () { updateCount(); });
+          setTimeout(function () { if (state) { b.disabled = false; b.textContent = 'Add to cart'; } }, 1600);
+        })
         .catch(function (err) { b.disabled = false; msg.textContent = err.message; });
     }
   });

@@ -18,13 +18,13 @@
         "height": 100,
         "overlay": 40,
         "text_color": "#ffffff",
-        "marquee_text": "Winter Sale",
+        "marquee_text": "Spring Sale",
         "marquee_size": 180,
         "marquee_pxs": 85,
-        "heading": "The New Season\nStarts Here",
+        "heading": "The New Season Starts Here",
         "button_label": "Shop Now",
         "button_link": "",
-        "text": "Curated wardrobe staples crafted from premium fabrics,\nblending timeless silhouettes with effortless versatility\nto create confident style for every season."
+        "text": "Curated wardrobe staples crafted from premium fabrics, blending timeless silhouettes with effortless versatility to create confident style for every season."
       }
     },
     "mosaic": {
@@ -227,6 +227,9 @@
         "s3",
         "s1"
       ],
+      "custom_css": [
+        ".sk-sc__glass {left: 52%;}"
+      ],
       "settings": {
         "pt": 0,
         "pb": 40,
@@ -269,10 +272,10 @@
       "settings": {
         "heading": "Fresh picks just dropped",
         "columns": 4,
-        "limit": 8,
-        "show_view_all": true,
-        "pt": 48,
-        "pb": 48
+        "limit": 12,
+        "show_view_all": false,
+        "pt": 30,
+        "pb": 0
       }
     },
     "look": {
