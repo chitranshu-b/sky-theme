@@ -20,7 +20,7 @@
       '<div class="sk-cs__inner">' +
         '<div class="sk-cs__msg"><span class="sk-cs__ico"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="currentColor"/><path d="M6.6 10.2l2.3 2.3 4.6-4.7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>' + esc(msg) + '</span></div>' +
         '<div class="sk-cs__act">' + (total ? '<div class="sk-cs__price">' + esc(total) + '</div>' : '') +
-          '<a class="sk-cs__btn" href="' + esc(cartUrl) + '">View cart</a></div>' +
+          '<a class="sk-cs__btn" data-sk-cart-open href="' + esc(cartUrl) + '">View cart</a></div>' +
       '</div>';
     bar.classList.add('is-visible');
     clearTimeout(timer);
@@ -29,6 +29,8 @@
 
   bar.addEventListener('mouseenter', function () { hovering = true; clearTimeout(timer); });
   bar.addEventListener('mouseleave', function () { hovering = false; if (bar.classList.contains('is-visible')) { clearTimeout(timer); timer = setTimeout(hide, delay); } });
+
+  bar.addEventListener('click', function (e) { if (e.target.closest('[data-sk-cart-open]')) hide(); });
 
   document.addEventListener('sky:cart-added', function (e) { var d = e.detail || {}; show(d.item, d.cart); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });

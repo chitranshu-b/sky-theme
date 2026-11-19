@@ -45,6 +45,7 @@
 
     {% render 'sky-back-to-top' %}
     {% render 'sky-quick-view' %}
+    {% section 'sky-cart-drawer' %}
     <sky-cart-success class="sk-cs" data-hide-delay="5" aria-live="polite" data-cart-url="{{ routes.cart_url }}"><div data-cs-slot></div></sky-cart-success>
     <script>window.SkyShop = { moneyFormat: {{ shop.money_format | json }}, cartUrl: {{ routes.cart_url | json }} };</script>
     <script src="{{ 'sky-quickview.js' | asset_url }}" defer></script>
