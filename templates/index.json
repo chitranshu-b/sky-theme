@@ -285,16 +285,22 @@
           "type": "hotspot",
           "settings": {
             "product": "fall-skeleton-men-offwhite",
-            "x": 50,
-            "y": 55
+            "title": "Office Wear",
+            "x": 51,
+            "y": 57,
+            "x_m": 52,
+            "y_m": 45
           }
         },
         "h2": {
           "type": "hotspot",
           "settings": {
             "product": "fall-skeleton-men-lavender",
-            "x": 72,
-            "y": 58
+            "title": "Casual",
+            "x": 70,
+            "y": 61,
+            "x_m": 70,
+            "y_m": 60
           }
         }
       },
@@ -303,13 +309,14 @@
         "h2"
       ],
       "settings": {
-        "pt": 40,
-        "pb": 40,
+        "pt": 0,
+        "pb": 0,
         "image": "shopify://shop_images/fall-skeleton-men-offwhite-05.png",
-        "height": 90,
-        "overlay": 40,
-        "text_color": "#ffffff",
-        "heading": "Enduring Stylish Sophistication",
+        "height": 810,
+        "height_m": 660,
+        "pin_color": "#ffffff",
+        "autoplay": 5,
+        "heading": "Enduring Stylish\nSophistication",
         "text": "Enduring Stylish Sophistication blends timeless elegance with lasting style.",
         "look_name": "Office Wear"
       }
