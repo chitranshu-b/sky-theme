@@ -268,10 +268,10 @@
       "settings": {
         "heading": "Fresh picks just dropped",
         "columns": 4,
-        "limit": 8,
-        "show_view_all": true,
-        "pt": 48,
-        "pb": 48
+        "limit": 12,
+        "show_view_all": false,
+        "pt": 30,
+        "pb": 0
       }
     },
     "look": {
