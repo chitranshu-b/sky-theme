@@ -227,13 +227,10 @@
         "s2",
         "s3"
       ],
-      "custom_css": [
-        ".sk-sc__glass {left: 52%;}"
-      ],
       "settings": {
         "pt": 0,
         "pb": 40,
-        "heading": "Dress Up Your Beautiful Moments",
+        "heading": "Dress Up Your\nBeautiful Moments",
         "eyebrow": "Our Collections",
         "ticker": "Designed to Stand Out  •  Elevate Your Wardrobe  •  Timeless Fits, Modern Style."
       }
