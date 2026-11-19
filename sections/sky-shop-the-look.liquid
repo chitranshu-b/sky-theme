@@ -22,7 +22,7 @@
 
     <div class="sk-stl__content sk-container">
       <div class="sk-stl__top">
-        <h2 class="sk-h2 sk-stl__h" data-sk-words><span class="sk-stl__accent">{{ s.heading | newline_to_br }}</span></h2>
+        <h2 class="sk-h2 sk-stl__h" data-sk-words>{{ s.heading | newline_to_br }}</h2>
         {%- if s.text != blank -%}<p class="sk-stl__text">{{ s.text }}</p>{%- endif -%}
       </div>
 
@@ -87,8 +87,7 @@
   @media (min-width: 768px) { .sk-stl__content { padding-top: 60px; } }
   .sk-stl__top, .sk-stl__bottom { pointer-events: none; }
   .sk-stl__prods { pointer-events: auto; }
-  .sk-stl__h { max-width: 500px; color: #fdfdfd; }
-  .sk-stl__accent { font-family: "Protest Riot", var(--sk-font-head), sans-serif; font-weight: 400; letter-spacing: normal; color: #fff; }
+  .sk-stl__h { max-width: 500px; color: #fff; font-family: "Protest Riot", var(--sk-font-head), sans-serif; font-weight: 400; letter-spacing: normal; }
   .sk-stl__text { margin-top: 15px; max-width: 520px; font-size: 14px; line-height: 21px; }
 
   /* hotspots */
