@@ -227,9 +227,7 @@
         "s2",
         "s3"
       ],
-      "custom_css": [
-        ".sk-sc__glass {left: 52%;}"
-      ],
+      "custom_css": [],
       "settings": {
         "pt": 0,
         "pb": 40,
