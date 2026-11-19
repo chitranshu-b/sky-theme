@@ -1,0 +1,8 @@
+{%- comment -%} Icon on the glass card: uploaded image, otherwise a simple shirt outline {%- endcomment -%}
+<span class="sk-sc__ico">
+  {%- if icon != blank -%}
+    <img src="{{ icon | image_url: width: 180 }}" alt="" width="180" height="180" loading="lazy">
+  {%- else -%}
+    <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5l-8 5 3 6 3-2v17h14V14l3 2 3-6-8-5a6 6 0 0 1-10 0z"/></svg>
+  {%- endif -%}
+</span>
