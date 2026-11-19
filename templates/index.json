@@ -326,13 +326,14 @@
       "custom_css": [],
       "settings": {
         "product": "marvel-doctor-doom-the-broken-world",
-        "discount_heading": "Where's The Discount?",
         "note": "The model is 173 cm tall and is wearing size S",
+        "discount_heading": "Where's The Discount?",
+        "discount_text": "Buy 2, get $20 off by using this code",
+        "discount_code": "SAVE20",
+        "pickup_enabled": true,
         "tab1_title": "Product Description",
         "tab2_title": "Clothing Care Instructions",
         "tab2_text": "<ul><li><strong>Machine Wash Cold:</strong> Wash with similar colors on a gentle cycle.</li><li><strong>Do Not Bleach:</strong> Avoid bleach and harsh chemicals to protect fabric quality.</li><li><strong>Tumble Dry Low:</strong> Use a low-heat setting or air dry when possible.</li><li><strong>Iron Low:</strong> Iron inside out using low to medium heat.</li><li><strong>Do Not Dry Clean:</strong> Avoid dry cleaning unless specifically recommended.</li><li><strong>Store Properly:</strong> Fold or hang garments in a cool, dry place away from direct sunlight.</li></ul>",
-        "discount_text": "Buy 2, get $20 off by using this code",
-        "discount_code": "SAVE20",
         "pt": 0,
         "pb": 0
       }
@@ -343,25 +344,29 @@
         "l1": {
           "type": "look",
           "settings": {
-            "product": ""
+            "image": "shopify://shop_images/1.png",
+            "product": "marvel-doctor-doom-the-broken-world"
           }
         },
         "l2": {
           "type": "look",
           "settings": {
-            "product": ""
+            "image": "shopify://shop_images/5.png",
+            "product": "marvel-doctor-doom-i-was-a-god"
           }
         },
         "l3": {
           "type": "look",
           "settings": {
-            "product": ""
+            "image": "shopify://shop_images/3_bbac7620-07a5-4336-bc6f-5ac0643c0a07.jpg",
+            "product": "marvel-doctor-doom-fear-doom"
           }
         },
         "l4": {
           "type": "look",
           "settings": {
-            "product": ""
+            "image": "shopify://shop_images/magnific__sitting-male-model-wearing-the-same-d3ceba-tshirt-__41072.png",
+            "product": "marvel-doctor-doom-the-death"
           }
         }
       },
