@@ -103,18 +103,17 @@ ul { margin: 0; padding: 0; list-style: none; }
 .sk-card__price s { margin-left: 6px; font-weight: 400; opacity: .5; }
 
 /* back to top */
-.sk-top { position: fixed; z-index: 60; right: 24px; bottom: 24px; width: 46px; height: 46px; border: 0; padding: 0; border-radius: 50%; background: #fff; color: #000; box-shadow: 0 4px 18px rgba(0,0,0,.15); opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .3s, transform .3s, visibility .3s; }
-.sk-top.is-visible { opacity: 1; visibility: visible; transform: none; }
-.sk-top svg.ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
-.sk-top .ring circle { fill: none; stroke-width: 3; }
-.sk-top .ring .bg { stroke: rgba(0,0,0,.08); }
-.sk-top .ring .bar { stroke: #000; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--p, 0)); transition: stroke-dashoffset .1s linear; }
-.sk-top__arrows { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; border-radius: 50%; }
-.sk-top__arrows svg { width: 16px; height: 16px; grid-area: 1 / 1; transition: transform .4s cubic-bezier(.7,0,.2,1); }
-.sk-top__arrows svg + svg { transform: translateY(26px); }
-.sk-top:hover .sk-top__arrows svg:first-child { transform: translateY(-26px); }
-.sk-top:hover .sk-top__arrows svg + svg { transform: none; }
-@media (max-width: 749px) { .sk-top { right: 14px; bottom: 14px; } }
+.sk-top { position: fixed; z-index: 2; right: 20px; bottom: 85px; width: 50px; height: 50px; padding: 0; border: 2px solid rgba(0,0,0,.2); border-radius: 50%; background: #fff; color: #000; box-shadow: none; cursor: pointer; opacity: 0; visibility: hidden; pointer-events: none; transform: translate3d(120%,0,0); transition: opacity .35s ease, visibility .35s ease, transform .35s ease; }
+.sk-top.is-visible { opacity: 1; visibility: visible; pointer-events: auto; transform: translate3d(0,0,0); }
+.sk-top svg.ring { position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); overflow: visible; pointer-events: none; transform: rotate(-90deg); }
+.sk-top .ring circle { fill: none; stroke-width: 2; }
+.sk-top .ring .bg { stroke: none; }
+.sk-top .ring .bar { stroke: currentColor; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--p, 0)); transition: stroke-dashoffset .1s linear; }
+.sk-top__arrows { position: absolute; inset: 0; overflow: hidden; border-radius: 50%; }
+.sk-top__arrows svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; padding: 17px; box-sizing: border-box; transition: transform .4s cubic-bezier(0,0,.2,1); will-change: transform; }
+.sk-top__arrows svg + svg { top: 100%; }
+.sk-top:hover .sk-top__arrows svg { transform: translateY(-100%); }
+@media (max-width: 767px) { .sk-top { width: 40px; height: 40px; } .sk-top__arrows svg { padding: 12px; } }
 
 /* product card: quick view button (matches Sky: white circle, soft ring shadow, slides in from the right on hover) */
 .sk-card__qv { position: absolute; z-index: 4; top: 20px; right: 20px; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #000; box-shadow: 0 0 7px 2px rgba(0,0,0,.1); }
