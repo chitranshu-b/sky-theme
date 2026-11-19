@@ -6,7 +6,7 @@
 {%- else -%}
 {%- assign current = product.selected_or_first_available_variant -%}
 {%- capture stock_json -%}{ {%- for v in product.variants -%}"{{ v.id }}":{% if v.available %}{% if v.inventory_management and v.inventory_quantity > 0 %}{{ v.inventory_quantity }}{% else %}-1{% endif %}{% else %}0{% endif %}{% unless forloop.last %},{% endunless %}{%- endfor -%} }{%- endcapture -%}
-<sky-fp class="sk-fp sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px;" data-variants='{{ product.variants | json | escape }}' data-stock='{{ stock_json | strip_newlines }}' data-money="₹{{amount}}">
+<sky-fp class="sk-fp sk-section" style="--sk-pt: {{ s.pt }}px; --sk-pb: {{ s.pb }}px;" data-variants='{{ product.variants | json | escape }}' data-stock='{{ stock_json | strip_newlines }}' data-money="₹{% raw %}{{amount}}{% endraw %}">
   <div class="sk-fp__grid">
     <div class="sk-fp__media">
       <div class="sk-fp__thumbs" data-thumbs>
