@@ -77,3 +77,4 @@
 @media (min-width: 1280px) { .sk-cd__panel { right: 70px; } }
 @media (max-width: 767px) { .sk-cd__panel { right: 0; max-height: calc(100% - 8rem); } .sk-cd__title { font-size: 22px; line-height: 28px; } .sk-cd__head { gap: 12px; } .sk-cd__panel::before { content: ""; position: absolute; top: 10px; left: 50%; width: 66px; height: 5px; margin-left: -33px; border-radius: 20px; background: rgba(58,58,58,.2); z-index: 1; } }
 @media (prefers-reduced-motion: reduce) { .sk-cd__panel, .sk-cd__overlay, .sk-cd__fill { transition: none; } }
+.sk-cd__goal:last-child .sk-cd__goal-label { left: auto; right: 0; transform: none; }
